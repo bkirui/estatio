@@ -18,6 +18,8 @@
  */
 package org.estatio.dom.asset;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
@@ -65,4 +67,23 @@ public class FixedAssetRoles extends EstatioDomainService<FixedAssetRole> {
                 "type", type);
     }
 
+    @NotContributed
+    @Action(semantics = SemanticsOf.SAFE)
+    public List<FixedAssetRole> findAllForProperty(
+            final Property property) {
+        return allMatches("findAllForProperty",
+                "asset", property);
+    }
+
+    @NotContributed
+    @Action(semantics = SemanticsOf.SAFE)
+    public List<FixedAssetRole> findAllForPropertyAndPartyAndType(
+            final FixedAsset asset,
+            final Party party,
+            final FixedAssetRoleType type) {
+        return allMatches("findByAssetAndPartyAndType",
+                "asset", asset,
+                "party", party,
+                "type", type);
+    }
 }

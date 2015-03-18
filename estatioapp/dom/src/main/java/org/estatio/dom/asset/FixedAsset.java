@@ -18,9 +18,11 @@
  */
 package org.estatio.dom.asset;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.DiscriminatorStrategy;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -51,6 +53,7 @@ import org.estatio.dom.WithNameComparable;
 import org.estatio.dom.WithReferenceUnique;
 import org.estatio.dom.communicationchannel.CommunicationChannelOwner;
 import org.estatio.dom.party.Party;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
@@ -88,6 +91,9 @@ public abstract class FixedAsset
     public FixedAsset() {
         super("name");
     }
+
+    @Inject
+    FixedAssetRoles fixedAssetRoles;
 
     // //////////////////////////////////////
 
@@ -180,9 +186,19 @@ public abstract class FixedAsset
             final Party party,
             final LocalDate startDate,
             final LocalDate endDate) {
+        List<FixedAssetRole> currentRoles = fixedAssetRoles.findAllForPropertyAndPartyAndType(this, party, type);
+        for (FixedAssetRole fixedAssetRole : currentRoles) {
+            LocalDateInterval existingInterval = new LocalDateInterval(fixedAssetRole.getStartDate(), fixedAssetRole.getEndDate());
+            LocalDateInterval newInterval = new LocalDateInterval(startDate, endDate);
+            if (existingInterval.overlaps(newInterval)) {
+                return "The provided dates overlap with a current role of this type and party";
+            }
+        }
+
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             return "End date cannot be earlier than start date";
         }
+
         if (!Sets.filter(getRoles(), type.matchingRole()).isEmpty()) {
             return "Add a successor/predecessor from existing role";
         }
