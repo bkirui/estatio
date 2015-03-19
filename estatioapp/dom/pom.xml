@@ -153,12 +153,18 @@ language governing permissions and limitations under the License.
             <artifactId>isis-module-excel-dom</artifactId>
         </dependency>
                 
-	<!-- SETTINGS -->
+		<!-- SETTINGS -->
         <dependency>
             <groupId>org.isisaddons.module.settings</groupId>
             <artifactId>isis-module-settings-dom</artifactId>
         </dependency>
 
+    	<!-- TAGS -->
+   	    <dependency>
+	        <groupId>org.isisaddons.module.tags</groupId>
+	        <artifactId>isis-module-tags-dom</artifactId>
+	        <version>1.8.0</version>
+	    </dependency>    
         
         <!-- QUARTZ -->
         <dependency>
