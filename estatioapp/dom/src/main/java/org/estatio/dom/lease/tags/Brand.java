@@ -18,22 +18,32 @@
  */
 package org.estatio.dom.lease.tags;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
+
 import org.apache.isis.applib.Identifier;
 import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.AutoComplete;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Hidden;
-import org.apache.isis.applib.annotation.Immutable;
-import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.services.eventbus.ActionInteractionEvent;
+
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import org.isisaddons.module.tags.dom.Tag;
+import org.isisaddons.module.tags.dom.Tags;
+
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.JdoColumnLength;
 import org.estatio.dom.WithNameComparable;
@@ -48,7 +58,7 @@ import org.estatio.dom.apptenancy.WithApplicationTenancyPathPersisted;
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
-@javax.jdo.annotations.Unique(name = "Brand_name_UNQ", members = {"name"})
+@javax.jdo.annotations.Unique(name = "Brand_name_UNQ", members = { "name" })
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
                 name = "findByName", language = "JDOQL",
@@ -65,14 +75,13 @@ import org.estatio.dom.apptenancy.WithApplicationTenancyPathPersisted;
                 value = "SELECT name "
                         + "FROM org.estatio.dom.lease.tags.Brand")
 })
-@AutoComplete(repository = Brands.class, action = "autoComplete")
-@Immutable
+@DomainObject(editing = Editing.DISABLED, autoCompleteRepository = Brands.class, autoCompleteAction = "autocomplete")
 public class Brand
         extends EstatioDomainObject<Brand>
         implements WithNameUnique, WithNameComparable<Brand>, WithApplicationTenancyCountry, WithApplicationTenancyPathPersisted {
 
     public Brand() {
-        super("name");
+        super("name, tag");
     }
 
     // //////////////////////////////////////
@@ -83,9 +92,9 @@ public class Brand
             length = ApplicationTenancy.MAX_LENGTH_PATH,
             allowsNull = "false",
             name = "atPath"
-    )
-    @Hidden
-    public String getApplicationTenancyPath() {
+            )
+            @Hidden
+            public String getApplicationTenancyPath() {
         return applicationTenancyPath;
     }
 
@@ -96,12 +105,14 @@ public class Brand
     @PropertyLayout(
             named = "Application Level",
             describedAs = "Determines those users for whom this object is available to view and/or modify."
-    )
-    public ApplicationTenancy getApplicationTenancy() {
+            )
+            public ApplicationTenancy getApplicationTenancy() {
         return applicationTenancies.findTenancyByPath(getApplicationTenancyPath());
     }
 
     // //////////////////////////////////////
+
+    private static final String TAG_NAME_Tag = "BrandTag";
 
     private String name;
 
@@ -115,8 +126,10 @@ public class Brand
         this.name = name;
     }
 
+    // //////////////////////////////////////
+
     public Brand change(
-            final @Named("Name") String name) {
+            final @ParameterLayout(named = "Name") String name) {
 
         setName(name);
         return this;
@@ -167,5 +180,69 @@ public class Brand
             return null;
         }
     }
+
+    // //////////////////////////////////////
+
+    private Tag TagTag;
+
+    @javax.jdo.annotations.Column(name = "TagTAG_ID", allowsNull = "true")
+    @Property(hidden = Where.EVERYWHERE )
+            public Tag getTagTag() {
+        return TagTag;
+    }
+
+    public void setTagTag(final Tag TagTag) {
+        this.TagTag = TagTag;
+    }
+
+    // //////////////////////////////////////
+
+    @javax.jdo.annotations.NotPersistent
+    @MemberOrder(sequence = "2")
+    public String getTag() {
+        final Tag existingTag = getTagTag();
+        return existingTag != null ? existingTag.getValue() : null;
+    }
+
+    public void setTag(final String Tag) {
+        final Tag existingTag = getTagTag();
+        Tag tag = tags.tagFor(this, existingTag, TAG_NAME_Tag, Tag);
+        setTagTag(tag);
+    }
+
+    // //////////////////////////////////////
+
+    @MemberOrder(name = "Tag", sequence = "2")
+    public Brand changeTag(
+            @ParameterLayout(named = "Tag") @Parameter(optionality = Optionality.OPTIONAL) final String Tag) {
+        setTag(Tag);
+        return this;
+    }
+
+    public String default0ChangeTag() {
+        return getTag();
+    }
+
+    public List<String> choices0ChangeTag() {
+        return tags.choices(this, TAG_NAME_Tag);
+    }
+
+    // //////////////////////////////////////
+
+    @MemberOrder(name = "Tag", sequence = "1")
+    public Brand newTag(
+            @ParameterLayout(named = "Tag") @Parameter(optionality = Optionality.OPTIONAL) final String NewTag) {
+        setTag(NewTag);
+        return this;
+    }
+
+    public String default0NewTag() {
+        return getTag();
+    }
+
+    // //////////////////////////////////////
+
+    @Inject
+    Tags tags;
 
 }

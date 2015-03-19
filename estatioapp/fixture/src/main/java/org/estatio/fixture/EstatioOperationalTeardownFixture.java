@@ -71,8 +71,7 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
         deleteFrom(InvoiceItem.class);
         deleteFrom(Invoice.class);
 
-        //deleteFrom("IsisAddonsTag");
-        //deleteFrom("isistags.Tag");
+        deleteFrom("isistags", "Tag");
 
         deleteFrom(Event.class);
         deleteFrom(BreakOption.class);
@@ -108,6 +107,10 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
         deleteFrom(Organisation.class);
         deleteFrom(Person.class);
         deleteFrom(Party.class);
+    }
+
+    private void deleteFrom(final String schema, final String table) {
+        isisJdoSupport.executeUpdate("DELETE FROM " + schema + ".\"" + table + "\"");
     }
 
     private void deleteFrom(final Class cls) {
