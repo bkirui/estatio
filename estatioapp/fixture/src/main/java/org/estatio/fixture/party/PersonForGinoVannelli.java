@@ -20,13 +20,19 @@ package org.estatio.fixture.party;
 
 import org.estatio.dom.party.PersonGenderType;
 import org.estatio.dom.party.relationship.PartyRelationshipType;
+import org.estatio.fixture.asset.PropertyForKal;
 
 public class PersonForGinoVannelli extends PersonAbstract {
 
     public static final String PARTY_REFERENCE = "GVANNELLI";
-    
+
     @Override
     protected void execute(ExecutionContext executionContext) {
+        // prereqs
+        if (isExecutePrereqs()) {
+            executionContext.executeChild(this, new OrganisationForTopModel());
+        }
+
         createPerson(
                 PARTY_REFERENCE,
                 "G",

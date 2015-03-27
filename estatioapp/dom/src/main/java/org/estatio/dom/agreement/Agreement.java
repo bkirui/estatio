@@ -384,8 +384,8 @@ public abstract class Agreement
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             return "End date cannot be earlier than start date";
         }
-        if (!Sets.filter(getRoles(), type.matchingRole()).isEmpty()) {
-            return "Add a successor/predecessor to existing agreement role";
+        if (!Sets.filter(getRoles(), org.estatio.dom.agreement.AgreementRole.Predicates.matchingRoleAndPeriod(type, startDate, endDate)).isEmpty()) {
+            return "There is already a role for this type and period";
         }
         return null;
     }
@@ -417,7 +417,6 @@ public abstract class Agreement
         role.setEndDate(endDate);
         role.setType(type); // must do before associate with agreement, since
                             // part of AgreementRole#compareTo impl.
-
         // JDO will manage the relationship for us
         // see http://markmail.org/thread/b6lpzktr6hzysisp, Dan's email
         // 2013-7-17
