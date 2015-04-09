@@ -24,10 +24,10 @@ import org.apache.isis.applib.fixturescripts.DiscoverableFixtureScript;
 import org.estatio.fixture.asset.PropertyForGraIt;
 import org.estatio.fixture.asset.PropertyForHanSe;
 import org.estatio.fixture.asset.PropertyForVivFr;
-import org.estatio.fixture.financial._BankAccountAndMandateForPoisonNl;
+import org.estatio.fixture.financial.BankAccountAndMandateForPoisonNl;
 import org.estatio.fixture.financial.BankAccountAndMandateForTopModelGb;
 import org.estatio.fixture.financial.BankAccountForAcmeNl;
-import org.estatio.fixture.financial._BankAccountForHelloWorldNl;
+import org.estatio.fixture.financial.BankAccountForHelloWorldGb;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
 import org.estatio.fixture.financial.BankAccountForMiracleGb;
 import org.estatio.fixture.financial.BankAccountForPretGb;
@@ -59,7 +59,7 @@ public class EstatioDemoFixture extends DiscoverableFixtureScript {
 
         executionContext.executeChild(this, new BankAccountForAcmeNl());
 
-        executionContext.executeChild(this, new _BankAccountForHelloWorldNl());
+        executionContext.executeChild(this, new BankAccountForHelloWorldGb());
 
         executionContext.executeChild(this, new BankAccountAndMandateForTopModelGb());
         executionContext.executeChild(this, new LeaseBreakOptionsForOxfTopModel001());
@@ -73,7 +73,7 @@ public class EstatioDemoFixture extends DiscoverableFixtureScript {
         executionContext.executeChild(this, new BankAccountForMiracleGb());
         executionContext.executeChild(this, new LeaseItemAndTermsForOxfMiracl005Gb());
 
-        executionContext.executeChild(this, new _BankAccountAndMandateForPoisonNl());
+        executionContext.executeChild(this, new BankAccountAndMandateForPoisonNl());
         executionContext.executeChild(this, new LeaseBreakOptionsForOxfPoison003Gb());
 
         executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003());

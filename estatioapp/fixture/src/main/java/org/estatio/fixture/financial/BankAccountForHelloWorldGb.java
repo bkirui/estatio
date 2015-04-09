@@ -19,20 +19,20 @@
 package org.estatio.fixture.financial;
 
 import org.estatio.fixture.asset.PropertyForOxfGb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
 
-public class _BankAccountForHelloWorldNl extends BankAccountAbstract {
+public class BankAccountForHelloWorldGb extends BankAccountAbstract {
 
     public static final String REF = "NL31ABNA0580744434";
 
-    public static final String PARTY_REF = OrganisationForHelloWorldNl.REF;
+    public static final String PARTY_REF = OrganisationForHelloWorldGb.REF;
     public static final String PROPERTY_REF = PropertyForOxfGb.REF;
 
-    public _BankAccountForHelloWorldNl() {
+    public BankAccountForHelloWorldGb() {
         this(null, null);
     }
 
-    public _BankAccountForHelloWorldNl(String friendlyName, String localName) {
+    public BankAccountForHelloWorldGb(String friendlyName, String localName) {
         super(friendlyName, localName);
     }
 
@@ -40,8 +40,8 @@ public class _BankAccountForHelloWorldNl extends BankAccountAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         // prereqs
-        if(isExecutePrereqs()) {
-            executionContext.executeChild(this, new OrganisationForHelloWorldNl());
+        if (isExecutePrereqs()) {
+            executionContext.executeChild(this, new OrganisationForHelloWorldGb());
             executionContext.executeChild(this, new PropertyForOxfGb());
         }
 

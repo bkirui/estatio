@@ -84,8 +84,8 @@ import org.estatio.fixture.financial.BankAccountForAcmeNl;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
 import org.estatio.fixture.financial.BankAccountForMiracleGb;
 import org.estatio.fixture.financial.BankAccountForPretGb;
-import org.estatio.fixture.financial._BankAccountAndMandateForPoisonNl;
-import org.estatio.fixture.financial._BankAccountForHelloWorldNl;
+import org.estatio.fixture.financial.BankAccountAndMandateForPoisonNl;
+import org.estatio.fixture.financial.BankAccountForHelloWorldGb;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
@@ -123,7 +123,7 @@ public class ApiIntegrationTest extends EstatioIntegrationTestForMigration {
 
                         executionContext.executeChild(this, new OrganisationForHelloWorldNl());
                         executionContext.executeChild(this, new PropertyForOxfGb());
-                        executionContext.executeChild(this, new _BankAccountForHelloWorldNl());
+                        executionContext.executeChild(this, new BankAccountForHelloWorldGb());
 
                         executionContext.executeChild(this, new OrganisationForAcmeNl());
                         executionContext.executeChild(this, new PropertyForKalNl());
@@ -141,7 +141,7 @@ public class ApiIntegrationTest extends EstatioIntegrationTestForMigration {
                         executionContext.executeChild(this, new OrganisationForPoisonNl());
                         executionContext.executeChild(this, new LeaseBreakOptionsForOxfPoison003Gb());
                         executionContext.executeChild(this, new LeaseItemAndLeaseTermForRentForKalPoison001());
-                        executionContext.executeChild(this, new _BankAccountAndMandateForPoisonNl());
+                        executionContext.executeChild(this, new BankAccountAndMandateForPoisonNl());
                         executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003());
                         executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001());
 

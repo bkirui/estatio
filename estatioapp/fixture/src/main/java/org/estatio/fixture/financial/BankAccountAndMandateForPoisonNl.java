@@ -20,18 +20,17 @@ package org.estatio.fixture.financial;
 
 import org.estatio.fixture.lease.LeaseForKalPoison001Nl;
 import org.estatio.fixture.lease.LeaseForOxfPoison003Gb;
-import org.estatio.fixture.party.OrganisationForPoisonNl;
 
-public class _BankAccountForPoisonNl extends BankAccountAbstract {
+public class BankAccountAndMandateForPoisonNl extends BankAccountAndMandateAbstract {
 
-    public static final String REF = "NL31ABNA0580744437";
-    public static final String PARTY_REF = OrganisationForPoisonNl.REF;
+    public static final String BANK_ACCOUNT_REF = BankAccountForPoisonNl.REF;
+    public static final int SEQUENCE = 2;
 
-    public _BankAccountForPoisonNl() {
+    public BankAccountAndMandateForPoisonNl() {
         this(null, null);
     }
 
-    public _BankAccountForPoisonNl(String friendlyName, String localName) {
+    public BankAccountAndMandateForPoisonNl(String friendlyName, String localName) {
         super(friendlyName, localName);
     }
 
@@ -41,15 +40,11 @@ public class _BankAccountForPoisonNl extends BankAccountAbstract {
         // prereqs
         if(isExecutePrereqs()) {
             executionContext.executeChild(this, new LeaseForKalPoison001Nl());
-            executionContext.executeChild(this, new LeaseForOxfPoison003Gb());
+            executionContext.executeChild(this, new BankAccountForPoisonNl());
         }
 
         // exec
-        createBankAccountAndOptionallyFixedAssetFinancialAsset(
-                PARTY_REF,
-                REF,
-                null, // no property = no FAFA,
-                executionContext);
+        createBankMandate(BANK_ACCOUNT_REF, SEQUENCE, executionContext);
     }
 
 }

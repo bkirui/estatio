@@ -29,8 +29,8 @@ import org.estatio.fixture.financial.BankAccountForAcmeNl;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
 import org.estatio.fixture.financial.BankAccountForMiracleGb;
 import org.estatio.fixture.financial.BankAccountForPretGb;
-import org.estatio.fixture.financial._BankAccountAndMandateForPoisonNl;
-import org.estatio.fixture.financial._BankAccountForHelloWorldNl;
+import org.estatio.fixture.financial.BankAccountAndMandateForPoisonNl;
+import org.estatio.fixture.financial.BankAccountForHelloWorldGb;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
@@ -97,10 +97,10 @@ public class CatalogueOfFixturesGlue extends CukeGlueAbstract {
 
                         //execute("bank-accounts", new BankAccountsAndMandatesForAll(), executionContext);
                         execute(new BankAccountForAcmeNl(), executionContext);
-                        execute(new _BankAccountForHelloWorldNl(), executionContext);
+                        execute(new BankAccountForHelloWorldGb(), executionContext);
                         execute(new BankAccountForMediaXGb(), executionContext);
                         execute(new BankAccountForMiracleGb(), executionContext);
-                        execute(new _BankAccountAndMandateForPoisonNl(), executionContext);
+                        execute(new BankAccountAndMandateForPoisonNl(), executionContext);
                         execute(new BankAccountForPretGb(), executionContext);
                         execute(new BankAccountAndMandateForTopModelGb(), executionContext);
                     }

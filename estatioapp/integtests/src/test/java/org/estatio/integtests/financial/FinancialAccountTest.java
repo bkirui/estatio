@@ -18,25 +18,30 @@
  */
 package org.estatio.integtests.financial;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import org.estatio.dom.financial.FinancialAccount;
 import org.estatio.dom.financial.FinancialAccounts;
 import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
 import org.estatio.fixture.EstatioBaseLineFixture;
-import org.estatio.fixture.financial._BankAccountForHelloWorldNl;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
+import org.estatio.fixture.financial.BankAccountForHelloWorldGb;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
 import org.estatio.integtests.EstatioIntegrationTest;
-
-import static org.hamcrest.CoreMatchers.is;
 
 public class FinancialAccountTest extends EstatioIntegrationTest {
 
@@ -49,7 +54,7 @@ public class FinancialAccountTest extends EstatioIntegrationTest {
                 protected void execute(ExecutionContext executionContext) {
                     executionContext.executeChild(this, new EstatioBaseLineFixture());
 
-                    executionContext.executeChild(this, new _BankAccountForHelloWorldNl());
+                    executionContext.executeChild(this, new BankAccountForHelloWorldGb());
                 }
             });
         }
@@ -63,7 +68,7 @@ public class FinancialAccountTest extends EstatioIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            party = parties.findPartyByReference(OrganisationForHelloWorldNl.REF);
+            party = parties.findPartyByReference(OrganisationForHelloWorldGb.REF);
         }
 
         // this test really just makes an assertion about the fixture.
