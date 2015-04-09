@@ -20,9 +20,13 @@ package org.estatio.integtests.api;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import javax.inject.Inject;
+
+import org.apache.chemistry.opencmis.commons.enums.PropertyType;
 import org.hamcrest.core.Is;
 import org.joda.time.LocalDate;
 import org.junit.AfterClass;
@@ -31,8 +35,11 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 import org.apache.isis.applib.fixturescripts.FixtureScript;
+
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancies;
+
 import org.estatio.api.Api;
 import org.estatio.dom.agreement.AgreementRole;
 import org.estatio.dom.agreement.AgreementRoleType;
@@ -250,7 +257,7 @@ public class ApiIntegrationTest extends EstatioIntegrationTestForMigration {
 
     @Test
     public void t01_putAsset() throws Exception {
-        api.putProperty("APIP", "Apiland", "NLD", "ApiCity", "SHOPPING_CENTER", null, null, null, "HELLOWORLD", "APIFORMAT", "APIEXTREF", "/NLD");
+        api.putProperty("APIP", "Apiland", "NLD", "ApiCity", org.estatio.dom.asset.PropertyType.SHOPPING_CENTER.name(), null, null, null, OrganisationForHelloWorldNl.REF, "APIFORMAT", "APIEXTREF", "/NLD");
         api.putUnit("APIUNIT", "APIP", "APIONWER", "Name", "BOUTIQUE", dt(1999, 6, 1), null, null, null, null, null, null, null, null, null, null, null);
         Assert.assertThat(properties.findProperties("APIP").size(), Is.is(1));
     }

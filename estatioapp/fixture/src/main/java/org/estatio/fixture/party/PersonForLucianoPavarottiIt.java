@@ -18,28 +18,28 @@
  */
 package org.estatio.fixture.party;
 
-import org.estatio.fixture.security.tenancy.ApplicationTenancyForNl;
+import org.estatio.dom.party.PersonGenderType;
+import org.estatio.dom.party.relationship.PartyRelationshipType;
+import org.estatio.fixture.security.tenancy.ApplicationTenancyForIt;
 
-public class OrganisationForAcmeNl extends OrganisationAbstract {
+public class PersonForLucianoPavarottiIt extends PersonAbstract {
 
-    public static final String REF = "ACME_NL";
-    public static final String AT_PATH = ApplicationTenancyForNl.PATH;
+    public static final String REF = "LPAVAROTTI";
+    public static final String AT_PATH = ApplicationTenancyForIt.PATH;
+    public static final String PARTY_REF_FROM = OrganisationForPastaPapaIt.REF;
 
     @Override
     protected void execute(ExecutionContext executionContext) {
-        createOrganisation(
+        createPerson(
                 AT_PATH,
                 REF,
-                "ACME Properties International",
-                "Herengracht 100",
+                "L",
+                "Luciano",
+                "Pavarotti",
+                PersonGenderType.MALE,
                 null,
-                "1010 AA",
-                "Amsterdam",
                 null,
-                "NLD",
-                "+31202211333",
-                "+312022211399",
-                "info@acme.example.com", executionContext);
+                PARTY_REF_FROM,
+                PartyRelationshipType.CONTACT.fromTitle(), executionContext);
     }
-
 }
