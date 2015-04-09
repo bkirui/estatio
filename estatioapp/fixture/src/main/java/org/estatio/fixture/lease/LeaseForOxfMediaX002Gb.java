@@ -18,19 +18,21 @@
  */
 package org.estatio.fixture.lease;
 
-import org.estatio.dom.party.Party;
-import org.estatio.fixture.asset.PropertyForOxfGb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
-import org.estatio.fixture.party.OrganisationForMediaXGb;
-import org.estatio.fixture.party.PersonForJohnDoeNl;
 import static org.estatio.integtests.VT.ld;
 
-public class _LeaseForOxfMediaX002Gb extends LeaseAbstract {
+import org.estatio.dom.party.Party;
+import org.estatio.fixture.asset.PropertyForOxfGb;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
+import org.estatio.fixture.party.OrganisationForMediaXGb;
+import org.estatio.fixture.party.PersonForGinoVannelliGb;
+import org.estatio.fixture.party.PersonForJohnSmithGb;
+
+public class LeaseForOxfMediaX002Gb extends LeaseAbstract {
 
     public static final String REF = "OXF-MEDIAX-002";
 
     public static final String UNIT_REF = PropertyForOxfGb.unitReference("002");
-    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
+    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldGb.REF;
     public static final String PARTY_REF_TENANT = OrganisationForMediaXGb.REF;
 
     public static final String BRAND = "Mediax";
@@ -39,15 +41,15 @@ public class _LeaseForOxfMediaX002Gb extends LeaseAbstract {
     protected void execute(ExecutionContext executionContext) {
 
         // prereqs
-        if(isExecutePrereqs()) {
-            executionContext.executeChild(this, new PersonForJohnDoeNl());
-            executionContext.executeChild(this, new OrganisationForHelloWorldNl());
+        if (isExecutePrereqs()) {
+            executionContext.executeChild(this, new OrganisationForHelloWorldGb());
             executionContext.executeChild(this, new OrganisationForMediaXGb());
+            executionContext.executeChild(this, new PersonForJohnSmithGb());
             executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec
-        Party manager = parties.findPartyByReference(PersonForJohnDoeNl.REF);
+        Party manager = parties.findPartyByReference(PersonForJohnSmithGb.REF);
         createLease(
                 REF,
                 "Mediax Lease",

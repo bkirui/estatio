@@ -25,20 +25,26 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+
 import java.math.BigInteger;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.services.bookmark.Bookmark;
 import org.apache.isis.applib.services.bookmark.BookmarkService;
+
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancies;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.estatio.dom.asset.Properties;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.invoice.CollectionNumerators;
@@ -58,9 +64,9 @@ import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfPoison003Gb;
-import org.estatio.fixture.lease._LeaseForOxfPoison003Gb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
-import org.estatio.fixture.party.OrganisationForPoisonNl;
+import org.estatio.fixture.lease.LeaseForOxfPoison003Gb;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
+import org.estatio.fixture.party.OrganisationForPoisonGb;
 import org.estatio.fixture.security.tenancy.ApplicationTenancyForGb;
 import org.estatio.fixture.security.tenancy.ApplicationTenancyForNl;
 import org.estatio.integtests.EstatioIntegrationTest;
@@ -297,7 +303,7 @@ public class InvoicesTest extends EstatioIntegrationTest {
         @Test
         public void byParty() {
             List<Invoice> invoiceList = invoices.findInvoices(buyer);
-            assertThat(invoiceList.size(), is(2));
+            assertThat(invoiceList.size(), is(1));
         }
 
         @Test
@@ -401,9 +407,9 @@ public class InvoicesTest extends EstatioIntegrationTest {
         @Before
         public void setUp() throws Exception {
             applicationTenancy = applicationTenancies.findTenancyByPath(ApplicationTenancyForGb.PATH);
-            seller = parties.findPartyByReference(OrganisationForHelloWorldNl.REF);
-            buyer = parties.findPartyByReference(OrganisationForPoisonNl.REF);
-            lease = leases.findLeaseByReference(_LeaseForOxfPoison003Gb.REF);
+            seller = parties.findPartyByReference(OrganisationForHelloWorldGb.REF);
+            buyer = parties.findPartyByReference(OrganisationForPoisonGb.REF);
+            lease = leases.findLeaseByReference(LeaseForOxfPoison003Gb.REF);
 
             invoiceStartDate = InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003.startDateFor(lease);
         }

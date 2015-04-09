@@ -18,34 +18,35 @@
  */
 package org.estatio.fixture.lease;
 
-import org.estatio.dom.party.Party;
-import org.estatio.fixture.asset.PropertyForOxfGb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
-import org.estatio.fixture.party.OrganisationForMiracleGb;
-import org.estatio.fixture.party.PersonForJohnDoeNl;
-
 import static org.estatio.integtests.VT.ld;
 
-public class _LeaseForOxfMiracl005Gb extends LeaseAbstract {
+import org.estatio.dom.party.Party;
+import org.estatio.fixture.asset.PropertyForOxfGb;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
+import org.estatio.fixture.party.OrganisationForMiracleGb;
+import org.estatio.fixture.party.PersonForGinoVannelliGb;
+import org.estatio.fixture.party.PersonForJohnSmithGb;
+
+public class LeaseForOxfMiracl005Gb extends LeaseAbstract {
 
     public static final String REF = "OXF-MIRACL-005";
     public static final String UNIT_REF = PropertyForOxfGb.unitReference("005");
-    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
+    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldGb.REF;
     public static final String PARTY_REF_TENANT = OrganisationForMiracleGb.REF;
 
     @Override
     protected void execute(ExecutionContext executionContext) {
 
         // prereqs
-        if(isExecutePrereqs()) {
-            executionContext.executeChild(this, new PersonForJohnDoeNl());
-            executionContext.executeChild(this, new OrganisationForHelloWorldNl());
+        if (isExecutePrereqs()) {
+            executionContext.executeChild(this, new OrganisationForHelloWorldGb());
             executionContext.executeChild(this, new OrganisationForMiracleGb());
+            executionContext.executeChild(this, new PersonForJohnSmithGb());
             executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec
-        Party manager = parties.findPartyByReference(PersonForJohnDoeNl.REF);
+        Party manager = parties.findPartyByReference(PersonForJohnSmithGb.REF);
         createLease(
                 REF, "Miracle lease",
                 UNIT_REF, "Miracle", "FASHION", "ALL",

@@ -18,6 +18,8 @@
  */
 package org.estatio.fixture.lease;
 
+import static org.estatio.integtests.VT.ld;
+
 import javax.inject.Inject;
 
 import org.estatio.dom.agreement.AgreementRole;
@@ -31,18 +33,16 @@ import org.estatio.dom.lease.Lease;
 import org.estatio.dom.lease.LeaseConstants;
 import org.estatio.dom.party.Party;
 import org.estatio.fixture.asset.PropertyForOxfGb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
 import org.estatio.fixture.party.OrganisationForTopModelGb;
-import org.estatio.fixture.party.PersonForJohnDoeNl;
+import org.estatio.fixture.party.PersonForGinoVannelliGb;
 
-import static org.estatio.integtests.VT.ld;
-
-public class _LeaseForOxfTopModel001Gb extends LeaseAbstract {
+public class LeaseForOxfTopModel001Gb extends LeaseAbstract {
 
     public static final String REF = "OXF-TOPMODEL-001";
 
     public static final String UNIT_REF = PropertyForOxfGb.unitReference("001");
-    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
+    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldGb.REF;
     public static final String PARTY_REF_TENANT = OrganisationForTopModelGb.REF;
 
     public static final String BRAND = "Topmodel";
@@ -61,14 +61,14 @@ public class _LeaseForOxfTopModel001Gb extends LeaseAbstract {
 
         // prereqs
         if (isExecutePrereqs()) {
-            executionContext.executeChild(this, new PersonForJohnDoeNl());
-            executionContext.executeChild(this, new OrganisationForHelloWorldNl());
+            executionContext.executeChild(this, new OrganisationForHelloWorldGb());
             executionContext.executeChild(this, new OrganisationForTopModelGb());
+            executionContext.executeChild(this, new PersonForGinoVannelliGb());
             executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec
-        Party manager = parties.findPartyByReference(PersonForJohnDoeNl.REF);
+        Party manager = parties.findPartyByReference(PersonForGinoVannelliGb.REF);
         Lease lease = createLease(
                 REF, "Topmodel Lease",
                 UNIT_REF,

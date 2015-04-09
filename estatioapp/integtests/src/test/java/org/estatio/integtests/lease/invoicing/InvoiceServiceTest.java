@@ -56,7 +56,7 @@ import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfPoison003Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfMiracl005Gb;
-import org.estatio.fixture.lease._LeaseForOxfPret004Gb;
+import org.estatio.fixture.lease.LeaseForOxfPret004Gb;
 import org.estatio.fixture.party.PersonForJohnDoeNl;
 import org.estatio.integtests.EstatioIntegrationTest;
 import org.estatio.integtests.VT;
@@ -90,7 +90,7 @@ public class InvoiceServiceTest extends EstatioIntegrationTest {
                     executionContext.executeChild(this, new LeaseBreakOptionsForOxfPoison003Gb());
                     executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003());
                     executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001());
-                    executionContext.executeChild(this, new _LeaseForOxfPret004Gb());
+                    executionContext.executeChild(this, new LeaseForOxfPret004Gb());
                     executionContext.executeChild(this, new LeaseItemAndTermsForOxfMiracl005Gb());
                 }
             });

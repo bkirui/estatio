@@ -51,7 +51,7 @@ import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfPoison003Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
-import org.estatio.fixture.lease._LeaseForOxfPret004Gb;
+import org.estatio.fixture.lease.LeaseForOxfPret004Gb;
 import org.estatio.fixture.lease.LeaseItemAndLeaseTermForRentForKalPoison001;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfMiracl005Gb;
 import org.estatio.fixture.party.PersonForLinusTorvaldsNl;
@@ -84,7 +84,7 @@ public class InvoiceCalculationServiceTest_normalRun extends EstatioIntegrationT
                 executionContext.executeChild(this, new LeaseBreakOptionsForOxfMediax002Gb());
                 executionContext.executeChild(this, new LeaseBreakOptionsForOxfPoison003Gb());
                 executionContext.executeChild(this, new LeaseItemAndLeaseTermForRentForKalPoison001());
-                executionContext.executeChild(this, new _LeaseForOxfPret004Gb());
+                executionContext.executeChild(this, new LeaseForOxfPret004Gb());
                 executionContext.executeChild(this, new LeaseItemAndTermsForOxfMiracl005Gb());
             }
         });

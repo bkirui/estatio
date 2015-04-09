@@ -39,11 +39,11 @@ import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
 import org.estatio.fixture.lease.LeaseForKalPoison001Nl;
 import org.estatio.fixture.lease.LeaseItemAndLeaseTermForRentForKalPoison001;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfMiracl005Gb;
-import org.estatio.fixture.lease._LeaseForOxfMediaX002Gb;
-import org.estatio.fixture.lease._LeaseForOxfMiracl005Gb;
-import org.estatio.fixture.lease._LeaseForOxfPoison003Gb;
-import org.estatio.fixture.lease._LeaseForOxfPret004Gb;
-import org.estatio.fixture.lease._LeaseForOxfTopModel001Gb;
+import org.estatio.fixture.lease.LeaseForOxfMediaX002Gb;
+import org.estatio.fixture.lease.LeaseForOxfMiracl005Gb;
+import org.estatio.fixture.lease.LeaseForOxfPoison003Gb;
+import org.estatio.fixture.lease.LeaseForOxfPret004Gb;
+import org.estatio.fixture.lease.LeaseForOxfTopModel001Gb;
 import org.estatio.fixture.party.OrganisationForAcmeNl;
 import org.estatio.fixture.party.OrganisationForHelloWorldGb;
 import org.estatio.fixture.party.OrganisationForMediaXGb;
@@ -87,7 +87,7 @@ public class CatalogueOfFixturesGlue extends CukeGlueAbstract {
                         execute(new LeaseBreakOptionsForOxfTopModel001(), executionContext);
                         execute(new LeaseBreakOptionsForOxfMediax002Gb(), executionContext);
                         execute(new LeaseBreakOptionsForOxfPoison003Gb(), executionContext);
-                        execute(new _LeaseForOxfPret004Gb(), executionContext);
+                        execute(new LeaseForOxfPret004Gb(), executionContext);
                         execute(new LeaseItemAndTermsForOxfMiracl005Gb(), executionContext);
                         execute(new LeaseItemAndLeaseTermForRentForKalPoison001(), executionContext);
 
@@ -132,11 +132,11 @@ public class CatalogueOfFixturesGlue extends CukeGlueAbstract {
                         execute(new PropertyForKalNl(), executionContext);
 
                         //execute("leases", new LeaseForAll(), executionContext);
-                        execute(new _LeaseForOxfTopModel001Gb(), executionContext);
-                        execute(new _LeaseForOxfMediaX002Gb(), executionContext);
-                        execute(new _LeaseForOxfPoison003Gb(), executionContext);
-                        execute(new _LeaseForOxfPret004Gb(), executionContext);
-                        execute(new _LeaseForOxfMiracl005Gb(), executionContext);
+                        execute(new LeaseForOxfTopModel001Gb(), executionContext);
+                        execute(new LeaseForOxfMediaX002Gb(), executionContext);
+                        execute(new LeaseForOxfPoison003Gb(), executionContext);
+                        execute(new LeaseForOxfPret004Gb(), executionContext);
+                        execute(new LeaseForOxfMiracl005Gb(), executionContext);
                         execute(new LeaseForKalPoison001Nl(), executionContext);
 
                         // no lease items or terms

@@ -18,21 +18,23 @@
  */
 package org.estatio.fixture.lease;
 
+import static org.estatio.integtests.VT.ld;
+
 import javax.inject.Inject;
+
 import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
 import org.estatio.fixture.asset.PropertyForOxfGb;
-import org.estatio.fixture.party.OrganisationForHelloWorldNl;
+import org.estatio.fixture.party.OrganisationForHelloWorldGb;
 import org.estatio.fixture.party.OrganisationForPretGb;
-import org.estatio.fixture.party.PersonForJohnDoeNl;
+import org.estatio.fixture.party.OrganisationForTopModelGb;
+import org.estatio.fixture.party.PersonForGinoVannelliGb;
 
-import static org.estatio.integtests.VT.ld;
-
-public class _LeaseForOxfPret004Gb extends LeaseAbstract {
+public class LeaseForOxfPret004Gb extends LeaseAbstract {
 
     public static final String LEASE_REFERENCE = "OXF-PRET-004";
     public static final String UNIT_REFERENCE = PropertyForOxfGb.unitReference("004");
-    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
+    public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldGb.REF;
     public static final String PARTY_REF_TENANT = OrganisationForPretGb.REF;
 
     @Override
@@ -40,13 +42,14 @@ public class _LeaseForOxfPret004Gb extends LeaseAbstract {
 
         // prereqs
         if (isExecutePrereqs()) {
-            executionContext.executeChild(this, new PersonForJohnDoeNl());
             executionContext.executeChild(this, new OrganisationForPretGb());
+            executionContext.executeChild(this, new OrganisationForTopModelGb());
+            executionContext.executeChild(this, new PersonForGinoVannelliGb());
             executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec
-        Party manager = parties.findPartyByReference(PersonForJohnDoeNl.REF);
+        Party manager = parties.findPartyByReference(PersonForGinoVannelliGb.REF);
         createLease(
                 LEASE_REFERENCE,
                 "Pret-a-Partir lease",

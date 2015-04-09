@@ -19,7 +19,7 @@
 package org.estatio.fixture.financial;
 
 import org.estatio.fixture.lease.LeaseForKalPoison001Nl;
-import org.estatio.fixture.lease._LeaseForOxfPoison003Gb;
+import org.estatio.fixture.lease.LeaseForOxfPoison003Gb;
 import org.estatio.fixture.party.OrganisationForPoisonNl;
 
 public class _BankAccountForPoisonNl extends BankAccountAbstract {
@@ -41,7 +41,7 @@ public class _BankAccountForPoisonNl extends BankAccountAbstract {
         // prereqs
         if(isExecutePrereqs()) {
             executionContext.executeChild(this, new LeaseForKalPoison001Nl());
-            executionContext.executeChild(this, new _LeaseForOxfPoison003Gb());
+            executionContext.executeChild(this, new LeaseForOxfPoison003Gb());
         }
 
         // exec

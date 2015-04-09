@@ -39,7 +39,7 @@ import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxf
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfPoison003Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
-import org.estatio.fixture.lease._LeaseForOxfPret004Gb;
+import org.estatio.fixture.lease.LeaseForOxfPret004Gb;
 import org.estatio.fixture.lease.LeaseItemAndLeaseTermForRentForKalPoison001;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfMiracl005Gb;
 import org.estatio.fixture.party.PersonForGinoVannelliGb;
@@ -68,7 +68,7 @@ public class EstatioDemoFixture extends DiscoverableFixtureScript {
         executionContext.executeChild(this, new LeaseBreakOptionsForOxfMediax002Gb());
 
         executionContext.executeChild(this, new BankAccountForPretGb());
-        executionContext.executeChild(this, new _LeaseForOxfPret004Gb());
+        executionContext.executeChild(this, new LeaseForOxfPret004Gb());
 
         executionContext.executeChild(this, new BankAccountForMiracleGb());
         executionContext.executeChild(this, new LeaseItemAndTermsForOxfMiracl005Gb());

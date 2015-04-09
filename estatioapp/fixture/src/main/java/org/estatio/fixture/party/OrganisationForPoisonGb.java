@@ -18,12 +18,12 @@
  */
 package org.estatio.fixture.party;
 
-import org.estatio.fixture.security.tenancy.ApplicationTenancyForNl;
+import org.estatio.fixture.security.tenancy.ApplicationTenancyForGb;
 
-public class OrganisationForPoisonNl extends OrganisationAbstract {
+public class OrganisationForPoisonGb extends OrganisationAbstract {
 
-    public static final String REF = "POISON_NL";
-    public static final String AT_PATH = ApplicationTenancyForNl.PATH;
+    public static final String REF = "POISON_GB";
+    public static final String AT_PATH = ApplicationTenancyForGb.PATH;
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -31,15 +31,15 @@ public class OrganisationForPoisonNl extends OrganisationAbstract {
                 AT_PATH,
                 REF,
                 "Poison Perfumeries",
-                "Herengracht 100",
                 null,
-                "1010 AA",
-                "Amsterdam",
                 null,
-                "GBR",
-                "+31202211333",
-                "+312022211399",
-                "info@poison.example.com", executionContext);
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null, executionContext);
     }
 
 }

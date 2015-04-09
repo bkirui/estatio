@@ -93,7 +93,7 @@ import org.estatio.fixture.lease.LeaseBreakOptionsForOxfPoison003Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
 import org.estatio.fixture.lease.LeaseItemAndLeaseTermForRentForKalPoison001;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfMiracl005Gb;
-import org.estatio.fixture.lease._LeaseForOxfPret004Gb;
+import org.estatio.fixture.lease.LeaseForOxfPret004Gb;
 import org.estatio.fixture.party.OrganisationForAcmeNl;
 import org.estatio.fixture.party.OrganisationForHelloWorldNl;
 import org.estatio.fixture.party.OrganisationForMediaXGb;
@@ -146,7 +146,7 @@ public class ApiIntegrationTest extends EstatioIntegrationTestForMigration {
                         executionContext.executeChild(this, new InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001());
 
                         executionContext.executeChild(this, new OrganisationForPretGb());
-                        executionContext.executeChild(this, new _LeaseForOxfPret004Gb());
+                        executionContext.executeChild(this, new LeaseForOxfPret004Gb());
                         executionContext.executeChild(this, new BankAccountForPretGb());
 
                         executionContext.executeChild(this, new OrganisationForMiracleGb());
