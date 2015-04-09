@@ -78,7 +78,7 @@ import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.EstatioOperationalTeardownFixture;
 import org.estatio.fixture.EstatioRefDataTeardownFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.financial.BankAccountAndMandateForTopModelGb;
 import org.estatio.fixture.financial.BankAccountForAcmeNl;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
@@ -122,7 +122,7 @@ public class ApiIntegrationTest extends EstatioIntegrationTestForMigration {
 
 
                         executionContext.executeChild(this, new OrganisationForHelloWorldNl());
-                        executionContext.executeChild(this, new _PropertyForOxfGb());
+                        executionContext.executeChild(this, new PropertyForOxfGb());
                         executionContext.executeChild(this, new _BankAccountForHelloWorldNl());
 
                         executionContext.executeChild(this, new OrganisationForAcmeNl());

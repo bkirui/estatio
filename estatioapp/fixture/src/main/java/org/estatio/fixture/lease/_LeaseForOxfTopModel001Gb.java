@@ -30,7 +30,7 @@ import org.estatio.dom.communicationchannel.CommunicationChannels;
 import org.estatio.dom.lease.Lease;
 import org.estatio.dom.lease.LeaseConstants;
 import org.estatio.dom.party.Party;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.party.OrganisationForHelloWorldNl;
 import org.estatio.fixture.party.OrganisationForTopModelGb;
 import org.estatio.fixture.party.PersonForJohnDoeNl;
@@ -41,7 +41,7 @@ public class _LeaseForOxfTopModel001Gb extends LeaseAbstract {
 
     public static final String REF = "OXF-TOPMODEL-001";
 
-    public static final String UNIT_REF = _PropertyForOxfGb.unitReference("001");
+    public static final String UNIT_REF = PropertyForOxfGb.unitReference("001");
     public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
     public static final String PARTY_REF_TENANT = OrganisationForTopModelGb.REF;
 
@@ -64,7 +64,7 @@ public class _LeaseForOxfTopModel001Gb extends LeaseAbstract {
             executionContext.executeChild(this, new PersonForJohnDoeNl());
             executionContext.executeChild(this, new OrganisationForHelloWorldNl());
             executionContext.executeChild(this, new OrganisationForTopModelGb());
-            executionContext.executeChild(this, new _PropertyForOxfGb());
+            executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec

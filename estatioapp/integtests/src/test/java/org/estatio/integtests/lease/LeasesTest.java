@@ -38,7 +38,7 @@ import org.estatio.dom.lease.Leases;
 import org.estatio.dom.lease.tags.Brand;
 import org.estatio.dom.lease.tags.Brands;
 import org.estatio.fixture.EstatioBaseLineFixture;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.lease.LeaseForKalPoison001Nl;
 import org.estatio.fixture.lease._LeaseForOxfMediaX002Gb;
 import org.estatio.fixture.lease._LeaseForOxfMiracl005Gb;
@@ -191,7 +191,7 @@ public class LeasesTest extends EstatioIntegrationTest {
         @Test
         public void whenValidProperty() {
             // given
-            final Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            final Property property = properties.findPropertyByReference(PropertyForOxfGb.REF);
             // when
             final List<Lease> matchingLeases = leases.findLeasesByProperty(property);
             // then
@@ -254,7 +254,7 @@ public class LeasesTest extends EstatioIntegrationTest {
         @Test
         public void whenValidProperty() {
             // given
-            final Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            final Property property = properties.findPropertyByReference(PropertyForOxfGb.REF);
             System.out.println(property);
             // when
             assertThat(leases.findLeasesActiveOnDate(property, new LocalDate(2010, 7, 14)).size(), is(0));

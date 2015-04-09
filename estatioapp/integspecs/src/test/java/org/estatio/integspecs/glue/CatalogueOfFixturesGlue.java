@@ -23,7 +23,7 @@ import org.apache.isis.core.specsupport.specs.CukeGlueAbstract;
 
 import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.financial.BankAccountAndMandateForTopModelGb;
 import org.estatio.fixture.financial.BankAccountForAcmeNl;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
@@ -80,7 +80,7 @@ public class CatalogueOfFixturesGlue extends CukeGlueAbstract {
                         execute(new PersonForLinusTorvaldsNl(), executionContext);
 
                         // execute("properties", new PropertiesAndUnitsForAll(), executionContext);
-                        execute(new _PropertyForOxfGb(), executionContext);
+                        execute(new PropertyForOxfGb(), executionContext);
                         execute(new PropertyForKalNl(), executionContext);
 
                         // execute("leases", new LeasesEtcForAll(), executionContext);
@@ -128,7 +128,7 @@ public class CatalogueOfFixturesGlue extends CukeGlueAbstract {
                         execute(new PersonForLinusTorvaldsNl(), executionContext);
 
                         // execute("properties", new PropertiesAndUnitsForAll(), executionContext);
-                        execute(new _PropertyForOxfGb(), executionContext);
+                        execute(new PropertyForOxfGb(), executionContext);
                         execute(new PropertyForKalNl(), executionContext);
 
                         //execute("leases", new LeaseForAll(), executionContext);

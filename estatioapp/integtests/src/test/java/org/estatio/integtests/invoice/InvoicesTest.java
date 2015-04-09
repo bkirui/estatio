@@ -54,7 +54,7 @@ import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
 import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfPoison003Gb;
@@ -126,7 +126,7 @@ public class InvoicesTest extends EstatioIntegrationTest {
                 protected void execute(ExecutionContext executionContext) {
                     executionContext.executeChild(this, new EstatioBaseLineFixture());
 
-                    executionContext.executeChild(this, new _PropertyForOxfGb());
+                    executionContext.executeChild(this, new PropertyForOxfGb());
                     executionContext.executeChild(this, new PropertyForKalNl());
                 }
             });
@@ -139,7 +139,7 @@ public class InvoicesTest extends EstatioIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            propertyOxf = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            propertyOxf = properties.findPropertyByReference(PropertyForOxfGb.REF);
             propertyKal = properties.findPropertyByReference(PropertyForKalNl.REF);
 
             propertyOxfBookmark = bookmarkService.bookmarkFor(propertyOxf);
@@ -213,7 +213,7 @@ public class InvoicesTest extends EstatioIntegrationTest {
                 protected void execute(ExecutionContext executionContext) {
                     executionContext.executeChild(this, new EstatioBaseLineFixture());
 
-                    executionContext.executeChild(this, new _PropertyForOxfGb());
+                    executionContext.executeChild(this, new PropertyForOxfGb());
                 }
             });
         }
@@ -222,7 +222,7 @@ public class InvoicesTest extends EstatioIntegrationTest {
 
         @Before
         public void setUp() throws Exception {
-            propertyOxf = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            propertyOxf = properties.findPropertyByReference(PropertyForOxfGb.REF);
         }
 
         @Test

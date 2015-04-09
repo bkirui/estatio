@@ -19,7 +19,7 @@
 package org.estatio.fixture.lease;
 
 import org.estatio.dom.party.Party;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.party.OrganisationForHelloWorldNl;
 import org.estatio.fixture.party.OrganisationForMediaXGb;
 import org.estatio.fixture.party.PersonForJohnDoeNl;
@@ -29,7 +29,7 @@ public class _LeaseForOxfMediaX002Gb extends LeaseAbstract {
 
     public static final String REF = "OXF-MEDIAX-002";
 
-    public static final String UNIT_REF = _PropertyForOxfGb.unitReference("002");
+    public static final String UNIT_REF = PropertyForOxfGb.unitReference("002");
     public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
     public static final String PARTY_REF_TENANT = OrganisationForMediaXGb.REF;
 
@@ -43,7 +43,7 @@ public class _LeaseForOxfMediaX002Gb extends LeaseAbstract {
             executionContext.executeChild(this, new PersonForJohnDoeNl());
             executionContext.executeChild(this, new OrganisationForHelloWorldNl());
             executionContext.executeChild(this, new OrganisationForMediaXGb());
-            executionContext.executeChild(this, new _PropertyForOxfGb());
+            executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec

@@ -21,9 +21,9 @@ package org.estatio.fixture;
 import org.apache.isis.applib.fixtures.FixtureClock;
 import org.apache.isis.applib.fixturescripts.DiscoverableFixtureScript;
 
-import org.estatio.fixture.asset._PropertyForGraIt;
-import org.estatio.fixture.asset._PropertyForHanSe;
-import org.estatio.fixture.asset._PropertyForVivFr;
+import org.estatio.fixture.asset.PropertyForGraIt;
+import org.estatio.fixture.asset.PropertyForHanSe;
+import org.estatio.fixture.asset.PropertyForVivFr;
 import org.estatio.fixture.financial._BankAccountAndMandateForPoisonNl;
 import org.estatio.fixture.financial.BankAccountAndMandateForTopModelGb;
 import org.estatio.fixture.financial.BankAccountForAcmeNl;
@@ -85,9 +85,9 @@ public class EstatioDemoFixture extends DiscoverableFixtureScript {
 
         executionContext.executeChild(this, new PersonForGinoVannelliGb());
 
-        executionContext.executeChild(this, new _PropertyForGraIt());
-        executionContext.executeChild(this, new _PropertyForVivFr());
-        executionContext.executeChild(this, new _PropertyForHanSe());
+        executionContext.executeChild(this, new PropertyForGraIt());
+        executionContext.executeChild(this, new PropertyForVivFr());
+        executionContext.executeChild(this, new PropertyForHanSe());
 
         executionContext.executeChild(this, new InteractiveMapDocumentForOxf());
         

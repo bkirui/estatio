@@ -21,7 +21,7 @@ package org.estatio.fixture.lease;
 import javax.inject.Inject;
 import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.party.OrganisationForHelloWorldNl;
 import org.estatio.fixture.party.OrganisationForPretGb;
 import org.estatio.fixture.party.PersonForJohnDoeNl;
@@ -31,7 +31,7 @@ import static org.estatio.integtests.VT.ld;
 public class _LeaseForOxfPret004Gb extends LeaseAbstract {
 
     public static final String LEASE_REFERENCE = "OXF-PRET-004";
-    public static final String UNIT_REFERENCE = _PropertyForOxfGb.unitReference("004");
+    public static final String UNIT_REFERENCE = PropertyForOxfGb.unitReference("004");
     public static final String PARTY_REF_LANDLORD = OrganisationForHelloWorldNl.REF;
     public static final String PARTY_REF_TENANT = OrganisationForPretGb.REF;
 
@@ -42,7 +42,7 @@ public class _LeaseForOxfPret004Gb extends LeaseAbstract {
         if (isExecutePrereqs()) {
             executionContext.executeChild(this, new PersonForJohnDoeNl());
             executionContext.executeChild(this, new OrganisationForPretGb());
-            executionContext.executeChild(this, new _PropertyForOxfGb());
+            executionContext.executeChild(this, new PropertyForOxfGb());
         }
 
         // exec

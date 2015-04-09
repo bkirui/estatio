@@ -55,7 +55,7 @@ import org.estatio.dom.lease.invoicing.InvoiceRunType;
 import org.estatio.dom.lease.invoicing.InvoiceService;
 import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfMediax002Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfPoison003Gb;
 import org.estatio.fixture.lease.LeaseBreakOptionsForOxfTopModel001;
@@ -85,7 +85,7 @@ public class InvoiceCalculationServiceTest_normalRun_COPY extends EstatioIntegra
             protected void execute(ExecutionContext executionContext) {
                 executionContext.executeChild(this, new EstatioBaseLineFixture());
                 executionContext.executeChild(this, new PersonForJohnDoeNl());
-                executionContext.executeChild(this, new _PropertyForOxfGb());
+                executionContext.executeChild(this, new PropertyForOxfGb());
                 executionContext.executeChild(this, new PropertyForKalNl());
                 executionContext.executeChild(this, new LeaseBreakOptionsForOxfTopModel001());
                 executionContext.executeChild(this, new LeaseBreakOptionsForOxfMediax002Gb());

@@ -42,7 +42,7 @@ import org.estatio.dom.lease.tags.Brand;
 import org.estatio.dom.lease.tags.Brand.RemoveEvent;
 import org.estatio.dom.lease.tags.Brands;
 import org.estatio.fixture.EstatioBaseLineFixture;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.lease.LeaseItemAndTermsForOxfTopModel001;
 import org.estatio.fixture.lease._LeaseForOxfMediaX002Gb;
 import org.estatio.fixture.lease._LeaseForOxfTopModel001Gb;
@@ -60,7 +60,7 @@ public class OccupanciesTest extends EstatioIntegrationTest {
             }
         });
         lease = leases.findLeaseByReference(_LeaseForOxfTopModel001Gb.REF);
-        unit = units.findUnitByReference(_PropertyForOxfGb.unitReference("001"));
+        unit = units.findUnitByReference(PropertyForOxfGb.unitReference("001"));
     }
 
     @Inject

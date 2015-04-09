@@ -44,7 +44,7 @@ import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
 import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForKalPoison001;
 import org.estatio.fixture.invoice.InvoiceForLeaseItemTypeOfRentOneQuarterForOxfPoison003;
 import org.estatio.fixture.lease.*;
@@ -145,7 +145,7 @@ public class InvoiceTest extends EstatioIntegrationTest {
 
                     executionContext.executeChild(this, new PersonForLinusTorvaldsNl());
 
-                    executionContext.executeChild(this, new _PropertyForOxfGb());
+                    executionContext.executeChild(this, new PropertyForOxfGb());
                     executionContext.executeChild(this, new PropertyForKalNl());
 
                     executionContext.executeChild(this, new LeaseBreakOptionsForOxfTopModel001());

@@ -27,7 +27,7 @@ import org.estatio.dom.asset.Properties;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.asset.Unit;
 import org.estatio.fixture.EstatioBaseLineFixture;
-import org.estatio.fixture.asset._PropertyForOxfGb;
+import org.estatio.fixture.asset.PropertyForOxfGb;
 import org.estatio.integtests.EstatioIntegrationTest;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -42,7 +42,7 @@ public class PropertyTest extends EstatioIntegrationTest {
             protected void execute(ExecutionContext executionContext) {
                 executionContext.executeChild(this, new EstatioBaseLineFixture());
 
-                executionContext.executeChild(this, new _PropertyForOxfGb());
+                executionContext.executeChild(this, new PropertyForOxfGb());
             }
         });
     }
@@ -56,7 +56,7 @@ public class PropertyTest extends EstatioIntegrationTest {
         @Test
         public void whenReturnsInstance_thenCanTraverseUnits() throws Exception {
             // given
-            Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            Property property = properties.findPropertyByReference(PropertyForOxfGb.REF);
 
             // when
             Set<Unit> units = property.getUnits();
