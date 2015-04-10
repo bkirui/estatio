@@ -54,7 +54,6 @@ import org.estatio.dom.party.Party;
 import org.estatio.dom.party.PartyRegistration;
 import org.estatio.dom.party.Person;
 import org.estatio.dom.party.relationship.PartyRelationship;
-import org.estatio.dom.tag.Tag;
 
 public class EstatioOperationalTeardownFixture extends FixtureScript {
 
@@ -72,7 +71,8 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
         deleteFrom(InvoiceItem.class);
         deleteFrom(Invoice.class);
 
-        deleteFrom(Tag.class);
+        //deleteFrom("IsisAddonsTag");
+        //deleteFrom("isistags.Tag");
 
         deleteFrom(Event.class);
         deleteFrom(BreakOption.class);

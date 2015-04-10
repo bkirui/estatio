@@ -50,7 +50,6 @@ import org.estatio.dom.lease.tags.Sector;
 import org.estatio.dom.lease.tags.Sectors;
 import org.estatio.dom.lease.tags.UnitSize;
 import org.estatio.dom.lease.tags.UnitSizes;
-import org.estatio.dom.tag.Taggable;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -100,7 +99,7 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
 })
 public class Occupancy
         extends EstatioDomainObject<Occupancy>
-        implements WithIntervalMutable<Occupancy>, Taggable, WithApplicationTenancyProperty {
+        implements WithIntervalMutable<Occupancy>, WithApplicationTenancyProperty {
 
     public Occupancy() {
         super("lease, startDate desc nullsLast, unit");

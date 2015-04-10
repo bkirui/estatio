@@ -94,7 +94,8 @@ language governing permissions and limitations under the License.
         <isis-module-sessionlogger.version>1.8.2</isis-module-sessionlogger.version>
         <isis-module-settings.version>1.8.0</isis-module-settings.version>
         <isis-module-stringinterpolator.version>1.8.0</isis-module-stringinterpolator.version>
-
+		<isis-module-tags.version>1.9.0-SNAPSHOT</isis-module-tags.version>
+        
         <isis-wicket-excel.version>1.8.0</isis-wicket-excel.version>
         <isis-wicket-fullcalendar2.version>1.8.0</isis-wicket-fullcalendar2.version>
         <isis-wicket-gmap3.version>1.9.0-SNAPSHOT</isis-wicket-gmap3.version>
@@ -882,9 +883,6 @@ language governing permissions and limitations under the License.
                 <version>${quartz-scheduler.version}</version>
             </dependency>
 
-
-
-
             <!-- viewer extensions -->
 
             <!-- GMAP3: https://github.com/danhaywood/isis-wicket-gmap3 -->
@@ -915,6 +913,13 @@ language governing permissions and limitations under the License.
                 <artifactId>isis-wicket-svg-cpt</artifactId>
                 <version>${isis-wicket-svg.version}</version>
             </dependency>
+
+	    	<!-- TAGS -->
+	   	    <dependency>
+		        <groupId>org.isisaddons.module.tags</groupId>
+		        <artifactId>isis-module-tags-dom</artifactId>
+                <version>${isis-module-tags.version}</version>
+		    </dependency>    
 
             <!-- domain services -->
 

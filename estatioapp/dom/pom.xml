@@ -180,6 +180,12 @@ language governing permissions and limitations under the License.
             <artifactId>isis-module-settings-dom</artifactId>
         </dependency>
 
+    	<!-- TAGS -->
+   	    <dependency>
+	        <groupId>org.isisaddons.module.tags</groupId>
+	        <artifactId>isis-module-tags-dom</artifactId>
+	    </dependency>   
+	    
         <!-- QUARTZ -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
