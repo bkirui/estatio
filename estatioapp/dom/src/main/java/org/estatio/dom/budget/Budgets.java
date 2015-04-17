@@ -18,44 +18,30 @@
  */
 package org.estatio.dom.budget;
 
-import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.DomainService;
+import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
 import org.joda.time.LocalDate;
 
-public class Budget {
+@DomainService(repositoryFor = Budget.class)
+public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
-    private Property property;
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
+    public Budgets() {
+        super(Budgets.class, Budget.class);
     }
 
     // //////////////////////////////////////
 
-    private LocalDate startDate;
+    public Budget newBudget(
+            final Property property,
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        Budget budget = newTransientInstance();
+        budget.setProperty(property);
+        budget.setStartDate(startDate);
+        budget.setEndDate(endDate);
+        persistIfNotAlready(budget);
 
-    public LocalDate getStartDate() {
-        return startDate;
+        return budget;
     }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    // //////////////////////////////////////
-
-    private LocalDate endDate;
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
 }
