@@ -18,14 +18,35 @@
  */
 package org.estatio.dom.budget;
 
-import org.estatio.dom.asset.Unit;
-
 import java.math.BigDecimal;
 
-public class BudgetKeyItem {
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.VersionStrategy;
+
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.asset.Unit;
+
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+@DomainObject(editing = Editing.DISABLED)
+public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
+
+    public BudgetKeyItem() {
+        super("budgetKeyTable,unit");
+    }
 
     private BudgetKeyTable budgetKeyTable;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BudgetKeyTable getBudgetKeyTable() {
         return budgetKeyTable;
     }
@@ -38,6 +59,7 @@ public class BudgetKeyItem {
 
     private Unit unit;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Unit getUnit() {
         return unit;
     }
@@ -50,6 +72,7 @@ public class BudgetKeyItem {
 
     private BigDecimal sourceValue;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BigDecimal getSourceValue() {
         return sourceValue;
     }
@@ -62,6 +85,7 @@ public class BudgetKeyItem {
 
     private BigDecimal foundationValue;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BigDecimal getFoundationValue() {
         return foundationValue;
     }
@@ -74,11 +98,18 @@ public class BudgetKeyItem {
 
     private BigDecimal keyValue;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BigDecimal getKeyValue() {
         return keyValue;
     }
 
+    // //////////////////////////////////////
+
     public void setKeyValue(BigDecimal keyValue) {
         this.keyValue = keyValue;
+    }
+
+    @Override public ApplicationTenancy getApplicationTenancy() {
+        return getBudgetKeyTable().getApplicationTenancy();
     }
 }

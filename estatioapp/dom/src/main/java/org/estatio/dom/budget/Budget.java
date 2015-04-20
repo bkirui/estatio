@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright 2012-2014 Eurocommercial Properties NV
+ *  Copyright 2012-2015 Eurocommercial Properties NV
  *
  *
  *  Licensed under the Apache License, Version 2.0 (the
@@ -18,14 +18,49 @@
  */
 package org.estatio.dom.budget;
 
-import org.apache.isis.applib.annotation.DomainObject;
-import org.estatio.dom.asset.Property;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Query;
+import javax.jdo.annotations.VersionStrategy;
+
 import org.joda.time.LocalDate;
 
-public class Budget {
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.RenderType;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.asset.Property;
+
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+@javax.jdo.annotations.Queries({
+        @Query(
+                name = "findByProperty", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.Budget " +
+                        "WHERE property == :property ")
+})
+@DomainObject(editing = Editing.DISABLED, autoCompleteRepository = Budgets.class)
+public class Budget extends EstatioDomainObject<Budget> {
+
+    public Budget() {
+        super("property, startDate, endDate");
+    }
 
     private Property property;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Property getProperty() {
         return property;
     }
@@ -38,6 +73,7 @@ public class Budget {
 
     private LocalDate startDate;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -50,6 +86,7 @@ public class Budget {
 
     private LocalDate endDate;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -58,4 +95,23 @@ public class Budget {
         this.endDate = endDate;
     }
 
+    // //////////////////////////////////////
+
+    private SortedSet<BudgetItem> budgetItems = new TreeSet<BudgetItem>();
+
+    @CollectionLayout(render= RenderType.EAGERLY)
+    @Persistent(mappedBy = "budget", dependentElement = "true")
+    public SortedSet<BudgetItem> getBudgetItems() {
+        return budgetItems;
+    }
+
+    public void setBudgetItems(final SortedSet<BudgetItem> budgetItems) {
+        this.budgetItems = budgetItems;
+    }
+
+    // //////////////////////////////////////
+
+    @Override public ApplicationTenancy getApplicationTenancy() {
+        return getProperty().getApplicationTenancy();
+    }
 }

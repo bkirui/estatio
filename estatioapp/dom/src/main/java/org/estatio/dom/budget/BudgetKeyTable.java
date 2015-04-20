@@ -18,13 +18,41 @@
  */
 package org.estatio.dom.budget;
 
-import org.estatio.dom.asset.Property;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.VersionStrategy;
+
 import org.joda.time.LocalDate;
 
-public class BudgetKeyTable {
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.RenderType;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.asset.Property;
+
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+@DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BudgetKeyTables.class)
+public class BudgetKeyTable extends EstatioDomainObject<Budget> {
+
+    public BudgetKeyTable() {
+        super("property, name, startDate, endDate");
+    }
 
     private Property property;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Property getProperty() {
         return property;
     }
@@ -37,6 +65,7 @@ public class BudgetKeyTable {
 
     private String name;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public String getName() {
         return name;
     }
@@ -49,6 +78,7 @@ public class BudgetKeyTable {
 
     private LocalDate startDate;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -61,6 +91,7 @@ public class BudgetKeyTable {
 
     private LocalDate endDate;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -73,6 +104,7 @@ public class BudgetKeyTable {
 
     private BudgetFoundationValueType foundationValueType;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BudgetFoundationValueType getFoundationValueType() {
         return foundationValueType;
     }
@@ -85,11 +117,32 @@ public class BudgetKeyTable {
 
     private BudgetKeyValueMethod keyValueMethod;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BudgetKeyValueMethod getKeyValueMethod() {
         return keyValueMethod;
     }
 
     public void setKeyValueMethod(BudgetKeyValueMethod keyValueMethod) {
         this.keyValueMethod = keyValueMethod;
+    }
+
+    // //////////////////////////////////////
+
+    private SortedSet<BudgetKeyItem> budgetKeyItems = new TreeSet<BudgetKeyItem>();
+
+    @CollectionLayout(render= RenderType.EAGERLY)
+    @Persistent(mappedBy = "budgetKeyTable", dependentElement = "true")
+    public SortedSet<BudgetKeyItem> getBudgetKeyItems() {
+        return budgetKeyItems;
+    }
+
+    public void setBudgetKeyItems(final SortedSet<BudgetKeyItem> budgetKeyItems) {
+        this.budgetKeyItems = budgetKeyItems;
+    }
+
+    // //////////////////////////////////////
+
+    @Override public ApplicationTenancy getApplicationTenancy() {
+        return getProperty().getApplicationTenancy();
     }
 }

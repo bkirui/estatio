@@ -18,12 +18,20 @@
  */
 package org.estatio.dom.budget;
 
-import org.apache.isis.applib.annotation.DomainService;
-import org.estatio.dom.UdoDomainRepositoryAndFactory;
-import org.estatio.dom.asset.Property;
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
-@DomainService(repositoryFor = Budget.class)
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.ParameterLayout;
+
+import org.estatio.dom.UdoDomainRepositoryAndFactory;
+import org.estatio.dom.asset.Property;
+
+@DomainService(repositoryFor = Budget.class, nature = NatureOfService.VIEW)
+@DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
 public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
     public Budgets() {
@@ -33,9 +41,9 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
     // //////////////////////////////////////
 
     public Budget newBudget(
-            final Property property,
-            final LocalDate startDate,
-            final LocalDate endDate) {
+            final @ParameterLayout(named = "Property") Property property,
+            final @ParameterLayout(named = "StartDate") LocalDate startDate,
+            final @ParameterLayout(named = "EndDate") LocalDate endDate) {
         Budget budget = newTransientInstance();
         budget.setProperty(property);
         budget.setStartDate(startDate);
@@ -43,5 +51,11 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
         persistIfNotAlready(budget);
 
         return budget;
+    }
+
+    // //////////////////////////////////////
+
+    public List<Budget> allBudgets() {
+        return allInstances();
     }
 }

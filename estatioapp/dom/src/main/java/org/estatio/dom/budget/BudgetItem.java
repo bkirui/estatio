@@ -18,15 +18,36 @@
  */
 package org.estatio.dom.budget;
 
+import java.math.BigDecimal;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.VersionStrategy;
+
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.charge.Charge;
 import org.estatio.dom.currency.Currency;
 
-import java.math.BigDecimal;
+@javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
+@javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
+@javax.jdo.annotations.Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+@DomainObject(editing = Editing.DISABLED)
+public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
 
-public class BudgetItem {
+    public BudgetItem() {
+        super("budget");
+    }
 
     private Budget budget;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Budget getBudget() {
         return budget;
     }
@@ -39,6 +60,7 @@ public class BudgetItem {
 
     private BudgetKeyTable budgetKeyTable;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BudgetKeyTable getBudgetKeyTable() {
         return budgetKeyTable;
     }
@@ -51,6 +73,7 @@ public class BudgetItem {
 
     private BigDecimal value;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public BigDecimal getValue() {
         return value;
     }
@@ -63,6 +86,7 @@ public class BudgetItem {
 
     private Currency currency;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Currency getCurrency() {
         return currency;
     }
@@ -75,6 +99,7 @@ public class BudgetItem {
 
     private Charge charge;
 
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public Charge getCharge() {
         return charge;
     }
@@ -83,4 +108,20 @@ public class BudgetItem {
         this.charge = charge;
     }
 
+    // //////////////////////////////////////
+
+    private BudgetCostGroup budgetCostGroup;
+
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public BudgetCostGroup getBudgetCostGroup() {
+        return budgetCostGroup;
+    }
+
+    public void setBudgetCostGroup(final BudgetCostGroup budgetCostGroup) {
+        this.budgetCostGroup = budgetCostGroup;
+    }
+
+    @Override public ApplicationTenancy getApplicationTenancy() {
+        return getBudget().getApplicationTenancy();
+    }
 }
