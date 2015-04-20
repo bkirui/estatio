@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright 2012-2014 Eurocommercial Properties NV
+ *  Copyright 2012-2015 Eurocommercial Properties NV
  *
  *
  *  Licensed under the Apache License, Version 2.0 (the
@@ -103,11 +103,11 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
         return keyValue;
     }
 
-    // //////////////////////////////////////
-
     public void setKeyValue(BigDecimal keyValue) {
         this.keyValue = keyValue;
     }
+
+    // //////////////////////////////////////
 
     @Override public ApplicationTenancy getApplicationTenancy() {
         return getBudgetKeyTable().getApplicationTenancy();

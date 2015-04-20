@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright 2012-2014 Eurocommercial Properties NV
+ *  Copyright 2012-2015 Eurocommercial Properties NV
  *
  *
  *  Licensed under the Apache License, Version 2.0 (the
@@ -48,6 +48,14 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> {
 
     public BudgetKeyTable() {
         super("property, name, startDate, endDate");
+    }
+
+    public String title() {
+        return this.getName();
+    }
+
+    public String toString() {
+        return this.getName();
     }
 
     private Property property;
