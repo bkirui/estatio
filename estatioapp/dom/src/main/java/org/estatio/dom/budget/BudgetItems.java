@@ -18,17 +18,16 @@
  */
 package org.estatio.dom.budget;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
-
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.charge.Charge;
 import org.estatio.dom.currency.Currency;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @DomainService(repositoryFor = BudgetItem.class, nature = NatureOfService.VIEW)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
@@ -58,6 +57,20 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
         persistIfNotAlready(budgetItem);
 
         return budgetItem;
+    }
+
+    public String validateNewBudgetItem(
+            final Budget budget,
+            final BudgetKeyTable budgetKeyTable,
+            final BigDecimal value,
+            final Currency currency,
+            final Charge charge,
+            final BudgetCostGroup budgetCostGroup) {
+        if (value.equals(new BigDecimal(0))) {
+            return "Value can't be zero";
+        }
+
+        return null;
     }
 
     // //////////////////////////////////////

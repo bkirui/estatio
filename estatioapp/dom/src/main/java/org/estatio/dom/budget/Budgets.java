@@ -20,6 +20,7 @@ package org.estatio.dom.budget;
 
 import java.util.List;
 
+import org.estatio.dom.valuetypes.LocalDateInterval;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.DomainService;
@@ -42,8 +43,8 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
     public Budget newBudget(
             final @ParameterLayout(named = "Property") Property property,
-            final @ParameterLayout(named = "StartDate") LocalDate startDate,
-            final @ParameterLayout(named = "EndDate") LocalDate endDate) {
+            final @ParameterLayout(named = "Start Date") LocalDate startDate,
+            final @ParameterLayout(named = "End Date") LocalDate endDate) {
         Budget budget = newTransientInstance();
         budget.setProperty(property);
         budget.setStartDate(startDate);
@@ -53,6 +54,16 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
         return budget;
     }
 
+    public String validateNewBudget(
+            final Property property,
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        if (!new LocalDateInterval(startDate, endDate).isValid()) {
+            return "End date can not be before start date";
+        }
+
+        return null;
+    }
     // //////////////////////////////////////
 
     public List<Budget> allBudgets() {

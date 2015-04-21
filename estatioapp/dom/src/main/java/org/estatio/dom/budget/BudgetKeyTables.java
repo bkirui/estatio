@@ -16,19 +16,13 @@
  */
 package org.estatio.dom.budget;
 
-import java.util.List;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Where;
-
+import org.apache.isis.applib.annotation.*;
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
+import org.joda.time.LocalDate;
+
+import java.util.List;
 
 @DomainService(repositoryFor = BudgetKeyTable.class, nature = NatureOfService.VIEW)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
@@ -43,10 +37,10 @@ public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTabl
     public BudgetKeyTable newBudgetKeyTable(
             final @ParameterLayout(named = "Property") Property property,
             final @ParameterLayout(named = "Name") String name,
-            final @ParameterLayout(named = "StartDate") LocalDate startDate,
-            final @ParameterLayout(named = "EndDate") LocalDate endDate,
+            final @ParameterLayout(named = "Start Date") LocalDate startDate,
+            final @ParameterLayout(named = "End Date") LocalDate endDate,
             final @ParameterLayout(named = "Foundation Value Type") BudgetFoundationValueType foundationValueType,
-            final @ParameterLayout(named = "Key Value Method") BudgetKeyValueMethod keyValueMethod){
+            final @ParameterLayout(named = "Key Value Method") BudgetKeyValueMethod keyValueMethod) {
         BudgetKeyTable budgetKeyTable = newTransientInstance();
         budgetKeyTable.setProperty(property);
         budgetKeyTable.setName(name);
@@ -57,6 +51,20 @@ public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTabl
         persistIfNotAlready(budgetKeyTable);
 
         return budgetKeyTable;
+    }
+
+    public String validateNewBudgetKeyTable(
+            final Property property,
+            final String name,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final BudgetFoundationValueType foundationValueType,
+            final BudgetKeyValueMethod keyValueMethod) {
+        if (!new LocalDateInterval(startDate, endDate).isValid()) {
+            return "End date can not be before start date";
+        }
+
+        return null;
     }
 
     // //////////////////////////////////////

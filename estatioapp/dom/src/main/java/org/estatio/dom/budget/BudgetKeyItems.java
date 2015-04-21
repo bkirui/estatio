@@ -54,6 +54,17 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
         return budgetKeyItem;
     }
 
+    public String validateNewBudgetKeyItem(
+            final BudgetKeyTable budgetKeyTable,
+            final Unit unit,
+            final BigDecimal sourceValue,
+            final BigDecimal foundationValue,
+            final BigDecimal keyValue) {
+
+        // TODO: I guess the different values need to be validated?
+
+        return null;
+    }
     // //////////////////////////////////////
 
     public List<BudgetKeyItem> allBudgetKeyItems() {
