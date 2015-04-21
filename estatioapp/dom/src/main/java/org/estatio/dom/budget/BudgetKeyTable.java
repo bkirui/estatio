@@ -18,25 +18,20 @@
  */
 package org.estatio.dom.budget;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import org.apache.isis.applib.annotation.*;
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.WithIntervalMutable;
+import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import org.joda.time.LocalDate;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
-
-import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.RenderType;
-
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
-import org.estatio.dom.EstatioDomainObject;
-import org.estatio.dom.asset.Property;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
@@ -44,7 +39,7 @@ import org.estatio.dom.asset.Property;
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BudgetKeyTables.class)
-public class BudgetKeyTable extends EstatioDomainObject<Budget> {
+public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithIntervalMutable<BudgetKeyTable> {
 
     public BudgetKeyTable() {
         super("property, name, startDate, endDate");
@@ -110,6 +105,62 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> {
 
     // //////////////////////////////////////
 
+    @Programmatic
+    public LocalDateInterval getInterval() {
+        return LocalDateInterval.including(getStartDate(), getEndDate());
+    }
+
+    @Programmatic
+    public LocalDateInterval getEffectiveInterval() {
+        return getInterval();
+    }
+
+    // //////////////////////////////////////
+
+    public boolean isCurrent() {
+        return isActiveOn(getClockService().now());
+    }
+
+    private boolean isActiveOn(final LocalDate date) {
+        return LocalDateInterval.including(this.getStartDate(), this.getEndDate()).contains(date);
+    }
+
+    // //////////////////////////////////////
+
+    private WithIntervalMutable.Helper<BudgetKeyTable> changeDates = new WithIntervalMutable.Helper<BudgetKeyTable>(this);
+
+    WithIntervalMutable.Helper<BudgetKeyTable> getChangeDates() {
+        return changeDates;
+    }
+
+    @Override
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    public BudgetKeyTable changeDates(
+            final @ParameterLayout(named = "Start date") @Parameter(optionality = Optionality.OPTIONAL) LocalDate startDate,
+            final @ParameterLayout(named = "End date") @Parameter(optionality = Optionality.OPTIONAL) LocalDate endDate) {
+        return getChangeDates().changeDates(startDate, endDate);
+    }
+
+    @Override
+    public LocalDate default0ChangeDates() {
+        return getChangeDates().default0ChangeDates();
+    }
+
+    @Override
+    public LocalDate default1ChangeDates() {
+        return getChangeDates().default1ChangeDates();
+    }
+
+    @Override
+    public String validateChangeDates(
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        return getChangeDates().validateChangeDates(startDate, endDate);
+    }
+
+    // //////////////////////////////////////
+
+
     private BudgetFoundationValueType foundationValueType;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
@@ -119,6 +170,12 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> {
 
     public void setFoundationValueType(BudgetFoundationValueType foundationValueType) {
         this.foundationValueType = foundationValueType;
+    }
+
+    public BudgetKeyTable changeFoundationValueType(
+            final @ParameterLayout(named = "Foundation value type") BudgetFoundationValueType foundationValueType) {
+        setFoundationValueType(foundationValueType);
+        return this;
     }
 
     // //////////////////////////////////////
@@ -134,11 +191,17 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> {
         this.keyValueMethod = keyValueMethod;
     }
 
+    public BudgetKeyTable changeKeyValueMethod(
+            final @ParameterLayout(named = "Key value method") BudgetKeyValueMethod keyValueMethod) {
+        setKeyValueMethod(keyValueMethod);
+        return this;
+    }
+
     // //////////////////////////////////////
 
     private SortedSet<BudgetKeyItem> budgetKeyItems = new TreeSet<BudgetKeyItem>();
 
-    @CollectionLayout(render= RenderType.EAGERLY)
+    @CollectionLayout(render = RenderType.EAGERLY)
     @Persistent(mappedBy = "budgetKeyTable", dependentElement = "true")
     public SortedSet<BudgetKeyItem> getBudgetKeyItems() {
         return budgetKeyItems;
@@ -150,7 +213,8 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> {
 
     // //////////////////////////////////////
 
-    @Override public ApplicationTenancy getApplicationTenancy() {
+    @Override
+    public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }
 }

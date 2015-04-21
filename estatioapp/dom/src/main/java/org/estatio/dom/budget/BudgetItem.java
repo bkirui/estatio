@@ -18,20 +18,18 @@
  */
 package org.estatio.dom.budget;
 
-import java.math.BigDecimal;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.charge.Charge;
+import org.estatio.dom.currency.Currency;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
-import org.estatio.dom.EstatioDomainObject;
-import org.estatio.dom.charge.Charge;
-import org.estatio.dom.currency.Currency;
+import java.math.BigDecimal;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
@@ -39,7 +37,7 @@ import org.estatio.dom.currency.Currency;
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
 @DomainObject(editing = Editing.DISABLED)
-public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
+public class BudgetItem extends EstatioDomainObject<BudgetItem> {
 
     public BudgetItem() {
         super("budget");
@@ -82,6 +80,18 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
         this.value = value;
     }
 
+    public BudgetItem changeValue(final @ParameterLayout(named = "Value") BigDecimal value) {
+        setValue(value);
+        return this;
+    }
+
+    public String validateChangeValue(final BigDecimal value) {
+        if (value.equals(new BigDecimal(0))) {
+            return "Value can't be zero";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private Currency currency;
@@ -93,6 +103,11 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public BudgetItem changeCurrency(final @ParameterLayout(named = "Currency") Currency currency) {
+        setCurrency(currency);
+        return this;
     }
 
     // //////////////////////////////////////
@@ -108,6 +123,11 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
         this.charge = charge;
     }
 
+    public BudgetItem changeCharge(final @ParameterLayout(named = "Charge") Charge charge) {
+        setCharge(charge);
+        return this;
+    }
+
     // //////////////////////////////////////
 
     private BudgetCostGroup budgetCostGroup;
@@ -121,7 +141,8 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem>  {
         this.budgetCostGroup = budgetCostGroup;
     }
 
-    @Override public ApplicationTenancy getApplicationTenancy() {
+    @Override
+    public ApplicationTenancy getApplicationTenancy() {
         return getBudget().getApplicationTenancy();
     }
 }

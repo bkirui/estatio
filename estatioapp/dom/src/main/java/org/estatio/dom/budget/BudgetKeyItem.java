@@ -18,19 +18,17 @@
  */
 package org.estatio.dom.budget;
 
-import java.math.BigDecimal;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.asset.Unit;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
-
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
-import org.estatio.dom.EstatioDomainObject;
-import org.estatio.dom.asset.Unit;
+import java.math.BigDecimal;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
@@ -81,6 +79,18 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
         this.sourceValue = sourceValue;
     }
 
+    public BudgetKeyItem changeSourceValue(final @ParameterLayout(named = "Source value") BigDecimal sourceValue) {
+        setSourceValue(sourceValue);
+        return this;
+    }
+
+    public String validateChangeSourceValue(final BigDecimal sourceValue) {
+        if (sourceValue.equals(new BigDecimal(0))) {
+            return "Source value can't be zero";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private BigDecimal foundationValue;
@@ -92,6 +102,18 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
 
     public void setFoundationValue(BigDecimal foundationValue) {
         this.foundationValue = foundationValue;
+    }
+
+    public BudgetKeyItem changeFoundationValue(final @ParameterLayout(named = "Foundation value") BigDecimal foundationValue) {
+        setFoundationValue(foundationValue);
+        return this;
+    }
+
+    public String validateChangeFoundationValue(final BigDecimal foundationValue) {
+        if (foundationValue.equals(new BigDecimal(0))) {
+            return "Foundation value can't be zero";
+        }
+        return null;
     }
 
     // //////////////////////////////////////
@@ -107,9 +129,22 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
         this.keyValue = keyValue;
     }
 
+    public BudgetKeyItem changeKeyValue(final @ParameterLayout(named = "Key value") BigDecimal keyValue) {
+        setKeyValue(keyValue);
+        return this;
+    }
+
+    public String validateChangeKeyValue(final BigDecimal keyValue) {
+        if (keyValue.equals(new BigDecimal(0))) {
+            return "Key value can't be zero";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
-    @Override public ApplicationTenancy getApplicationTenancy() {
+    @Override
+    public ApplicationTenancy getApplicationTenancy() {
         return getBudgetKeyTable().getApplicationTenancy();
     }
 }

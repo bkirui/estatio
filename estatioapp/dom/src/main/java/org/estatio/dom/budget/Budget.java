@@ -27,12 +27,10 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.apache.isis.applib.annotation.*;
+import org.estatio.dom.WithIntervalMutable;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.annotation.CollectionLayout;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.RenderType;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -52,7 +50,7 @@ import org.estatio.dom.asset.Property;
                         "WHERE property == :property ")
 })
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = Budgets.class)
-public class Budget extends EstatioDomainObject<Budget> {
+public class Budget extends EstatioDomainObject<Budget> implements WithIntervalMutable<Budget> {
 
     public Budget() {
         super("property, startDate, endDate");
@@ -93,6 +91,61 @@ public class Budget extends EstatioDomainObject<Budget> {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    // //////////////////////////////////////
+
+    @Programmatic
+    public LocalDateInterval getInterval() {
+        return LocalDateInterval.including(getStartDate(), getEndDate());
+    }
+
+    @Programmatic
+    public LocalDateInterval getEffectiveInterval() {
+        return getInterval();
+    }
+
+    // //////////////////////////////////////
+
+    public boolean isCurrent() {
+        return isActiveOn(getClockService().now());
+    }
+
+    private boolean isActiveOn(final LocalDate date) {
+        return LocalDateInterval.including(this.getStartDate(), this.getEndDate()).contains(date);
+    }
+
+    // //////////////////////////////////////
+
+    private WithIntervalMutable.Helper<Budget> changeDates = new WithIntervalMutable.Helper<Budget>(this);
+
+    WithIntervalMutable.Helper<Budget> getChangeDates() {
+        return changeDates;
+    }
+
+    @Override
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    public Budget changeDates(
+            final @ParameterLayout(named = "Start date") @Parameter(optionality = Optionality.OPTIONAL) LocalDate startDate,
+            final @ParameterLayout(named = "End date") @Parameter(optionality =  Optionality.OPTIONAL) LocalDate endDate) {
+        return getChangeDates().changeDates(startDate, endDate);
+    }
+
+    @Override
+    public LocalDate default0ChangeDates() {
+        return getChangeDates().default0ChangeDates();
+    }
+
+    @Override
+    public LocalDate default1ChangeDates() {
+        return getChangeDates().default1ChangeDates();
+    }
+
+    @Override
+    public String validateChangeDates(
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        return getChangeDates().validateChangeDates(startDate, endDate);
     }
 
     // //////////////////////////////////////
