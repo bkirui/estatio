@@ -104,7 +104,7 @@ public class BudgetKeyItemImportExportManager extends EstatioViewModel {
     }
 
     // //////////////////////////////////////
-    // allToDos
+    // allBudgetKeyItems TODO: refine => only items for property
     // //////////////////////////////////////
 
     @SuppressWarnings("unchecked")
