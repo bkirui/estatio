@@ -21,15 +21,39 @@ import java.math.BigDecimal;
 
 import org.apache.isis.applib.annotation.MemberOrder;
 
+import org.estatio.app.EstatioViewModel;
 import org.estatio.dom.asset.Unit;
 import org.estatio.dom.lease.Occupancy;
 
-public class BudgetCalculationItem {
+public class BudgetCalculationItem extends EstatioViewModel {
 
-    public BudgetCalculationItem(Occupancy occupancy){
-        this.setOccupancy(occupancy);
-        this.setUnit(occupancy.getUnit());
+    public BudgetCalculationItem(){
     }
+
+    // //////////////////////////////////////
+    // ViewModel implementation
+    // //////////////////////////////////////
+
+    public String viewModelMemento() {
+        return budgetCalculationService.mementoFor(this);
+    }
+
+    public void viewModelInit(final String mementoStr) {
+        budgetCalculationService.initOf(mementoStr, this);
+    }
+
+    //region > budgetCalculation (property)
+    private BudgetCalculation budgetCalculation;
+
+    @MemberOrder(sequence = "1")
+    public BudgetCalculation getBudgetCalculation() {
+        return budgetCalculation;
+    }
+
+    public void setBudgetCalculation(final BudgetCalculation budgetCalculation) {
+        this.budgetCalculation = budgetCalculation;
+    }
+    //endregion
 
     //region > occupancy (property)
     private Occupancy occupancy;
@@ -71,17 +95,24 @@ public class BudgetCalculationItem {
     //endregion
 
     //region > budgetedValue (property)
-    private BigDecimal budgetedValue;
+    private BigDecimal calculatedValue;
 
     @MemberOrder(sequence = "4")
-    public BigDecimal getBudgetedValue() {
-        return budgetedValue;
+    public BigDecimal getCalculatedValue() {
+        return calculatedValue;
     }
 
-    public void setBudgetedValue(final BigDecimal budgetedValue) {
-        this.budgetedValue = budgetedValue;
+    public void setCalculatedValue(final BigDecimal calculatedValue) {
+        this.calculatedValue = calculatedValue;
     }
     //endregion
+
+    // //////////////////////////////////////
+    // injected services
+    // //////////////////////////////////////
+
+    @javax.inject.Inject
+    private BudgetCalculationService budgetCalculationService;
 
 
 }

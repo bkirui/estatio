@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012-2015 Eurocommercial Properties NV
+ * Copyright 2015 Yodo Int. Projects and Consultancy
  *
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -17,13 +17,11 @@
 
 package org.estatio.dom.budget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.BookmarkPolicy;
-import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
@@ -33,26 +31,35 @@ import org.apache.isis.applib.annotation.RenderType;
 
 import org.estatio.app.EstatioViewModel;
 import org.estatio.dom.asset.Property;
-import org.estatio.dom.lease.Lease;
-import org.estatio.dom.lease.LeaseItem;
-import org.estatio.dom.lease.LeaseItemType;
-import org.estatio.dom.lease.LeaseTermForServiceCharge;
+import org.estatio.dom.charge.Charge;
 
 @DomainObject(
         nature = Nature.VIEW_MODEL
 )
 @DomainObjectLayout(
-        named ="Budget calculation",
+        named ="Budget calculation on property",
         bookmarking = BookmarkPolicy.AS_ROOT
 )
-public class BudgetCalculationOnLease extends EstatioViewModel {
+public class BudgetCalculation extends EstatioViewModel {
 
-    public BudgetCalculationOnLease(Lease lease){
-        this.setLeaseItem(lease.findFirstItemOfType(LeaseItemType.SERVICE_CHARGE));
+    public BudgetCalculation() {
+
     }
 
     public String title() {
         return "Budget calculation";
+    }
+
+    // //////////////////////////////////////
+    // ViewModel implementation
+    // //////////////////////////////////////
+
+    public String viewModelMemento() {
+        return budgetCalculationService.mementoFor(this);
+    }
+
+    public void viewModelInit(final String mementoStr) {
+        budgetCalculationService.initOf(mementoStr, this);
     }
 
     //region > property (property)
@@ -68,16 +75,16 @@ public class BudgetCalculationOnLease extends EstatioViewModel {
     }
     //endregion
 
-    //region > startdate (property)
-    private LocalDate startdate;
+    //region > startDate (property)
+    private LocalDate startDate;
 
     @MemberOrder(sequence = "2")
-    public LocalDate getStartdate() {
-        return startdate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setStartdate(final LocalDate startdate) {
-        this.startdate = startdate;
+    public void setStartDate(final LocalDate startDate) {
+        this.startDate = startDate;
     }
     //endregion
 
@@ -94,42 +101,30 @@ public class BudgetCalculationOnLease extends EstatioViewModel {
     }
     //endregion
 
-    //region > leaseItem (property)
-    private LeaseItem leaseItem;
+    //region > charge (property)
+    private Charge charge;
 
-    @MemberOrder(sequence = "5")
-    public LeaseItem getLeaseItem() {
-        return leaseItem;
+    @MemberOrder(sequence = "1")
+    public Charge getCharge() {
+        return charge;
     }
 
-    public void setLeaseItem(final LeaseItem leaseItem) {
-        this.leaseItem = leaseItem;
-    }
-    //endregion
-
-    //region > Term (property)
-    private LeaseTermForServiceCharge term;
-
-    @MemberOrder(sequence = "6")
-    public LeaseTermForServiceCharge getTerm() {
-        return term;
-    }
-
-    public void setTerm(final LeaseTermForServiceCharge term) {
-        this.term = term;
+    public void setCharge(final Charge charge) {
+        this.charge = charge;
     }
     //endregion
 
-    public List<BudgetCalculationItem> budgetCalculationItems = new ArrayList<BudgetCalculationItem>();
-
-    @SuppressWarnings("unchecked")
-    @Collection
-    @CollectionLayout(
-            render = RenderType.EAGERLY
-    )
-    public List<BudgetCalculationItem> getBudgetCalculationItems() {
-        return budgetCalculationItems;
+    @CollectionLayout(render = RenderType.EAGERLY)
+    public List<BudgetCalculationItem> getBudgetCalculationItems(){
+        return null;
     }
+
+    // //////////////////////////////////////
+    // injected services
+    // //////////////////////////////////////
+
+    @javax.inject.Inject
+    private BudgetCalculationService budgetCalculationService;
 
 
 }

@@ -17,54 +17,127 @@
 
 package org.estatio.dom.budget;
 
-import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.List;
 
+import org.joda.time.LocalDate;
+
+import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.services.bookmark.Bookmark;
+import org.apache.isis.applib.services.bookmark.BookmarkService;
+import org.apache.isis.applib.services.memento.MementoService;
 
 import org.estatio.dom.asset.Property;
-import org.estatio.dom.lease.Lease;
-import org.estatio.dom.lease.Leases;
+import org.estatio.dom.asset.Unit;
+import org.estatio.dom.charge.Charge;
 import org.estatio.dom.lease.Occupancy;
 
 @DomainService(nature = NatureOfService.VIEW)
 public class BudgetCalculationService {
 
-    public BudgetCalculationOnProperty calculateBudget(final Property property) {
+    @Action(
+            semantics = SemanticsOf.IDEMPOTENT
+    )
+    @MemberOrder(name="Budgets", sequence="90.1")
+    public BudgetCalculation calculateBudget(final Budget budget) {
 
         // init new budgetcalculation view
-        BudgetCalculationOnProperty budgetCalculationOnProperty = new BudgetCalculationOnProperty(property);
+        BudgetCalculation budgetCalculation = new BudgetCalculation();
+        budgetCalculation.setProperty(budget.getProperty());
+        budgetCalculation.setStartDate(budget.getStartDate());
+        budgetCalculation.setEndDate(budget.getEndDate());
 
-        // for each lease
-        for (Lease lease: leases.findLeasesByProperty(property)) {
+        // for each budgetItem on budget TODO: make query
+        for (BudgetItem budgetItem: budgetItems.allBudgetItems()) {
 
-            //init new calculation on lease
-            BudgetCalculationOnLease budgetCalculationOnLease = new BudgetCalculationOnLease(lease);
+            //init new BudgetCalculationItem
+            BudgetCalculationItem budgetCalculationItem = new BudgetCalculationItem();
+            budgetCalculationItem.setBudgetCalculation(budgetCalculation);
 
-            //for every occupancy
-            // TODO: refine => only occupances in period
-            for (Occupancy occupancy: lease.getOccupancies()){
-
-                //init new budget calulation on occupancy
-                BudgetCalculationItem budgetCalculationItem = new BudgetCalculationItem(occupancy);
-
-
-
-                budgetCalculationOnLease.budgetCalculationItems.add(budgetCalculationItem);
-
-
-            }
-
-            //add calculation ons lease to calculation on property
-            budgetCalculationOnProperty.budgetCalculationOnLeasesItems.add(budgetCalculationOnLease);
 
         }
 
-        return budgetCalculationOnProperty;
+        return budgetCalculation;
 
     }
 
-    @Inject
-    Leases leases;
+    public List<Budget> autoComplete0CalculateBudget(String string) {
+        return budgets.allBudgets();
+    }
+
+    // //////////////////////////////////////
+    // memento for BudgetCalculation
+    // //////////////////////////////////////
+
+    String mementoFor(final BudgetCalculation budgetCalculation) {
+        final MementoService.Memento memento = mementoService.create();
+        memento.set("property", bookmarkService.bookmarkFor(budgetCalculation.getProperty()));
+        memento.set("startDate", budgetCalculation.getStartDate());
+        memento.set("endDate", budgetCalculation.getEndDate());
+        memento.set("charge", bookmarkService.bookmarkFor(budgetCalculation.getCharge()));
+        return memento.asString();
+    }
+
+    void initOf(final String mementoStr, final BudgetCalculation budgetCalculation) {
+        final MementoService.Memento memento = mementoService.parse(mementoStr);
+        budgetCalculation.setProperty(bookmarkService.lookup(memento.get("property", Bookmark.class), Property.class));
+        budgetCalculation.setStartDate(memento.get("startDate", LocalDate.class));
+        budgetCalculation.setStartDate(memento.get("endDate", LocalDate.class));
+        budgetCalculation.setCharge(bookmarkService.lookup(memento.get("charge", Bookmark.class), Charge.class));
+    }
+
+    BudgetCalculation newBudgetCalculation(BudgetCalculation budgetCalculation) {
+        return container.newViewModelInstance(BudgetCalculation.class, mementoFor(budgetCalculation));
+    }
+
+    // //////////////////////////////////////
+    // memento for BudgetCalculationItem
+    // //////////////////////////////////////
+
+    String mementoFor(final BudgetCalculationItem budgetCalculationItem) {
+        final MementoService.Memento memento = mementoService.create();
+        memento.set("occupancy", bookmarkService.bookmarkFor(budgetCalculationItem.getOccupancy()));
+        memento.set("unit", bookmarkService.bookmarkFor(budgetCalculationItem.getUnit()));
+        memento.set("keyValue", budgetCalculationItem.getKeyValue());
+        memento.set("calculatedValue", bookmarkService.bookmarkFor(budgetCalculationItem.getCalculatedValue()));
+        return memento.asString();
+    }
+
+    void initOf(final String mementoStr, final BudgetCalculationItem budgetCalculationItem) {
+        final MementoService.Memento memento = mementoService.parse(mementoStr);
+        budgetCalculationItem.setOccupancy(bookmarkService.lookup(memento.get("occupancy", Bookmark.class), Occupancy.class));
+        budgetCalculationItem.setUnit(bookmarkService.lookup(memento.get("unit", Bookmark.class), Unit.class));
+        budgetCalculationItem.setKeyValue(memento.get("keyValue", BigDecimal.class));
+        budgetCalculationItem.setCalculatedValue(memento.get("calculatedValue", BigDecimal.class));
+    }
+
+    BudgetCalculationItem newBudgetCalculationItem(BudgetCalculationItem budgetCalculationItem) {
+        return container.newViewModelInstance(BudgetCalculationItem.class, mementoFor(budgetCalculationItem));
+    }
+
+    // //////////////////////////////////////
+    // Injected Services
+    // //////////////////////////////////////
+
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+
+    @javax.inject.Inject
+    private BookmarkService bookmarkService;
+
+    @javax.inject.Inject
+    private MementoService mementoService;
+
+    @javax.inject.Inject
+    private Budgets budgets;
+
+    @javax.inject.Inject
+    private BudgetItems budgetItems;
+
 
 }

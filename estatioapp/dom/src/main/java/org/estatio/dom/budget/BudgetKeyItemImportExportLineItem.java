@@ -56,12 +56,12 @@ public class BudgetKeyItemImportExportLineItem
 
     @Override
     public String viewModelMemento() {
-        return toDoItemExportImportService.mementoFor(this);
+        return budgetKeyItemImportExportService.mementoFor(this);
     }
 
     @Override
     public void viewModelInit(final String mementoStr) {
-        toDoItemExportImportService.init(mementoStr, this);
+        budgetKeyItemImportExportService.init(mementoStr, this);
     }
 
     
@@ -205,7 +205,7 @@ public class BudgetKeyItemImportExportLineItem
     // //////////////////////////////////////
     
     @javax.inject.Inject
-    private BudgetKeyItemImportExportService toDoItemExportImportService;
+    private BudgetKeyItemImportExportService budgetKeyItemImportExportService;
     
     @javax.inject.Inject
     private BudgetKeyItems budgetKeyItems;
