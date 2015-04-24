@@ -34,7 +34,10 @@ import org.apache.isis.applib.services.memento.MementoService;
 
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.asset.Unit;
-import org.estatio.dom.charge.Charge;
+import org.estatio.dom.lease.LeaseItem;
+import org.estatio.dom.lease.LeaseItemType;
+import org.estatio.dom.lease.LeaseTerm;
+import org.estatio.dom.lease.Occupancies;
 import org.estatio.dom.lease.Occupancy;
 
 @DomainService(nature = NatureOfService.VIEW)
@@ -52,17 +55,69 @@ public class BudgetCalculationService {
         budgetCalculation.setStartDate(budget.getStartDate());
         budgetCalculation.setEndDate(budget.getEndDate());
 
-        // for each budgetItem on budget TODO: make query
-        for (BudgetItem budgetItem: budgetItems.allBudgetItems()) {
 
-            //init new BudgetCalculationItem
-            BudgetCalculationItem budgetCalculationItem = new BudgetCalculationItem();
-            budgetCalculationItem.setBudgetCalculation(budgetCalculation);
+        // for each budgetItem on budget
+        for (BudgetItem budgetItem: budgetItems.findBudgetItemByBudget(budget)) {
+
+            // for each Unit on budgetItem.budgetKeyTable.budgetKeyItem
+
+            for (BudgetKeyItem budgetKeyItem: budgetItem.getBudgetKeyTable().getBudgetKeyItems()) {
+
+                Unit unit = budgetKeyItem.getUnit();
+
+                // find active Occupancy / Occupancies for period budget
+                // TODO: date selection refinement and calculate fractions of period if needed
+                for (Occupancy occupancy: occupancies.occupancies(unit)) {
+
+                    if (occupancy.getStartDate().isBefore(budget.getStartDate())
+                            && occupancy.getEndDate().isAfter(budget.getEndDate())
+                            ) {
+
+                        // find lease Item
+
+                        LeaseItem leaseItem = occupancy.getLease().findFirstItemOfType(LeaseItemType.SERVICE_CHARGE);
+
+                        //TODO: test if LeaseItem is null
+
+                        boolean activeLeaseTermFound = false;
+                        for (LeaseTerm leaseTerm: leaseItem.getTerms()) {
+
+                            if (leaseTerm.isCurrent()) {
+
+                                // TODO: recalculate budgeted value
+
+                                activeLeaseTermFound = true;
+
+                            }
+
+                        }
+
+                        if (!activeLeaseTermFound) {
+
+                            // make new lease Term
+                            LeaseTerm newTerm = leaseItem.newTerm(budget.getStartDate(), budget.getEndDate());
+
+                            // TODO: set the values
+
+                        }
 
 
+                    }
+
+                }
+
+            }
+
+
+
+//            //init new BudgetCalculationItem
+////            BudgetCalculationItem budgetCalculationItem = new BudgetCalculationItem();
+////            budgetCalculationItem.setBudgetCalculation(budgetCalculation);
+//
+//
         }
 
-        return budgetCalculation;
+        return newBudgetCalculation(budgetCalculation);
 
     }
 
@@ -79,7 +134,7 @@ public class BudgetCalculationService {
         memento.set("property", bookmarkService.bookmarkFor(budgetCalculation.getProperty()));
         memento.set("startDate", budgetCalculation.getStartDate());
         memento.set("endDate", budgetCalculation.getEndDate());
-        memento.set("charge", bookmarkService.bookmarkFor(budgetCalculation.getCharge()));
+//        memento.set("charge", bookmarkService.bookmarkFor(budgetCalculation.getCharge()));
         return memento.asString();
     }
 
@@ -88,7 +143,7 @@ public class BudgetCalculationService {
         budgetCalculation.setProperty(bookmarkService.lookup(memento.get("property", Bookmark.class), Property.class));
         budgetCalculation.setStartDate(memento.get("startDate", LocalDate.class));
         budgetCalculation.setStartDate(memento.get("endDate", LocalDate.class));
-        budgetCalculation.setCharge(bookmarkService.lookup(memento.get("charge", Bookmark.class), Charge.class));
+//        budgetCalculation.setCharge(bookmarkService.lookup(memento.get("charge", Bookmark.class), Charge.class));
     }
 
     BudgetCalculation newBudgetCalculation(BudgetCalculation budgetCalculation) {
@@ -138,6 +193,10 @@ public class BudgetCalculationService {
 
     @javax.inject.Inject
     private BudgetItems budgetItems;
+
+    @javax.inject.Inject
+    private Occupancies occupancies;
+
 
 
 }

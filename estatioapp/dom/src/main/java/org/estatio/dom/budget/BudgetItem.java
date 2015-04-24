@@ -18,24 +18,35 @@
  */
 package org.estatio.dom.budget;
 
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.estatio.dom.EstatioDomainObject;
-import org.estatio.dom.charge.Charge;
-import org.estatio.dom.currency.Currency;
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import java.math.BigDecimal;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
-import java.math.BigDecimal;
+
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.charge.Charge;
+import org.estatio.dom.currency.Currency;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
+@javax.jdo.annotations.Queries({
+        @Query(
+                name = "findByBudget", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.BudgetItem " +
+                        "WHERE budget == :budget ")
+})
 @DomainObject(editing = Editing.DISABLED)
 public class BudgetItem extends EstatioDomainObject<BudgetItem> {
 
