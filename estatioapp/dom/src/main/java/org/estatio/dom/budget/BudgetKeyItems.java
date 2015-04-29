@@ -54,6 +54,10 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
         return budgetKeyItem;
     }
 
+    public BudgetKeyItem findByBudgetKeyTableAndUnit(BudgetKeyTable budgetKeyTable, Unit unit){
+        return uniqueMatch("findByBudgetKeyTableAndUnit", "budgetKeyTable", budgetKeyTable, "unit", unit);
+    }
+
     public String validateNewBudgetKeyItem(
             final BudgetKeyTable budgetKeyTable,
             final Unit unit,

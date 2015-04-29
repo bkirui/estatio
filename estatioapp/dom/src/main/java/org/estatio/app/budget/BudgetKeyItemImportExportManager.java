@@ -14,12 +14,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.estatio.dom.budget;
+package org.estatio.app.budget;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import org.isisaddons.module.excel.dom.ExcelService;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -37,68 +37,69 @@ import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.value.Blob;
 
-import org.isisaddons.module.excel.dom.ExcelService;
-
 import org.estatio.app.EstatioViewModel;
+import org.estatio.dom.budget.BudgetKeyTable;
 
 @DomainObject(
         nature = Nature.VIEW_MODEL
 )
 @DomainObjectLayout(
-        named ="Import/export manager",
+        named = "Import/export manager",
         bookmarking = BookmarkPolicy.AS_ROOT
 )
-@MemberGroupLayout(left={"File", "Criteria"})
+@MemberGroupLayout(left = {"File", "Criteria"})
 public class BudgetKeyItemImportExportManager extends EstatioViewModel {
 
     // //////////////////////////////////////
-    
+
     public String title() {
         return "Import/export manager";
     }
-    
-    // //////////////////////////////////////
-    // ViewModel implementation
-    // //////////////////////////////////////
-    
 
-    public String viewModelMemento() {
-        return budgetKeyItemImportExportService.mementoFor(this);
+    public BudgetKeyItemImportExportManager() {
     }
 
-    public void viewModelInit(final String mementoStr) {
-        budgetKeyItemImportExportService.initOf(mementoStr, this);
+    public BudgetKeyItemImportExportManager(final BudgetKeyTable budgetKeyTable) {
+        this.budgetKeyTable = budgetKeyTable;
+        this.fileName = "export.xlsx";
     }
 
-    
+    private BudgetKeyTable budgetKeyTable;
+
+    public BudgetKeyTable getBudgetKeyTable() {
+        return budgetKeyTable;
+    }
+
+    public void setBudgetKeyTable(final BudgetKeyTable budgetKeyTable) {
+        this.budgetKeyTable = budgetKeyTable;
+    }
+
     // //////////////////////////////////////
     // fileName (property)
     // changeFileName
     // //////////////////////////////////////
 
     private String fileName;
-    
-    @MemberOrder(name="File", sequence="1")
+
+    @MemberOrder(name = "File", sequence = "1")
     public String getFileName() {
         return fileName;
     }
+
     public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
 
     // //////////////////////////////////////
 
-    @Action(
-            semantics = SemanticsOf.IDEMPOTENT
-    )
-    @ActionLayout(
-            named = "Change"
-    )
-    @MemberOrder(name="fileName", sequence="1")
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    @ActionLayout(named = "Change")
+    @MemberOrder(name = "fileName", sequence = "1")
     public BudgetKeyItemImportExportManager changeFileName(final String fileName) {
         setFileName(fileName);
-        return budgetKeyItemImportExportService.newBulkUpdateManager(this);
+        return this;
     }
+
     public String default0ChangeFileName() {
         return getFileName();
     }
@@ -112,67 +113,51 @@ public class BudgetKeyItemImportExportManager extends EstatioViewModel {
     @CollectionLayout(
             render = RenderType.EAGERLY
     )
-    public List<BudgetKeyItem> getBudgetKeyItems() {
-        return container.allInstances(BudgetKeyItem.class);
+    public List<BudgetKeyItemImportExportLineItem> getBudgetKeyItems() {
+        return budgetKeyItemImportExportService.items(this);
     }
-
 
     // //////////////////////////////////////
     // export (action)
     // //////////////////////////////////////
-    
-    @Action(
-            semantics = SemanticsOf.SAFE
-    )
-    @MemberOrder(name="budgetKeyItems", sequence="1")
+
+    @Action(semantics = SemanticsOf.SAFE)
+    @MemberOrder(name = "budgetKeyItems", sequence = "1")
     public Blob export() {
         final String fileName = withExtension(getFileName(), ".xlsx");
-        final List<BudgetKeyItem> items = getBudgetKeyItems();
-        return toExcel(fileName, items);
+        return excelService.toExcel(getBudgetKeyItems(), BudgetKeyItemImportExportLineItem.class, fileName);
     }
 
     public String disableExport() {
-        return getFileName() == null? "file name is required": null;
+        return getFileName() == null ? "file name is required" : null;
     }
 
     private static String withExtension(final String fileName, final String fileExtension) {
         return fileName.endsWith(fileExtension) ? fileName : fileName + fileExtension;
     }
 
-    private Blob toExcel(final String fileName, final List<BudgetKeyItem> items) {
-        final List<BudgetKeyItemImportExportLineItem> budgetKeyItemViewModels = Lists.transform(items, toLineItem());
-        return excelService.toExcel(budgetKeyItemViewModels, BudgetKeyItemImportExportLineItem.class, fileName);
-    }
-
-    private Function<BudgetKeyItem, BudgetKeyItemImportExportLineItem> toLineItem() {
-        return new Function<BudgetKeyItem, BudgetKeyItemImportExportLineItem>(){
-            @Override
-            public BudgetKeyItemImportExportLineItem apply(final BudgetKeyItem budgetKeyItem) {
-                final BudgetKeyItemImportExportLineItem template = new BudgetKeyItemImportExportLineItem();
-                template.modifyBudgetKeyItem(budgetKeyItem);
-                return budgetKeyItemImportExportService.newLineItem(template);
-            }
-        };
-    }
-
-
     // //////////////////////////////////////
     // import (action)
     // //////////////////////////////////////
 
     @Action
-    @ActionLayout(
-            named = "Import"
-    )
-    @MemberOrder(name="budgetKeyItems", sequence="2")
+    @ActionLayout(named = "Import")
+    @MemberOrder(name = "budgetKeyItems", sequence = "2")
     public List<BudgetKeyItemImportExportLineItem> importBlob(
-            @ParameterLayout(named="Excel spreadsheet") final Blob spreadsheet) {
-        final List<BudgetKeyItemImportExportLineItem> lineItems =
+            @ParameterLayout(named = "Excel spreadsheet") final Blob spreadsheet) {
+        List<BudgetKeyItemImportExportLineItem> lineItems =
                 excelService.fromExcel(spreadsheet, BudgetKeyItemImportExportLineItem.class);
         container.informUser(lineItems.size() + " items imported");
-        return lineItems;
+
+        List<BudgetKeyItemImportExportLineItem> newItems = new ArrayList<>();
+        for (BudgetKeyItemImportExportLineItem item : lineItems) {
+            item.setBudgetKeyTable(getBudgetKeyTable());
+            item.validate();
+            newItems.add(new BudgetKeyItemImportExportLineItem(item));
+        }
+        return newItems;
     }
-    
+
 
     // //////////////////////////////////////
     // Injected Services

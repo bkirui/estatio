@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
@@ -40,6 +41,13 @@ import org.estatio.dom.asset.Unit;
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
 @DomainObject(editing = Editing.DISABLED)
+@javax.jdo.annotations.Queries({
+        @Query(
+                name = "findByBudgetKeyTableAndUnit", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.BudgetKeyItem " +
+                        "WHERE budgetKeyTable == :budgetKeyTable && unit == :unit")
+})
 public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements WithApplicationTenancyProperty {
 
     public BudgetKeyItem() {

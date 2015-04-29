@@ -14,11 +14,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.estatio.dom.budget;
+package org.estatio.app.budget;
 
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+
+import org.isisaddons.module.excel.dom.ExcelService;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -30,7 +32,7 @@ import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.services.actinvoc.ActionInvocationContext;
 import org.apache.isis.applib.value.Blob;
 
-import org.isisaddons.module.excel.dom.ExcelService;
+import org.estatio.dom.budget.BudgetKeyItem;
 
 @DomainService(
         nature = NatureOfService.VIEW_CONTRIBUTIONS_ONLY
@@ -39,7 +41,7 @@ public class BudgetKeyItemImportExportContributions {
 
     @PostConstruct
     public void init() {
-        if(excelService == null) {
+        if (excelService == null) {
             throw new IllegalStateException("Require ExcelService to be configured");
         }
     }
@@ -49,7 +51,7 @@ public class BudgetKeyItemImportExportContributions {
 
     /**
      * Bulk actions of this type are not yet supported, hence have hidden...
-     * 
+     *
      * @see https://issues.apache.org/jira/browse/ISIS-705.
      */
     @Action(
@@ -59,9 +61,9 @@ public class BudgetKeyItemImportExportContributions {
     @ActionLayout(
             contributed = Contributed.AS_ACTION
     )
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Blob export(final BudgetKeyItem budgetKeyItem) {
-        if(actionInvocationContext.isLast()) {
+        if (actionInvocationContext.isLast()) {
             final List budgetKeyItems = actionInvocationContext.getDomainObjects();
             return excelService.toExcel(budgetKeyItems, BudgetKeyItem.class, "budgetKeyItems.xlsx");
         } else {
@@ -69,7 +71,7 @@ public class BudgetKeyItemImportExportContributions {
         }
     }
 
-    
+
     // //////////////////////////////////////
     // Injected Services
     // //////////////////////////////////////
