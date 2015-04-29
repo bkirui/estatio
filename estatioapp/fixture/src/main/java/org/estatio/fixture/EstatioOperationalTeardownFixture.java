@@ -27,8 +27,8 @@ import org.estatio.dom.JdoColumnLength.Numerator;
 import org.estatio.dom.agreement.Agreement;
 import org.estatio.dom.agreement.AgreementRole;
 import org.estatio.dom.agreement.AgreementRoleCommunicationChannel;
-import org.estatio.dom.asset.FixedAsset;
 import org.estatio.dom.asset.CommunicationChannelOwnerLinkForFixedAsset;
+import org.estatio.dom.asset.FixedAsset;
 import org.estatio.dom.asset.FixedAssetRole;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.asset.Unit;
@@ -36,6 +36,8 @@ import org.estatio.dom.asset.financial.FixedAssetFinancialAccount;
 import org.estatio.dom.asset.registration.FixedAssetRegistration;
 import org.estatio.dom.asset.registration.LandRegister;
 import org.estatio.dom.bankmandate.BankMandate;
+import org.estatio.dom.budget.BudgetKeyItem;
+import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.communicationchannel.CommunicationChannel;
 import org.estatio.dom.communicationchannel.CommunicationChannelOwnerLink;
 import org.estatio.dom.document.Document;
@@ -69,6 +71,9 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
     }
 
     private void deleteAllDirect() {
+
+        deleteFrom(BudgetKeyItem.class);
+        deleteFrom(BudgetKeyTable.class);
 
         deleteFrom(Numerator.class);
 

@@ -18,8 +18,26 @@
  */
 package org.estatio.dom.budget;
 
+import java.math.BigDecimal;
+
+import org.estatio.dom.asset.Unit;
+
 public enum BudgetFoundationValueType {
-    AREA,
-    COUNT,
-    MANUAL;
+    AREA{
+        @Override public BigDecimal valueOf(final Unit u) {
+            return u.getArea();
+        }
+    },
+    COUNT{
+        @Override public BigDecimal valueOf(final Unit u) {
+            return BigDecimal.ONE;
+        }
+    },
+    MANUAL{
+        @Override public BigDecimal valueOf(final Unit u) {
+            return null;
+        }
+    };
+
+    public abstract BigDecimal valueOf(final Unit u);
 }

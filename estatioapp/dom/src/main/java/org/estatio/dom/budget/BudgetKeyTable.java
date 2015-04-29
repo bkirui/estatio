@@ -18,15 +18,16 @@
  */
 package org.estatio.dom.budget;
 
+import java.math.BigDecimal;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
@@ -40,10 +41,14 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.WithIntervalMutable;
 import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.asset.Unit;
+import org.estatio.dom.asset.Units;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
@@ -226,8 +231,39 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
     // //////////////////////////////////////
 
+    public void generateBudgetKeyItems(){
+
+        // Works for BudgetFoundationValueType Area
+
+
+        for (Unit unit :  units.findByProperty(this.getProperty())){
+
+            BigDecimal denominator = BigDecimal.ZERO;
+            for (Unit u :  units.findByProperty(this.getProperty())) {
+                denominator = denominator.add(getFoundationValueType().valueOf(u));
+            }
+
+            final BigDecimal numerator = unit.getArea();
+            BigDecimal keyValue = getKeyValueMethod().calculate(numerator, denominator);
+            budgetKeyItemsRepo.newBudgetKeyItem(
+                    this,
+                    unit,
+                    getFoundationValueType().valueOf(unit),
+                    getFoundationValueType().valueOf(unit),
+                    keyValue);
+
+        }
+
+    }
+
     @Override
     public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }
+
+    @Inject
+    Units units;
+
+    @Inject
+    BudgetKeyItems budgetKeyItemsRepo;
 }

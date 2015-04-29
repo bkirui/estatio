@@ -18,7 +18,22 @@
  */
 package org.estatio.dom.budget;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 public enum BudgetKeyValueMethod {
-    MILLESIMI,
-    ITA;
+    MILLESIMI{
+        @Override
+        public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
+            return numerator.multiply(new BigDecimal(1000)).divide(denominator, MathContext.DECIMAL32);
+        }
+    },
+    ITA{
+        @Override
+        public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
+            return numerator.divide(denominator, MathContext.DECIMAL32);
+        }
+    };
+
+    public abstract BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator);
 }
