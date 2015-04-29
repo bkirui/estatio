@@ -18,17 +18,21 @@
  */
 package org.estatio.dom.budget;
 
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.estatio.dom.EstatioDomainObject;
-import org.estatio.dom.asset.Unit;
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import java.math.BigDecimal;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
-import java.math.BigDecimal;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.ParameterLayout;
+
+import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
+import org.estatio.dom.asset.Unit;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
@@ -36,7 +40,7 @@ import java.math.BigDecimal;
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
 @DomainObject(editing = Editing.DISABLED)
-public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> {
+public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements WithApplicationTenancyProperty {
 
     public BudgetKeyItem() {
         super("budgetKeyTable,unit");

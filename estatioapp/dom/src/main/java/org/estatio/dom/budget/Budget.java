@@ -27,6 +27,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
@@ -40,10 +41,9 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.WithIntervalMutable;
+import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 
@@ -60,7 +60,7 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
                         "WHERE property == :property ")
 })
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = Budgets.class)
-public class Budget extends EstatioDomainObject<Budget> implements WithIntervalMutable<Budget> {
+public class Budget extends EstatioDomainObject<Budget> implements WithIntervalMutable<Budget>, WithApplicationTenancyProperty {
 
     public Budget() {
         super("property, startDate, endDate");

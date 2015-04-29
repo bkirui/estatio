@@ -25,13 +25,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.ParameterLayout;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
 import org.estatio.dom.EstatioDomainObject;
+import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
 import org.estatio.dom.charge.Charge;
 import org.estatio.dom.currency.Currency;
 
@@ -48,7 +49,7 @@ import org.estatio.dom.currency.Currency;
                         "WHERE budget == :budget ")
 })
 @DomainObject(editing = Editing.DISABLED)
-public class BudgetItem extends EstatioDomainObject<BudgetItem> {
+public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithApplicationTenancyProperty {
 
     public BudgetItem() {
         super("budget");
