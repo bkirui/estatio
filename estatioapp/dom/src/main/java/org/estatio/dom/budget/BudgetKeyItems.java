@@ -23,6 +23,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Unit;
@@ -40,35 +41,55 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
     public BudgetKeyItem newBudgetKeyItem(
             final @ParameterLayout(named = "Budget Key Table") BudgetKeyTable budgetKeyTable,
             final @ParameterLayout(named = "Unit") Unit unit,
-            final @ParameterLayout(named = "Source Value") BigDecimal sourceValue,
-            final @ParameterLayout(named = "Foundation Value") BigDecimal foundationValue,
+//            final @ParameterLayout(named = "Source Value") BigDecimal sourceValue,
+//            final @ParameterLayout(named = "Foundation Value") BigDecimal foundationValue,
             final @ParameterLayout(named = "Key Value") BigDecimal keyValue) {
         BudgetKeyItem budgetKeyItem = newTransientInstance();
         budgetKeyItem.setBudgetKeyTable(budgetKeyTable);
         budgetKeyItem.setUnit(unit);
-        budgetKeyItem.setSourceValue(sourceValue);
-        budgetKeyItem.setFoundationValue(foundationValue);
+//        budgetKeyItem.setSourceValue(sourceValue);
+//        budgetKeyItem.setFoundationValue(foundationValue);
         budgetKeyItem.setKeyValue(keyValue);
         persistIfNotAlready(budgetKeyItem);
 
         return budgetKeyItem;
     }
 
-    public BudgetKeyItem findByBudgetKeyTableAndUnit(BudgetKeyTable budgetKeyTable, Unit unit){
-        return uniqueMatch("findByBudgetKeyTableAndUnit", "budgetKeyTable", budgetKeyTable, "unit", unit);
+    @Programmatic
+    public BudgetKeyItem newBudgetKeyItem(
+            final BudgetKeyTable budgetKeyTable,
+            final Unit unit,
+            final BigDecimal sourceValue,
+            final BigDecimal keyValue) {
+        BudgetKeyItem budgetKeyItem = newTransientInstance();
+        budgetKeyItem.setBudgetKeyTable(budgetKeyTable);
+        budgetKeyItem.setUnit(unit);
+                budgetKeyItem.setSourceValue(sourceValue);
+        budgetKeyItem.setKeyValue(keyValue);
+        persistIfNotAlready(budgetKeyItem);
+
+        return budgetKeyItem;
     }
 
     public String validateNewBudgetKeyItem(
             final BudgetKeyTable budgetKeyTable,
             final Unit unit,
-            final BigDecimal sourceValue,
-            final BigDecimal foundationValue,
+            //            final BigDecimal sourceValue,
+            //            final BigDecimal foundationValue,
             final BigDecimal keyValue) {
 
         // TODO: I guess the different values need to be validated?
 
         return null;
     }
+
+    // //////////////////////////////////////
+
+    public BudgetKeyItem findByBudgetKeyTableAndUnit(BudgetKeyTable budgetKeyTable, Unit unit){
+        return uniqueMatch("findByBudgetKeyTableAndUnit", "budgetKeyTable", budgetKeyTable, "unit", unit);
+    }
+
+
     // //////////////////////////////////////
 
     public List<BudgetKeyItem> allBudgetKeyItems() {

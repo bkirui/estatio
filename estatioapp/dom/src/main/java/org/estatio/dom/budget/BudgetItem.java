@@ -25,11 +25,12 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
@@ -43,7 +44,7 @@ import org.estatio.dom.currency.Currency;
         column = "version")
 @javax.jdo.annotations.Queries({
         @Query(
-                name = "findByBudget", language = "JDOQL",
+                name = "findBudgetItemByBudget", language = "JDOQL",
                 value = "SELECT " +
                         "FROM org.estatio.dom.budget.BudgetItem " +
                         "WHERE budget == :budget ")
@@ -58,6 +59,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
     private Budget budget;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "1")
     public Budget getBudget() {
         return budget;
     }
@@ -71,6 +73,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
     private BudgetKeyTable budgetKeyTable;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "2")
     public BudgetKeyTable getBudgetKeyTable() {
         return budgetKeyTable;
     }
@@ -79,11 +82,28 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
         this.budgetKeyTable = budgetKeyTable;
     }
 
+    public BudgetItem changeBudgetKeyTable(final @ParameterLayout(named = "BudgetKeyTable") BudgetKeyTable budgetKeyTable) {
+        setBudgetKeyTable(budgetKeyTable);
+        return this;
+    }
+
+    public BudgetKeyTable default0ChangeBudgetKeyTable(final BudgetKeyTable budgetKeyTable) {
+        return getBudgetKeyTable();
+    }
+
+    public String validateChangeBudgetKeyTable(final BudgetKeyTable budgetKeyTable) {
+        if (budgetKeyTable.equals(null)) {
+            return "BudgetKeyTable can't be empty";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private BigDecimal value;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "3")
     public BigDecimal getValue() {
         return value;
     }
@@ -95,6 +115,10 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
     public BudgetItem changeValue(final @ParameterLayout(named = "Value") BigDecimal value) {
         setValue(value);
         return this;
+    }
+
+    public BigDecimal default0ChangeValue(final BigDecimal value) {
+        return getValue();
     }
 
     public String validateChangeValue(final BigDecimal value) {
@@ -109,6 +133,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
     private Currency currency;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "4")
     public Currency getCurrency() {
         return currency;
     }
@@ -122,11 +147,23 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
         return this;
     }
 
+    public Currency default0ChangeCurrency(final Currency currency) {
+        return getCurrency();
+    }
+
+    public String validateChangeCurrency(final Currency currency) {
+        if (currency.equals(null)) {
+            return "Currency can't be empty";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private Charge charge;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "5")
     public Charge getCharge() {
         return charge;
     }
@@ -140,11 +177,23 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
         return this;
     }
 
+    public Charge default0ChangeCharge(final Charge charge) {
+        return getCharge();
+    }
+
+    public String validateChangeCharge(final Charge charge) {
+        if (charge.equals(null)) {
+            return "Charge can't be empty";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private BudgetCostGroup budgetCostGroup;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "6")
     public BudgetCostGroup getBudgetCostGroup() {
         return budgetCostGroup;
     }
@@ -153,7 +202,26 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
         this.budgetCostGroup = budgetCostGroup;
     }
 
+    public BudgetItem changeBudgetCostGroup(final @ParameterLayout(named = "BudgetCostGroup") BudgetCostGroup budgetCostGroup) {
+        setBudgetCostGroup(budgetCostGroup);
+        return this;
+    }
+
+    public BudgetCostGroup default0ChangeBudgetCostGroup(final BudgetCostGroup budgetCostGroup) {
+        return getBudgetCostGroup();
+    }
+
+    public String validateChangeBudgetCostGroup(final BudgetCostGroup budgetCostGroup) {
+        if (budgetCostGroup.equals(null)) {
+            return "BudgetCostGroup can't be empty";
+        }
+        return null;
+    }
+
+    // //////////////////////////////////////
+
     @Override
+    @MemberOrder(sequence = "7")
     public ApplicationTenancy getApplicationTenancy() {
         return getBudget().getApplicationTenancy();
     }

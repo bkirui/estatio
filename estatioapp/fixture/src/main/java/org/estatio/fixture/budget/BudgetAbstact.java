@@ -17,6 +17,8 @@
 
 package org.estatio.fixture.budget;
 
+import java.math.BigDecimal;
+
 import javax.inject.Inject;
 
 import org.joda.time.LocalDate;
@@ -24,7 +26,12 @@ import org.joda.time.LocalDate;
 import org.estatio.dom.asset.Properties;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.budget.Budget;
+import org.estatio.dom.budget.BudgetCostGroup;
+import org.estatio.dom.budget.BudgetItems;
+import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.budget.Budgets;
+import org.estatio.dom.charge.Charge;
+import org.estatio.dom.currency.Currency;
 import org.estatio.fixture.EstatioFixtureScript;
 
 /**
@@ -32,17 +39,39 @@ import org.estatio.fixture.EstatioFixtureScript;
  */
 public abstract class BudgetAbstact extends EstatioFixtureScript {
 
+
+
     protected Budget createBudget(
             final Property property,
             final LocalDate startDate,
             final LocalDate endDate,
+            final BudgetKeyTable budgetKeyTable,
+            final BigDecimal value,
+            final Currency currency,
+            final Charge charge,
+            final BudgetCostGroup budgetCostGroup,
             final ExecutionContext fixtureResults){
         Budget budget = budgets.newBudget(property, startDate, endDate);
+        createBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
         return fixtureResults.addResult(this, budget);
+    }
+
+    private void createBudgetItem(
+            final Budget budget,
+            final BudgetKeyTable budgetKeyTable,
+            final BigDecimal value,
+            final Currency currency,
+            final Charge charge,
+            final BudgetCostGroup budgetCostGroup
+    ){
+        budgetItems.newBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
     }
 
     @Inject
     protected Budgets budgets;
+
+    @Inject
+    protected BudgetItems budgetItems;
 
     @Inject
     protected Properties properties;

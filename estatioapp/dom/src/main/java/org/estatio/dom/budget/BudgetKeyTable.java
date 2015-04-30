@@ -34,6 +34,7 @@ import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
@@ -74,6 +75,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
     private Property property;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "2")
     public Property getProperty() {
         return property;
     }
@@ -87,6 +89,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
     private String name;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "1")
     public String getName() {
         return name;
     }
@@ -95,11 +98,28 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
         this.name = name;
     }
 
+    public BudgetKeyTable changeName(final String name) {
+        setName(name);
+        return this;
+    }
+
+    public String validateChangeName(final String name) {
+        if (name.equals(null)) {
+            return "Name can't be empty";
+        }
+        return null;
+    }
+
+    public String default0ChangeName(final String name) {
+        return getName();
+    }
+
     // //////////////////////////////////////
 
     private LocalDate startDate;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "3")
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -113,6 +133,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
     private LocalDate endDate;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "4")
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -182,6 +203,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
     private BudgetFoundationValueType foundationValueType;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "5")
     public BudgetFoundationValueType getFoundationValueType() {
         return foundationValueType;
     }
@@ -196,11 +218,23 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
         return this;
     }
 
+    public BudgetFoundationValueType default0ChangeFoundationValueType(final BudgetFoundationValueType foundationValueType) {
+        return getFoundationValueType();
+    }
+
+    public String validateChangeFoundationValueType(final BudgetFoundationValueType foundationValueType) {
+        if (foundationValueType.equals(null)) {
+            return "Foundation value type can't be empty";
+        }
+        return null;
+    }
+
     // //////////////////////////////////////
 
     private BudgetKeyValueMethod keyValueMethod;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "6")
     public BudgetKeyValueMethod getKeyValueMethod() {
         return keyValueMethod;
     }
@@ -213,6 +247,17 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
             final @ParameterLayout(named = "Key value method") BudgetKeyValueMethod keyValueMethod) {
         setKeyValueMethod(keyValueMethod);
         return this;
+    }
+
+    public BudgetKeyValueMethod default0ChangeKeyValueMethod(final BudgetKeyValueMethod keyValueMethod) {
+        return getKeyValueMethod();
+    }
+
+    public String validateChangeKeyValueMethod(final BudgetKeyValueMethod keyValueMethod) {
+        if (keyValueMethod.equals(null)) {
+            return "Key value method can't be empty";
+        }
+        return null;
     }
 
     // //////////////////////////////////////
@@ -235,7 +280,6 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
         // Works for BudgetFoundationValueType Area
 
-
         for (Unit unit :  units.findByProperty(this.getProperty())){
 
             BigDecimal denominator = BigDecimal.ZERO;
@@ -249,7 +293,6 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
                     this,
                     unit,
                     getFoundationValueType().valueOf(unit),
-                    getFoundationValueType().valueOf(unit),
                     keyValue);
 
         }
@@ -257,6 +300,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
     }
 
     @Override
+    @MemberOrder(sequence = "7")
     public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }

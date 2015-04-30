@@ -41,8 +41,9 @@ public abstract class BudgetKeyTableAbstact extends EstatioFixtureScript {
             final LocalDate startDate,
             final LocalDate endDate,
             final BudgetFoundationValueType budgetFoundationValueType,
+            final BudgetKeyValueMethod budgetKeyValueMethod,
             final ExecutionContext fixtureResults){
-        BudgetKeyTable budgetKeyTable = budgetKeyTables.newBudgetKeyTable(property, name ,startDate, endDate, budgetFoundationValueType, BudgetKeyValueMethod.MILLESIMI);
+        BudgetKeyTable budgetKeyTable = budgetKeyTables.newBudgetKeyTable(property, name ,startDate, endDate, budgetFoundationValueType, budgetKeyValueMethod);
         budgetKeyTable.generateBudgetKeyItems();
         return fixtureResults.addResult(this, budgetKeyTable);
     }

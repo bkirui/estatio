@@ -25,23 +25,24 @@ import javax.inject.Inject;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-import org.isisaddons.module.excel.dom.ExcelService;
-
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.bookmark.BookmarkService;
 import org.apache.isis.applib.services.memento.MementoService;
+
+import org.isisaddons.module.excel.dom.ExcelService;
 
 import org.estatio.dom.budget.BudgetKeyItem;
 import org.estatio.dom.budget.BudgetKeyItems;
 import org.estatio.dom.budget.BudgetKeyTable;
 
-@DomainService
+@DomainService(nature = NatureOfService.DOMAIN)
 public class BudgetKeyItemImportExportService {
 
     @PostConstruct

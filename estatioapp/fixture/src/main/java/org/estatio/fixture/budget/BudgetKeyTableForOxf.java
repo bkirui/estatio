@@ -21,12 +21,19 @@ import org.joda.time.LocalDate;
 
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.budget.BudgetFoundationValueType;
+import org.estatio.dom.budget.BudgetKeyValueMethod;
 import org.estatio.fixture.asset._PropertyForOxfGb;
 
 /**
  * Created by jodo on 22/04/15.
  */
 public class BudgetKeyTableForOxf extends BudgetKeyTableAbstact {
+
+    public static final String NAME = "Service Charges By Area";
+    public static final LocalDate STARTDATE = new LocalDate(2015,01,01);
+    public static final LocalDate ENDDATE = new LocalDate(2015,12,31);
+    public static final BudgetFoundationValueType BUDGET_FOUNDATION_VALUE_TYPE= BudgetFoundationValueType.AREA;
+    public static final BudgetKeyValueMethod BUDGET_KEY_VALUE_METHOD = BudgetKeyValueMethod.MILLESIMI;
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -39,6 +46,6 @@ public class BudgetKeyTableForOxf extends BudgetKeyTableAbstact {
         // exec
         Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
 
-        createBudgetKeyTable(property, "Service Charges By Area", new LocalDate(2015,01,01), new LocalDate(2015,12,31), BudgetFoundationValueType.AREA, executionContext);
+        createBudgetKeyTable(property, NAME, STARTDATE, ENDDATE, BUDGET_FOUNDATION_VALUE_TYPE, BUDGET_KEY_VALUE_METHOD, executionContext);
     }
 }

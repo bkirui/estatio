@@ -25,11 +25,12 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
-
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.apptenancy.WithApplicationTenancyProperty;
@@ -57,6 +58,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     private BudgetKeyTable budgetKeyTable;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "1")
     public BudgetKeyTable getBudgetKeyTable() {
         return budgetKeyTable;
     }
@@ -70,6 +72,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     private Unit unit;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "1")
     public Unit getUnit() {
         return unit;
     }
@@ -83,6 +86,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     private BigDecimal sourceValue;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "3")
     public BigDecimal getSourceValue() {
         return sourceValue;
     }
@@ -91,48 +95,24 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
         this.sourceValue = sourceValue;
     }
 
-    public BudgetKeyItem changeSourceValue(final @ParameterLayout(named = "Source value") BigDecimal sourceValue) {
-        setSourceValue(sourceValue);
-        return this;
-    }
-
-    public String validateChangeSourceValue(final BigDecimal sourceValue) {
-        if (sourceValue.equals(new BigDecimal(0))) {
-            return "Source value can't be zero";
-        }
-        return null;
-    }
-
-    // //////////////////////////////////////
-
-    private BigDecimal foundationValue;
-
-    @javax.jdo.annotations.Column(allowsNull = "false")
-    public BigDecimal getFoundationValue() {
-        return foundationValue;
-    }
-
-    public void setFoundationValue(BigDecimal foundationValue) {
-        this.foundationValue = foundationValue;
-    }
-
-    public BudgetKeyItem changeFoundationValue(final @ParameterLayout(named = "Foundation value") BigDecimal foundationValue) {
-        setFoundationValue(foundationValue);
-        return this;
-    }
-
-    public String validateChangeFoundationValue(final BigDecimal foundationValue) {
-        if (foundationValue.equals(new BigDecimal(0))) {
-            return "Foundation value can't be zero";
-        }
-        return null;
-    }
+//    public BudgetKeyItem changeSourceValue(final @ParameterLayout(named = "Source value") BigDecimal sourceValue) {
+//        setSourceValue(sourceValue);
+//        return this;
+//    }
+//
+//    public String validateChangeSourceValue(final BigDecimal sourceValue) {
+//        if (sourceValue.equals(new BigDecimal(0))) {
+//            return "Source value can't be zero";
+//        }
+//        return null;
+//    }
 
     // //////////////////////////////////////
 
     private BigDecimal keyValue;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "2")
     public BigDecimal getKeyValue() {
         return keyValue;
     }
@@ -146,16 +126,22 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
         return this;
     }
 
+    public BigDecimal default0ChangeKeyValue(final BigDecimal keyValue) {
+        return getKeyValue();
+    }
+
     public String validateChangeKeyValue(final BigDecimal keyValue) {
         if (keyValue.equals(new BigDecimal(0))) {
             return "Key value can't be zero";
         }
+        //TODO: validation in case of Millissime; Maybe changing an individual key value is no good idea at all
         return null;
     }
 
     // //////////////////////////////////////
 
     @Override
+    @MemberOrder(sequence = "4")
     public ApplicationTenancy getApplicationTenancy() {
         return getBudgetKeyTable().getApplicationTenancy();
     }

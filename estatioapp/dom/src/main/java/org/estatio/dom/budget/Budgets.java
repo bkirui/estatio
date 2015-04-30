@@ -20,16 +20,17 @@ package org.estatio.dom.budget;
 
 import java.util.List;
 
-import org.estatio.dom.valuetypes.LocalDateInterval;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @DomainService(repositoryFor = Budget.class, nature = NatureOfService.VIEW)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
@@ -69,4 +70,9 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
     public List<Budget> allBudgets() {
         return allInstances();
     }
+
+    @Programmatic
+    public List<Budget> findByProperty(Property property){
+        return allMatches("findByProperty", "property", property);
+    };
 }

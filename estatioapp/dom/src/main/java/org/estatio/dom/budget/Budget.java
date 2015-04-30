@@ -27,19 +27,21 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.WithIntervalMutable;
@@ -69,6 +71,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
     private Property property;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "1")
     public Property getProperty() {
         return property;
     }
@@ -81,6 +84,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
 
     private LocalDate startDate;
 
+    @MemberOrder(sequence = "2")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public LocalDate getStartDate() {
         return startDate;
@@ -94,6 +98,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
 
     private LocalDate endDate;
 
+    @MemberOrder(sequence = "3")
     @javax.jdo.annotations.Column(allowsNull = "true")
     public LocalDate getEndDate() {
         return endDate;
@@ -174,6 +179,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
 
     // //////////////////////////////////////
 
+    @MemberOrder(sequence = "4")
     @Override public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }

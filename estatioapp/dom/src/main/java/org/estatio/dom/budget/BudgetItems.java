@@ -25,6 +25,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.charge.Charge;
@@ -82,7 +83,8 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
 
     // //////////////////////////////////////
 
+    @Programmatic
     public List<BudgetItem> findBudgetItemByBudget(final Budget budget) {
-        return allMatches("findByBudget", "budget", budget);
+        return allMatches("findBudgetItemByBudget", "budget", budget);
     }
 }
