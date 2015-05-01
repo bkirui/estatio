@@ -59,7 +59,6 @@ import org.estatio.dom.party.Party;
 import org.estatio.dom.party.PartyRegistration;
 import org.estatio.dom.party.Person;
 import org.estatio.dom.party.relationship.PartyRelationship;
-import org.estatio.dom.tag.Tag;
 
 public class EstatioOperationalTeardownFixture extends FixtureScript {
 
@@ -76,8 +75,6 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
 
         deleteFrom(InvoiceItem.class);
         deleteFrom(Invoice.class);
-
-        deleteFrom(Tag.class);
 
         deleteFrom(EventSourceLinkForBreakOption.class);
         deleteFrom(EventSourceLink.class);
@@ -119,6 +116,10 @@ public class EstatioOperationalTeardownFixture extends FixtureScript {
         deleteFrom(Organisation.class);
         deleteFrom(Person.class);
         deleteFrom(Party.class);
+    }
+
+    private void deleteFrom(final String schema, final String table) {
+        isisJdoSupport.executeUpdate("DELETE FROM " + schema + ".\"" + table + "\"");
     }
 
     private void deleteFrom(final Class cls) {
