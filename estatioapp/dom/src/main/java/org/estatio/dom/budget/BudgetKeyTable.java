@@ -19,6 +19,7 @@
 package org.estatio.dom.budget;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.joda.time.LocalDate;
@@ -57,6 +59,13 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER,
         column = "version")
+@javax.jdo.annotations.Queries({
+        @Query(
+                name = "findBudgetKeyTableByName", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.BudgetKeyTable " +
+                        "WHERE name == :name ")
+})
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BudgetKeyTables.class)
 public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithIntervalMutable<BudgetKeyTable>, WithApplicationTenancyProperty {
 
@@ -276,9 +285,15 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
     // //////////////////////////////////////
 
-    public void generateBudgetKeyItems(){
+    public BudgetKeyTable generateBudgetKeyItems(
+            @ParameterLayout(named="Are you sure you want to delete all Budget Key Items and generate new ones?")
+            @Parameter(optionality= Optionality.OPTIONAL)
+            boolean confirmGenerate){
 
-        // Works for BudgetFoundationValueType Area
+        //delete old items
+        for (Iterator<BudgetKeyItem> it = this.getBudgetKeyItems().iterator(); it.hasNext();) {
+            it.next().deleteBudgetKeyItem();
+        }
 
         for (Unit unit :  units.findByProperty(this.getProperty())){
 
@@ -287,7 +302,8 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
                 denominator = denominator.add(getFoundationValueType().valueOf(u));
             }
 
-            final BigDecimal numerator = unit.getArea();
+            BigDecimal numerator = BigDecimal.ZERO;
+            numerator = numerator.add(getFoundationValueType().valueOf(unit));
             BigDecimal keyValue = getKeyValueMethod().calculate(numerator, denominator);
             budgetKeyItemsRepo.newBudgetKeyItem(
                     this,
@@ -297,13 +313,23 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
         }
 
+        return this;
+
     }
+
+    public String validateGenerateBudgetKeyItems(boolean confirmGenerate){
+        return confirmGenerate? null:"Please confirm";
+    }
+
+    // //////////////////////////////////////
 
     @Override
     @MemberOrder(sequence = "7")
     public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }
+
+    // //////////////////////////////////////
 
     @Inject
     Units units;

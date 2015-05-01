@@ -29,6 +29,7 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -139,6 +140,11 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     }
 
     // //////////////////////////////////////
+
+    @Programmatic
+    public void deleteBudgetKeyItem() {
+        removeIfNotAlready(this);
+    }
 
     @Override
     @MemberOrder(sequence = "4")

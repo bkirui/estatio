@@ -16,13 +16,17 @@
  */
 package org.estatio.integtests.budget;
 
+import java.math.BigDecimal;
+
 import javax.inject.Inject;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.estatio.dom.asset.Units;
 import org.estatio.dom.budget.BudgetFoundationValueType;
+import org.estatio.dom.budget.BudgetKeyItems;
 import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.budget.BudgetKeyTables;
 import org.estatio.dom.budget.BudgetKeyValueMethod;
@@ -60,7 +64,7 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
         public void whenSetUp() throws Exception {
 
             //given
-            budgetKeyTable = tables.allBudgetKeyTables().get(0);
+            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTableForOxf.NAME);
             assertThat(budgetKeyTable.getName().equals(BudgetKeyTableForOxf.NAME));
             assertThat(budgetKeyTable.getStartDate().equals(BudgetKeyTableForOxf.STARTDATE));
             assertThat(budgetKeyTable.getEndDate().equals(BudgetKeyTableForOxf.ENDDATE));
@@ -83,6 +87,29 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
         }
 
 
+    }
+
+    public static class generateBudgetKeyItemsTest extends BudgetKeyTableTest {
+
+        @Inject
+        BudgetKeyItems items;
+
+        @Inject
+        Units units;
+
+        @Test
+        public void whenSetUp() throws Exception {
+
+            //given
+            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTableForOxf.NAME);
+
+            //when
+            budgetKeyTable.generateBudgetKeyItems(true);
+
+            //then
+            assertThat(items.findByBudgetKeyTableAndUnit(budgetKeyTable, units.findUnitByReference("OXF-001")).getKeyValue().equals(new BigDecimal(3)));
+            assertThat(items.findByBudgetKeyTableAndUnit(budgetKeyTable, units.findUnitByReference("OXF-002")).getKeyValue().equals(new BigDecimal(6)));
+        }
 
     }
 
