@@ -29,6 +29,8 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -60,6 +62,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "1")
+    @PropertyLayout(hidden = Where.PARENTED_TABLES)
     public Budget getBudget() {
         return budget;
     }
@@ -222,6 +225,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
 
     @Override
     @MemberOrder(sequence = "7")
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public ApplicationTenancy getApplicationTenancy() {
         return getBudget().getApplicationTenancy();
     }

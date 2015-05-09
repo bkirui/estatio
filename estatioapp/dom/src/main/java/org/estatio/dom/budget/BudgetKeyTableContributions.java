@@ -18,30 +18,35 @@ package org.estatio.dom.budget;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 
-@DomainService(repositoryFor = BudgetKeyTable.class, nature = NatureOfService.DOMAIN)
+@DomainService(repositoryFor = BudgetKeyTable.class, nature = NatureOfService.VIEW)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
-public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTable> {
+public class BudgetKeyTableContributions extends UdoDomainRepositoryAndFactory<BudgetKeyTable> {
 
-    public BudgetKeyTables() {
-        super(BudgetKeyTables.class, BudgetKeyTable.class);
+    public BudgetKeyTableContributions() {
+        super(BudgetKeyTableContributions.class, BudgetKeyTable.class);
     }
 
     // //////////////////////////////////////
 
-    @Programmatic
     public BudgetKeyTable newBudgetKeyTable(
             final @ParameterLayout(named = "Property") Property property,
             final @ParameterLayout(named = "Name") String name,
@@ -61,30 +66,33 @@ public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTabl
         return budgetKeyTable;
     }
 
-    // //////////////////////////////////////
+    public String validateNewBudgetKeyTable(
+            final Property property,
+            final String name,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final BudgetFoundationValueType foundationValueType,
+            final BudgetKeyValueMethod keyValueMethod) {
+        if (!new LocalDateInterval(startDate, endDate).isValid()) {
+            return "End date can not be before start date";
+        }
 
-    public List<BudgetKeyTable> allBudgetKeyTables() {
-        return allInstances();
+        return null;
     }
 
     // //////////////////////////////////////
 
-    @Programmatic
-    public List<BudgetKeyTable> findBudgetKeyTableByProperty(Property property) {
-        return allMatches("findByProperty", "property", property);
+    @Action(semantics = SemanticsOf.SAFE)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
+    @CollectionLayout(render = RenderType.LAZILY)
+    public List<BudgetKeyTable> budgetKeyTables(Property property){
+        return budgetKeyTables.findBudgetKeyTableByProperty(property);
     }
+
 
     // //////////////////////////////////////
 
-    @Programmatic
-    public BudgetKeyTable findBudgetKeyTableByName(final String name) {
-        return firstMatch("findBudgetKeyTableByName", "name", name);
-    }
+    @Inject
+    BudgetKeyTables budgetKeyTables;
 
-    // //////////////////////////////////////
-
-    @CollectionLayout(hidden = Where.EVERYWHERE)
-    public List<BudgetKeyTable> autoComplete(final String search) {
-        return this.allBudgetKeyTables();
-    }
 }

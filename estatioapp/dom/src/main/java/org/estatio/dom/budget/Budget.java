@@ -38,8 +38,10 @@ import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -72,6 +74,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "1")
+    @PropertyLayout(hidden = Where.PARENTED_TABLES)
     public Property getProperty() {
         return property;
     }
@@ -180,6 +183,7 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
     // //////////////////////////////////////
 
     @MemberOrder(sequence = "4")
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     @Override public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }

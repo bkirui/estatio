@@ -41,8 +41,10 @@ import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -64,7 +66,12 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
                 name = "findBudgetKeyTableByName", language = "JDOQL",
                 value = "SELECT " +
                         "FROM org.estatio.dom.budget.BudgetKeyTable " +
-                        "WHERE name == :name ")
+                        "WHERE name == :name "),
+        @Query(
+                name = "findByProperty", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.BudgetKeyTable " +
+                        "WHERE property == :property ")
 })
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BudgetKeyTables.class)
 public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithIntervalMutable<BudgetKeyTable>, WithApplicationTenancyProperty {
@@ -85,6 +92,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "2")
+    @PropertyLayout(hidden = Where.PARENTED_TABLES)
     public Property getProperty() {
         return property;
     }
@@ -325,6 +333,7 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
     @Override
     @MemberOrder(sequence = "7")
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public ApplicationTenancy getApplicationTenancy() {
         return getProperty().getApplicationTenancy();
     }

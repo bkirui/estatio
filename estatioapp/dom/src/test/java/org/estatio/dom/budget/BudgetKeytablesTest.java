@@ -26,6 +26,7 @@ import org.apache.isis.applib.query.Query;
 import org.apache.isis.core.commons.matchers.IsisMatchers;
 
 import org.estatio.dom.FinderInteraction;
+import org.estatio.dom.asset.Property;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -74,6 +75,19 @@ public class BudgetKeytablesTest {
             assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(BudgetKeyTable.class));
             assertThat(finderInteraction.getQueryName(), is("findBudgetKeyTableByName"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("name"), is((Object) "name"));
+            assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+
+        @Test
+        public void anotherHappyCase() {
+
+            Property property = new PropertyForTesting();
+            budgetKeyTables.findBudgetKeyTableByProperty(property);
+
+            assertThat(finderInteraction.getFinderMethod(), is(FinderInteraction.FinderMethod.ALL_MATCHES));
+            assertThat(finderInteraction.getResultType(), IsisMatchers.classEqualTo(BudgetKeyTable.class));
+            assertThat(finderInteraction.getQueryName(), is("findByProperty"));
+            assertThat(finderInteraction.getArgumentsByParameterName().get("property"), is((Object) property));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
         }
 

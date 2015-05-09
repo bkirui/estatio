@@ -18,12 +18,23 @@
  */
 package org.estatio.dom.budget;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.CollectionLayout;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.InvokeOn;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.RenderType;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
@@ -62,5 +73,15 @@ public class BudgetContributions extends UdoDomainRepositoryAndFactory<Budget> {
 
         return null;
     }
+
+    @Action(semantics = SemanticsOf.SAFE, invokeOn = InvokeOn.OBJECT_ONLY)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
+    @CollectionLayout(render = RenderType.LAZILY)
+    public List<Budget> budgets(Property property){
+        return budgets.findByProperty(property);
+    };
+
+    @Inject
+    Budgets budgets;
 
 }
