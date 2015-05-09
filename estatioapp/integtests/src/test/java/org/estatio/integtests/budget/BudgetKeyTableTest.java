@@ -31,7 +31,7 @@ import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.budget.BudgetKeyTables;
 import org.estatio.dom.budget.BudgetKeyValueMethod;
 import org.estatio.fixture.EstatioOperationalTeardownFixture;
-import org.estatio.fixture.budget.BudgetKeyTableForOxf;
+import org.estatio.fixture.budget.BudgetKeyTablesForOxf;
 import org.estatio.integtests.EstatioIntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +42,7 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
     @Before
     public void setupData() {
         runFixtureScript(new EstatioOperationalTeardownFixture());
-        runFixtureScript(new BudgetKeyTableForOxf());
+        runFixtureScript(new BudgetKeyTablesForOxf());
     }
 
     @Inject
@@ -64,12 +64,12 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
         public void whenSetUp() throws Exception {
 
             //given
-            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTableForOxf.NAME);
-            assertThat(budgetKeyTable.getName().equals(BudgetKeyTableForOxf.NAME));
-            assertThat(budgetKeyTable.getStartDate().equals(BudgetKeyTableForOxf.STARTDATE));
-            assertThat(budgetKeyTable.getEndDate().equals(BudgetKeyTableForOxf.ENDDATE));
-            assertThat(budgetKeyTable.getFoundationValueType().equals(BudgetKeyTableForOxf.BUDGET_FOUNDATION_VALUE_TYPE));
-            assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyTableForOxf.BUDGET_KEY_VALUE_METHOD));
+            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME);
+            assertThat(budgetKeyTable.getName().equals(BudgetKeyTablesForOxf.NAME));
+            assertThat(budgetKeyTable.getStartDate().equals(BudgetKeyTablesForOxf.STARTDATE));
+            assertThat(budgetKeyTable.getEndDate().equals(BudgetKeyTablesForOxf.ENDDATE));
+            assertThat(budgetKeyTable.getFoundationValueType().equals(BudgetKeyTablesForOxf.BUDGET_FOUNDATION_VALUE_TYPE));
+            assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyTablesForOxf.BUDGET_KEY_VALUE_METHOD));
 
 
             //when
@@ -101,7 +101,7 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
         public void whenSetUp() throws Exception {
 
             //given
-            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTableForOxf.NAME);
+            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME);
 
             //when
             budgetKeyTable.generateBudgetKeyItems(true);

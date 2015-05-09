@@ -123,7 +123,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     }
 
     public BudgetKeyItem changeKeyValue(final @ParameterLayout(named = "Key value") BigDecimal keyValue) {
-        setKeyValue(keyValue);
+        setKeyValue(keyValue.setScale(2, BigDecimal.ROUND_HALF_DOWN));
         return this;
     }
 

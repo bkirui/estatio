@@ -21,15 +21,12 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
-import org.joda.time.LocalDate;
-
 import org.estatio.dom.asset.Properties;
-import org.estatio.dom.asset.Property;
 import org.estatio.dom.budget.Budget;
 import org.estatio.dom.budget.BudgetCostGroup;
+import org.estatio.dom.budget.BudgetItem;
 import org.estatio.dom.budget.BudgetItems;
 import org.estatio.dom.budget.BudgetKeyTable;
-import org.estatio.dom.budget.Budgets;
 import org.estatio.dom.charge.Charge;
 import org.estatio.dom.currency.Currency;
 import org.estatio.fixture.EstatioFixtureScript;
@@ -37,37 +34,27 @@ import org.estatio.fixture.EstatioFixtureScript;
 /**
  * Created by jodo on 22/04/15.
  */
-public abstract class BudgetAbstact extends EstatioFixtureScript {
+public abstract class BudgetItemAbstact extends EstatioFixtureScript {
 
 
-    protected Budget createBudget(
-            final Property property,
-            final LocalDate startDate,
-            final LocalDate endDate,
-            final BudgetKeyTable budgetKeyTable,
-            final BigDecimal value,
-            final Currency currency,
-            final Charge charge,
-            final BudgetCostGroup budgetCostGroup,
-            final ExecutionContext fixtureResults){
-        Budget budget = budgets.newBudget(property, startDate, endDate);
-        createBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
-        return fixtureResults.addResult(this, budget);
-    }
-
-    private void createBudgetItem(
+    protected BudgetItem createBudgetItem(
             final Budget budget,
             final BudgetKeyTable budgetKeyTable,
             final BigDecimal value,
             final Currency currency,
             final Charge charge,
-            final BudgetCostGroup budgetCostGroup
+            final BudgetCostGroup budgetCostGroup,
+            final ExecutionContext fixtureResults
     ){
-        budgetItems.newBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
+        BudgetItem budgetItem = budgetItems.newBudgetItem(
+                budget,
+                budgetKeyTable,
+                value,
+                currency,
+                charge,
+                budgetCostGroup);
+        return fixtureResults.addResult(this, budgetItem);
     }
-
-    @Inject
-    protected Budgets budgets;
 
     @Inject
     protected BudgetItems budgetItems;

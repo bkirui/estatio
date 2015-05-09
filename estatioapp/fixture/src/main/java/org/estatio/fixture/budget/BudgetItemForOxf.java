@@ -21,13 +21,13 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
-import org.joda.time.LocalDate;
-
+import org.estatio.dom.asset.Properties;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.budget.Budget;
 import org.estatio.dom.budget.BudgetCostGroup;
 import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.budget.BudgetKeyTables;
+import org.estatio.dom.budget.Budgets;
 import org.estatio.dom.charge.Charge;
 import org.estatio.dom.charge.Charges;
 import org.estatio.dom.currency.Currencies;
@@ -39,7 +39,7 @@ import org.estatio.fixture.currency.CurrenciesRefData;
 /**
  * Created by jodo on 22/04/15.
  */
-public class BudgetForOxf extends BudgetAbstact {
+public class BudgetItemForOxf extends BudgetItemAbstact {
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -50,21 +50,21 @@ public class BudgetForOxf extends BudgetAbstact {
             executionContext.executeChild(this, new BudgetKeyTablesForOxf());
             executionContext.executeChild(this, new CurrenciesRefData());
             executionContext.executeChild(this, new ChargeRefData());
+            executionContext.executeChild(this, new BudgetForOxf());
         }
 
         // exec
         Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
-        BudgetKeyTable budgetKeyTable = budgetKeyTables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME);
-        final BigDecimal VALUE = new BigDecimal(30000);
+        Budget budget = budgets.findByProperty(property).get(0);
+        BudgetKeyTable budgetKeyTable = budgetKeyTables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME2);
+        final BigDecimal VALUE = new BigDecimal(40000);
         final Currency currency = currencies.findCurrency(CurrenciesRefData.EUR);
         final Charge charge = charges.findByReference(ChargeRefData.GB_SERVICE_CHARGE);
-        final BudgetCostGroup budgetCostGroup = BudgetCostGroup.VIGILANZA;
+        final BudgetCostGroup budgetCostGroup = BudgetCostGroup.UTENZE;
 
 
-        Budget newBudget = createBudget(
-                property,
-                new LocalDate(2015, 01, 01),
-                new LocalDate(2015, 12, 31),
+        createBudgetItem(
+                budget,
                 budgetKeyTable,
                 VALUE,
                 currency,
@@ -74,6 +74,9 @@ public class BudgetForOxf extends BudgetAbstact {
     }
 
     @Inject
+    Budgets budgets;
+
+    @Inject
     BudgetKeyTables budgetKeyTables;
 
     @Inject
@@ -81,5 +84,8 @@ public class BudgetForOxf extends BudgetAbstact {
 
     @Inject
     Charges charges;
+
+    @Inject
+    Properties properties;
 
 }

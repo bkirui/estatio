@@ -33,7 +33,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by jodo on 30/04/15.
  */
-public class BudgetsItemsTest {
+public class BudgetItemsTest {
 
     FinderInteraction finderInteraction;
 
@@ -63,7 +63,7 @@ public class BudgetsItemsTest {
         };
     }
 
-    public static class findBudgetItemByBudget extends BudgetsItemsTest {
+    public static class findBudgetItemByBudget extends BudgetItemsTest {
 
         @Test
         public void happyCase() {

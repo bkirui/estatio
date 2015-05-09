@@ -17,10 +17,16 @@
 
 package org.estatio.dom.budget;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 import org.estatio.dom.AbstractBeanPropertiesTest;
 import org.estatio.dom.asset.Unit;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jodo on 22/04/15.
@@ -37,6 +43,23 @@ public class BudgetKeyItemTest {
                     .withFixture(pojos(Unit.class, UnitForTesting.class))
                     .exercise(pojo);
         }
+
+    }
+
+    @Test
+    public void testChangeKeyValue(){
+
+        // given
+        BudgetKeyItem item = new BudgetKeyItem();
+        item.setKeyValue(new BigDecimal(2));
+        assertTrue(item.getKeyValue().equals(new BigDecimal(2)));
+
+        //when
+        item.changeKeyValue(new BigDecimal(2.333));
+
+        //then
+        assertEquals(item.getKeyValue(),new BigDecimal(2.33).setScale(2, BigDecimal.ROUND_HALF_DOWN));
+        assertFalse(item.getKeyValue().equals(new BigDecimal(2.34).setScale(2, BigDecimal.ROUND_HALF_DOWN)));
 
     }
 

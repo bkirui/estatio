@@ -25,7 +25,8 @@ import org.estatio.fixture.asset._PropertyForGraIt;
 import org.estatio.fixture.asset._PropertyForHanSe;
 import org.estatio.fixture.asset._PropertyForVivFr;
 import org.estatio.fixture.budget.BudgetForOxf;
-import org.estatio.fixture.budget.BudgetKeyTableForOxf;
+import org.estatio.fixture.budget.BudgetItemForOxf;
+import org.estatio.fixture.budget.BudgetKeyTablesForOxf;
 import org.estatio.fixture.financial.BankAccountAndMandateForTopModelGb;
 import org.estatio.fixture.financial.BankAccountForAcmeNl;
 import org.estatio.fixture.financial.BankAccountForMediaXGb;
@@ -94,7 +95,8 @@ public class EstatioDemoFixture extends DiscoverableFixtureScript {
         executionContext.executeChild(this, new InteractiveMapDocumentForOxf());
 
         executionContext.executeChild(this, new BudgetForOxf());
-        executionContext.executeChild(this, new BudgetKeyTableForOxf());
+        executionContext.executeChild(this, new BudgetItemForOxf());
+        executionContext.executeChild(this, new BudgetKeyTablesForOxf());
         
         
         final FixtureClock fixtureClock = (FixtureClock) FixtureClock.getInstance();

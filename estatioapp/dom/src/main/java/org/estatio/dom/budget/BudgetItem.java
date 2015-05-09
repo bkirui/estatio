@@ -53,7 +53,7 @@ import org.estatio.dom.currency.Currency;
 public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithApplicationTenancyProperty {
 
     public BudgetItem() {
-        super("budget");
+        super("budget, budgetKeyTable, value, charge, budgetCostGroup");
     }
 
     private Budget budget;

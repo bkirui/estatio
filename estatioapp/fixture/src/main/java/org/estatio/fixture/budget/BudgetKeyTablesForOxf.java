@@ -27,12 +27,14 @@ import org.estatio.fixture.asset._PropertyForOxfGb;
 /**
  * Created by jodo on 22/04/15.
  */
-public class BudgetKeyTableForOxf extends BudgetKeyTableAbstact {
+public class BudgetKeyTablesForOxf extends BudgetKeyTableAbstact {
 
     public static final String NAME = "Service Charges By Area";
+    public static final String NAME2 = "Service Charges By Count";
     public static final LocalDate STARTDATE = new LocalDate(2015,01,01);
     public static final LocalDate ENDDATE = new LocalDate(2015,12,31);
     public static final BudgetFoundationValueType BUDGET_FOUNDATION_VALUE_TYPE= BudgetFoundationValueType.AREA;
+    public static final BudgetFoundationValueType BUDGET_FOUNDATION_VALUE_TYPE2= BudgetFoundationValueType.COUNT;
     public static final BudgetKeyValueMethod BUDGET_KEY_VALUE_METHOD = BudgetKeyValueMethod.MILLESIMI;
 
     @Override
@@ -47,5 +49,6 @@ public class BudgetKeyTableForOxf extends BudgetKeyTableAbstact {
         Property property = properties.findPropertyByReference(_PropertyForOxfGb.REF);
 
         createBudgetKeyTable(property, NAME, STARTDATE, ENDDATE, BUDGET_FOUNDATION_VALUE_TYPE, BUDGET_KEY_VALUE_METHOD, executionContext);
+        createBudgetKeyTable(property, NAME2, STARTDATE, ENDDATE, BUDGET_FOUNDATION_VALUE_TYPE2, BUDGET_KEY_VALUE_METHOD, executionContext);
     }
 }

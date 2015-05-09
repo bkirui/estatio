@@ -18,30 +18,27 @@
  */
 package org.estatio.dom.budget;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Programmatic;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 
-@DomainService(repositoryFor = Budget.class, nature = NatureOfService.DOMAIN)
-@DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
-public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
+@DomainService(nature = NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
+@DomainServiceLayout()
+public class BudgetContributions extends UdoDomainRepositoryAndFactory<Budget> {
 
-    public Budgets() {
-        super(Budgets.class, Budget.class);
+    public BudgetContributions() {
+        super(BudgetContributions.class, Budget.class);
     }
 
     // //////////////////////////////////////
 
-    @Programmatic
     public Budget newBudget(
             final @ParameterLayout(named = "Property") Property property,
             final @ParameterLayout(named = "Start Date") LocalDate startDate,
@@ -55,14 +52,15 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
         return budget;
     }
 
-    // //////////////////////////////////////
+    public String validateNewBudget(
+            final Property property,
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        if (!new LocalDateInterval(startDate, endDate).isValid()) {
+            return "End date can not be before start date";
+        }
 
-    public List<Budget> allBudgets() {
-        return allInstances();
+        return null;
     }
 
-    @Programmatic
-    public List<Budget> findByProperty(Property property){
-        return allMatches("findByProperty", "property", property);
-    };
 }
