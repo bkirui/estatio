@@ -115,13 +115,13 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "2")
     public BigDecimal getKeyValue() {
-        return keyValue.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        return keyValue;
     }
 
     public void setKeyValue(BigDecimal keyValue) {
-        if (keyValue!=null) {
-            this.keyValue = keyValue.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        }
+
+            this.keyValue = keyValue;
+
     }
 
     public BudgetKeyItem changeKeyValue(final @ParameterLayout(named = "Key value") BigDecimal keyValue) {
