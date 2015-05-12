@@ -31,7 +31,6 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.bookmark.BookmarkService;
@@ -41,9 +40,8 @@ import org.isisaddons.module.excel.dom.ExcelService;
 
 import org.estatio.dom.budget.BudgetKeyItem;
 import org.estatio.dom.budget.BudgetKeyItems;
-import org.estatio.dom.budget.BudgetKeyTable;
 
-@DomainService(nature = NatureOfService.VIEW)
+@DomainService(nature = NatureOfService.DOMAIN)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
 public class BudgetKeyItemImportExportService {
 
@@ -52,18 +50,6 @@ public class BudgetKeyItemImportExportService {
         if (excelService == null) {
             throw new IllegalStateException("Require ExcelService to be configured");
         }
-    }
-
-    // //////////////////////////////////////
-    // bulk update manager (action)
-    // //////////////////////////////////////
-
-    @Action(
-            semantics = SemanticsOf.IDEMPOTENT
-    )
-    @MemberOrder(name = "Budgets", sequence = "90.1")
-    public BudgetKeyItemImportExportManager bulkUpdateManager(BudgetKeyTable budgetKeyTable) {
-        return new BudgetKeyItemImportExportManager(budgetKeyTable);
     }
 
     @Action(semantics = SemanticsOf.SAFE)

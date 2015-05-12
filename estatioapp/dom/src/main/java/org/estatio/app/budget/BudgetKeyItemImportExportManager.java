@@ -19,7 +19,7 @@ package org.estatio.app.budget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.isisaddons.module.excel.dom.ExcelService;
+import javax.inject.Inject;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -37,8 +37,11 @@ import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.value.Blob;
 
+import org.isisaddons.module.excel.dom.ExcelService;
+
 import org.estatio.app.EstatioViewModel;
 import org.estatio.dom.budget.BudgetKeyTable;
+import org.estatio.dom.budget.BudgetKeyTables;
 
 @DomainObject(
         nature = Nature.VIEW_MODEL
@@ -105,7 +108,7 @@ public class BudgetKeyItemImportExportManager extends EstatioViewModel {
     }
 
     // //////////////////////////////////////
-    // allBudgetKeyItems TODO: refine => only items for property
+    // allBudgetKeyItems
     // //////////////////////////////////////
 
     @SuppressWarnings("unchecked")
@@ -151,7 +154,8 @@ public class BudgetKeyItemImportExportManager extends EstatioViewModel {
 
         List<BudgetKeyItemImportExportLineItem> newItems = new ArrayList<>();
         for (BudgetKeyItemImportExportLineItem item : lineItems) {
-            item.setBudgetKeyTable(getBudgetKeyTable());
+//            item.setBudgetKeyTable(getBudgetKeyTable());
+// yodo: doesn't work; used trick by changing budgetKeyTable to String budgetKeyTableName on BudgetKeyItemImportExportLineItem
             item.validate();
             newItems.add(new BudgetKeyItemImportExportLineItem(item));
         }
@@ -171,5 +175,8 @@ public class BudgetKeyItemImportExportManager extends EstatioViewModel {
 
     @javax.inject.Inject
     private BudgetKeyItemImportExportService budgetKeyItemImportExportService;
+
+    @Inject
+    private BudgetKeyTables budgetKeyTables;
 
 }

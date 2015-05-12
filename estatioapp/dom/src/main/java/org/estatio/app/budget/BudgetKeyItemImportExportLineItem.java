@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.BookmarkPolicy;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
@@ -33,8 +34,7 @@ import org.estatio.dom.asset.Unit;
 import org.estatio.dom.asset.Units;
 import org.estatio.dom.budget.BudgetKeyItem;
 import org.estatio.dom.budget.BudgetKeyItems;
-import org.estatio.dom.budget.BudgetKeyTable;
-
+import org.estatio.dom.budget.BudgetKeyTables;
 
 enum Status {
     NOT_FOUND,
@@ -59,6 +59,7 @@ public class BudgetKeyItemImportExportLineItem
         this.budgetKeyItem = budgetKeyItem;
         this.unitReference = budgetKeyItem.getUnit().getReference();
         this.keyValue = budgetKeyItem.getKeyValue();
+        this.budgetKeyTableName = budgetKeyItem.getBudgetKeyTable().getName();
     }
 
     public BudgetKeyItemImportExportLineItem(final BudgetKeyItemImportExportLineItem item) {
@@ -66,16 +67,19 @@ public class BudgetKeyItemImportExportLineItem
         this.unitReference = item.unitReference;
         this.status = item.status;
         this.keyValue = item.keyValue;
+        this.budgetKeyTableName = item.budgetKeyTableName;
     }
 
     public String title() {
         return "";
     }
 
-    private BudgetKeyTable budgetKeyTable;
+    private String budgetKeyTableName;
 
-    public void setBudgetKeyTable(final BudgetKeyTable budgetKeyTable) {
-        this.budgetKeyTable = budgetKeyTable;
+    public String getBudgetKeyTableName() { return budgetKeyTableName; }
+
+    public void setBudgetKeyTableName(final String budgetKeyTableName) {
+        this.budgetKeyTableName = budgetKeyTableName;
     }
 
     private BudgetKeyItem budgetKeyItem;
@@ -130,12 +134,11 @@ public class BudgetKeyItemImportExportLineItem
     )
     public BudgetKeyItem apply() {
         if (budgetKeyItem == null) {
-            //...
+            BudgetKeyItem budgetKeyItem = new BudgetKeyItem();
+            budgetKeyItem.setBudgetKeyTable(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()));
+            budgetKeyItem.setUnit(units.findUnitByReference(unitReference));
         }
-        //...
-
-        budgetKeyItem.setKeyValue(keyValue);
-
+        budgetKeyItems.findByBudgetKeyTableAndUnit(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()), units.findUnitByReference(unitReference)).changeKeyValue(this.getKeyValue().setScale(2,BigDecimal.ROUND_HALF_DOWN));
         return budgetKeyItem;
     }
 
@@ -144,7 +147,7 @@ public class BudgetKeyItemImportExportLineItem
         Unit unit = units.findUnitByReference(unitReference);
         Status newStatus = Status.UNCHANGED;
         if (unit != null) {
-            BudgetKeyItem budgetKeyItem = budgetKeyItems.findByBudgetKeyTableAndUnit(this.budgetKeyTable, unit);
+            BudgetKeyItem budgetKeyItem = budgetKeyItems.findByBudgetKeyTableAndUnit(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()), unit);
             if (budgetKeyItem == null) {
                 newStatus = Status.ADDED;
             } else {
@@ -183,4 +186,10 @@ public class BudgetKeyItemImportExportLineItem
 
     @Inject
     private Units units;
+
+    @Inject
+    private DomainObjectContainer container;
+
+    @Inject
+    private BudgetKeyTables budgetKeyTables;
 }

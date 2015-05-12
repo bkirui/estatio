@@ -130,6 +130,13 @@
                                 "cssClass": "btn-primary",
                                 "named": "Generate Budget Key Items"
                             }
+                        },
+                        "bulkUpdateManager": {
+                            "actionLayout": {
+                                "cssClass": "btn-primary",
+                                "named": "Bulk Update Manager",
+                                "contributed": "AS_ACTION"
+                            }
                         }
                     }
                 }

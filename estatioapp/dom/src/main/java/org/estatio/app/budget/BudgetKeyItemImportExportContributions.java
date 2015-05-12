@@ -27,12 +27,15 @@ import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.InvokeOn;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.services.actinvoc.ActionInvocationContext;
 import org.apache.isis.applib.value.Blob;
 
 import org.estatio.dom.budget.BudgetKeyItem;
+import org.estatio.dom.budget.BudgetKeyTable;
 
 @DomainService(
         nature = NatureOfService.VIEW_CONTRIBUTIONS_ONLY
@@ -47,6 +50,21 @@ public class BudgetKeyItemImportExportContributions {
     }
 
     // //////////////////////////////////////
+
+    // //////////////////////////////////////
+    // bulk update manager (action)
+    // //////////////////////////////////////
+
+    @Action(
+            semantics = SemanticsOf.IDEMPOTENT
+    )
+    @ActionLayout(contributed = Contributed.AS_ACTION)
+    @MemberOrder(name = "Budgets", sequence = "90.1")
+    public BudgetKeyItemImportExportManager bulkUpdateManager(BudgetKeyTable budgetKeyTable) {
+
+        return new BudgetKeyItemImportExportManager(budgetKeyTable);
+
+    }
 
 
     /**
