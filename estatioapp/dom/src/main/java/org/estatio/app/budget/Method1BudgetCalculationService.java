@@ -8,7 +8,9 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import org.estatio.dom.budget.Budget;
 import org.estatio.dom.budget.BudgetItem;
@@ -22,7 +24,7 @@ import org.estatio.dom.lease.Leases;
 /**
  * Created by jodo on 11/05/15.
  */
-@DomainService()
+@DomainService(nature = NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
 public class Method1BudgetCalculationService {
 
@@ -90,6 +92,7 @@ public class Method1BudgetCalculationService {
 
     //////////////////////////////////
 
+    @Programmatic
     public List<Method1BudgetCalculationLeaseItemLine> lines() {
         return lines;
     }

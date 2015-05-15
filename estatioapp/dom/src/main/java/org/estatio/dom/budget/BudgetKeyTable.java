@@ -340,6 +340,11 @@ public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithI
 
     // //////////////////////////////////////
 
+    public boolean isValid(){
+
+        return getKeyValueMethod().isValid(this);
+    }
+
     @Inject
     Units units;
 

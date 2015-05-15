@@ -20,6 +20,7 @@ package org.estatio.dom.budget;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Iterator;
 
 public enum BudgetKeyValueMethod {
     MILLESIMI{
@@ -27,13 +28,30 @@ public enum BudgetKeyValueMethod {
         public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
             return numerator.multiply(new BigDecimal(1000)).divide(denominator, MathContext.DECIMAL32);
         }
+        @Override
+        public boolean isValid(BudgetKeyTable budgetKeyTable) {
+                BigDecimal sum = new BigDecimal(0);
+                for (Iterator<BudgetKeyItem> it = budgetKeyTable.getBudgetKeyItems().iterator(); it.hasNext();) {
+                    sum = sum.add(it.next().getKeyValue());
+                }
+                if (!sum.equals(new BigDecimal(1000))) {
+                    return false;
+                }
+            return true;
+        }
     },
     ITA{
         @Override
         public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
             return numerator.divide(denominator, MathContext.DECIMAL32);
         }
+        @Override
+        public boolean isValid(BudgetKeyTable budgetKeyTable) {
+            return true;
+        }
     };
 
     public abstract BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator);
+
+    public abstract boolean isValid(BudgetKeyTable budgetKeyTable);
 }
