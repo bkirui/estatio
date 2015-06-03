@@ -34,7 +34,7 @@ public class BudgetedValueCalculationTest {
         Occupancy occupancy = new Occupancy();
 
 
-        budgetKeyTable.setKeyValueMethod(BudgetKeyValueMethod.MILLESIMI);
+        budgetKeyTable.setKeyValueMethod(BudgetKeyValueMethod.PROMILLE);
         budgetKeyItem.setUnit(unit);
         budgetKeyItem.setBudgetKeyTable(budgetKeyTable);
         budgetKeyItem.setKeyValue(new BigDecimal(100.00).setScale(2, BigDecimal.ROUND_HALF_DOWN));

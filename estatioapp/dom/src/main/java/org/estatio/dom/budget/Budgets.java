@@ -22,16 +22,18 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.RestrictTo;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
 
-@DomainService(repositoryFor = Budget.class, nature = NatureOfService.DOMAIN)
+@DomainService(repositoryFor = Budget.class)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
 public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
@@ -41,7 +43,7 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
     // //////////////////////////////////////
 
-    @Programmatic
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT)
     public Budget newBudget(
             final @ParameterLayout(named = "Property") Property property,
             final @ParameterLayout(named = "Start Date") LocalDate startDate,
@@ -57,6 +59,7 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
 
     // //////////////////////////////////////
 
+    @Action(semantics = SemanticsOf.SAFE, restrictTo = RestrictTo.PROTOTYPING)
     public List<Budget> allBudgets() {
         return allInstances();
     }

@@ -76,14 +76,14 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
             budgetKeyTable.changeName("something else");
             budgetKeyTable.changeDates(new LocalDate(2015, 07, 01), new LocalDate(2015, 12, 31));
             budgetKeyTable.changeFoundationValueType(BudgetFoundationValueType.COUNT);
-            budgetKeyTable.changeKeyValueMethod(BudgetKeyValueMethod.ITA);
+            budgetKeyTable.changeKeyValueMethod(BudgetKeyValueMethod.DEFAULT);
 
             //then
             assertThat(budgetKeyTable.getName().equals("something else"));
             assertThat(budgetKeyTable.getStartDate().equals(new LocalDate(2015, 07, 01)));
             assertThat(budgetKeyTable.getEndDate().equals(new LocalDate(2015,12,31)));
             assertThat(budgetKeyTable.getFoundationValueType().equals(BudgetFoundationValueType.COUNT));
-            assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyValueMethod.ITA));
+            assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyValueMethod.DEFAULT));
         }
 
 

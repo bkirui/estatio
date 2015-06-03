@@ -23,7 +23,7 @@ import java.math.MathContext;
 import java.util.Iterator;
 
 public enum BudgetKeyValueMethod {
-    MILLESIMI{
+    PROMILLE {
         @Override
         public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
             return numerator.multiply(new BigDecimal(1000)).divide(denominator, MathContext.DECIMAL32);
@@ -40,7 +40,7 @@ public enum BudgetKeyValueMethod {
             return true;
         }
     },
-    ITA{
+    DEFAULT {
         @Override
         public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
             return numerator.divide(denominator, MathContext.DECIMAL32);

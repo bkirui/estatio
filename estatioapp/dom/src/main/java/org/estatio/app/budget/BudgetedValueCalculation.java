@@ -22,7 +22,7 @@ public class BudgetedValueCalculation {
             for (BudgetKeyItem budgetKeyItem : bi.getBudgetKeyTable().getBudgetKeyItems()){
                 if (budgetKeyItem.getUnit().equals(u)){
                     // check Key Value Method
-                    if (budgetKeyItem.getBudgetKeyTable().getKeyValueMethod() == BudgetKeyValueMethod.MILLESIMI) {
+                    if (budgetKeyItem.getBudgetKeyTable().getKeyValueMethod() == BudgetKeyValueMethod.PROMILLE) {
                         budgetedValueContrib = budgetedValueContrib.add(budgetKeyItem.getKeyValue().setScale(2, BigDecimal.ROUND_HALF_DOWN).multiply(bi.getValue().setScale(2, BigDecimal.ROUND_HALF_DOWN).divide(new BigDecimal(1000))));
                     }
                     //TODO: other BudgetKeyValue methods...

@@ -35,7 +35,7 @@ public class BudgetKeyTablesForOxf extends BudgetKeyTableAbstact {
     public static final LocalDate ENDDATE = new LocalDate(2015,12,31);
     public static final BudgetFoundationValueType BUDGET_FOUNDATION_VALUE_TYPE= BudgetFoundationValueType.AREA;
     public static final BudgetFoundationValueType BUDGET_FOUNDATION_VALUE_TYPE2= BudgetFoundationValueType.COUNT;
-    public static final BudgetKeyValueMethod BUDGET_KEY_VALUE_METHOD = BudgetKeyValueMethod.MILLESIMI;
+    public static final BudgetKeyValueMethod BUDGET_KEY_VALUE_METHOD = BudgetKeyValueMethod.PROMILLE;
 
     @Override
     protected void execute(ExecutionContext executionContext) {

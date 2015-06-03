@@ -21,33 +21,30 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by jodo on 01/05/15.
- */
 public class BudgetKeyValueMethodTest {
 
     @Test
-    public void testCalculate(){
+    public void testCalculateDefault() {
 
-        BudgetKeyValueMethod method = BudgetKeyValueMethod.MILLESIMI;
-        BudgetKeyValueMethod method2 = BudgetKeyValueMethod.ITA;
+        BudgetKeyValueMethod method = BudgetKeyValueMethod.DEFAULT;
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(1))).isEqualTo(new BigDecimal(1));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(10))).isEqualTo(new BigDecimal("0.1"));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(100))).isEqualTo(new BigDecimal("0.01"));
+    }
 
-        assertFalse(method.equals(method2));
-        assertTrue(method.calculate(new BigDecimal(1), new BigDecimal(1)).equals(new BigDecimal(1000)));
-        assertTrue(method2.calculate(new BigDecimal(1), new BigDecimal(1)).equals(new BigDecimal(1)));
+    @Test
+    public void testCalculateThousand() {
 
-        assertEquals(method.calculate(new BigDecimal(1), new BigDecimal(10)), new BigDecimal(100));
-        assertEquals(method.calculate(new BigDecimal(1), new BigDecimal(100)),new BigDecimal(10));
-        assertEquals(method.calculate(new BigDecimal(1), new BigDecimal(1000)),new BigDecimal(1));
-        assertEquals(method.calculate(new BigDecimal(1), new BigDecimal(10000)),new BigDecimal(0.1).setScale(1, BigDecimal.ROUND_HALF_DOWN));
-        assertEquals(method.calculate(new BigDecimal(1), new BigDecimal(100000)),new BigDecimal(0.01).setScale(2, BigDecimal.ROUND_HALF_DOWN));
+        BudgetKeyValueMethod method = BudgetKeyValueMethod.PROMILLE;
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(1)).equals(new BigDecimal(1000)));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(10))).isEqualTo(new BigDecimal(100));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(100))).isEqualTo(new BigDecimal(10));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(1000))).isEqualTo(new BigDecimal(1));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(10000))).isEqualTo(new BigDecimal(0.1).setScale(1, BigDecimal.ROUND_HALF_DOWN));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(100000))).isEqualTo(new BigDecimal(0.01).setScale(2, BigDecimal.ROUND_HALF_DOWN));
 
-        assertEquals(method2.calculate(new BigDecimal(1), new BigDecimal(10)), new BigDecimal(0.1).setScale(1, BigDecimal.ROUND_HALF_DOWN));
-        assertEquals(method2.calculate(new BigDecimal(1), new BigDecimal(100)),new BigDecimal(0.01).setScale(2, BigDecimal.ROUND_HALF_DOWN));
     }
 
 }
