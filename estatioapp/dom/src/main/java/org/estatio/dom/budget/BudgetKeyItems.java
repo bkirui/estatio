@@ -72,8 +72,8 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
             final Unit unit,
             final BigDecimal keyValue) {
 
-        if (keyValue.compareTo(BigDecimal.ZERO) <= 0) {
-            return "keyValue cannot be zero or less";
+        if (keyValue.compareTo(BigDecimal.ZERO) < 0) {
+            return "keyValue cannot be less than zero";
         }
 
         return null;

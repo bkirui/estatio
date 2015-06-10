@@ -86,7 +86,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
 
     private BigDecimal sourceValue;
 
-    @javax.jdo.annotations.Column(allowsNull = "false", scale = 2)
+    @javax.jdo.annotations.Column(allowsNull = "false", scale = 3)
     @MemberOrder(sequence = "3")
     public BigDecimal getSourceValue() {
         return sourceValue;
@@ -100,7 +100,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
 
     private BigDecimal keyValue;
 
-    @javax.jdo.annotations.Column(allowsNull = "false", scale = 2)
+    @javax.jdo.annotations.Column(allowsNull = "false", scale = 3)
     @MemberOrder(sequence = "2")
     public BigDecimal getKeyValue() {
         return keyValue;
@@ -122,8 +122,8 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     }
 
     public String validateChangeKeyValue(final BigDecimal keyValue) {
-        if (keyValue.compareTo(BigDecimal.ZERO) <= 0) {
-            return "keyValue cannot be zero or less";
+        if (keyValue.compareTo(BigDecimal.ZERO) < 0) {
+            return "keyValue cannot be less than zero";
         }
         //TODO: Maybe changing an individual key value is no good idea at all?
         return null;

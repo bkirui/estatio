@@ -136,16 +136,10 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
             unit = units.findUnitByReference("OXF-001");
 
             //when
-            newKeyValue = BigDecimal.ZERO;
+            newKeyValue = new BigDecimal(-0.001);
 
             // then
-            assertThat(items.validateNewBudgetKeyItem(budgetKeyTable, unit, newKeyValue).equals("keyValue cannot be zero or less"));
-
-            //when
-            newKeyValue = new BigDecimal(-1);
-
-            // then
-            assertThat(items.validateNewBudgetKeyItem(budgetKeyTable, unit, newKeyValue).equals("keyValue cannot be zero or less"));
+            assertThat(items.validateNewBudgetKeyItem(budgetKeyTable, unit, newKeyValue).equals("keyValue cannot be less than zero"));
 
         }
     }

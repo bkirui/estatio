@@ -30,7 +30,7 @@ public enum BudgetKeyValueMethod {
         }
         @Override
         public boolean isValid(BudgetKeyTable budgetKeyTable) {
-                if (!this.keySum(budgetKeyTable).equals(new BigDecimal(1000).setScale(2))) {
+                if (!this.keySum(budgetKeyTable).equals(new BigDecimal(1000).setScale(3))) {
                     return false;
                 }
             return true;
@@ -51,7 +51,7 @@ public enum BudgetKeyValueMethod {
         }
         @Override
         public boolean isValid(BudgetKeyTable budgetKeyTable) {
-            if (!this.keySum(budgetKeyTable).equals(new BigDecimal(100).setScale(2))) {
+            if (!this.keySum(budgetKeyTable).equals(new BigDecimal(100).setScale(3))) {
                 return false;
             }
             return true;

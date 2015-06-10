@@ -19,6 +19,7 @@ package org.estatio.app.budget;
 import java.math.BigDecimal;
 
 import javax.inject.Inject;
+import javax.jdo.annotations.Column;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Action;
@@ -66,7 +67,7 @@ public class BudgetKeyItemImportExportLineItem
         this.budgetKeyItem = item.budgetKeyItem;
         this.unitReference = item.unitReference;
         this.status = item.status;
-        this.keyValue = item.keyValue;
+        this.keyValue = item.keyValue.setScale(3,BigDecimal.ROUND_HALF_DOWN); //TODO: does not help rounding to 3 decimals instead of 2
         this.budgetKeyTableName = item.budgetKeyTableName;
     }
 
@@ -96,6 +97,7 @@ public class BudgetKeyItemImportExportLineItem
 
     private BigDecimal keyValue;
 
+    @Column(scale = 3)
     public BigDecimal getKeyValue() {
         return keyValue;
     }

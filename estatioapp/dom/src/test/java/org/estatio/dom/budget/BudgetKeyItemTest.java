@@ -72,7 +72,7 @@ public class BudgetKeyItemTest {
         assertTrue(item.getKeyValue().equals(new BigDecimal(2)));
 
         //when, then
-        assertEquals(item.validateChangeKeyValue(new BigDecimal(0)),"keyValue cannot be zero or less");
+        assertEquals(item.validateChangeKeyValue(new BigDecimal(-0.001)),"keyValue cannot be less than zero");
     }
 
 }
