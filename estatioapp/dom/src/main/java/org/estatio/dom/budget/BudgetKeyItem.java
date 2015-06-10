@@ -86,7 +86,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
 
     private BigDecimal sourceValue;
 
-    @javax.jdo.annotations.Column(allowsNull = "false")
+    @javax.jdo.annotations.Column(allowsNull = "false", scale = 2)
     @MemberOrder(sequence = "3")
     public BigDecimal getSourceValue() {
         return sourceValue;
@@ -96,23 +96,11 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
             this.sourceValue = sourceValue;
     }
 
-//    public BudgetKeyItem changeSourceValue(final @ParameterLayout(named = "Source value") BigDecimal sourceValue) {
-//        setSourceValue(sourceValue);
-//        return this;
-//    }
-//
-//    public String validateChangeSourceValue(final BigDecimal sourceValue) {
-//        if (sourceValue.equals(new BigDecimal(0))) {
-//            return "Source value can't be zero";
-//        }
-//        return null;
-//    }
-
     // //////////////////////////////////////
 
     private BigDecimal keyValue;
 
-    @javax.jdo.annotations.Column(allowsNull = "false")
+    @javax.jdo.annotations.Column(allowsNull = "false", scale = 2)
     @MemberOrder(sequence = "2")
     public BigDecimal getKeyValue() {
         return keyValue;

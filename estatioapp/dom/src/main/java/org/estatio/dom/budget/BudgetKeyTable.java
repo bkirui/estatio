@@ -68,12 +68,19 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
                         "FROM org.estatio.dom.budget.BudgetKeyTable " +
                         "WHERE name == :name "),
         @Query(
+                name = "findBudgetKeyTableByNameMatches", language = "JDOQL",
+                value = "SELECT " +
+                        "FROM org.estatio.dom.budget.BudgetKeyTable " +
+                        "WHERE name.toLowerCase().indexOf(:name) >= 0 "),
+        @Query(
                 name = "findByProperty", language = "JDOQL",
                 value = "SELECT " +
                         "FROM org.estatio.dom.budget.BudgetKeyTable " +
                         "WHERE property == :property ")
 })
-@DomainObject(editing = Editing.DISABLED, autoCompleteRepository = BudgetKeyTables.class)
+@DomainObject(editing = Editing.DISABLED,
+        autoCompleteRepository = BudgetKeyTables.class,
+        autoCompleteAction = "autoComplete")
 public class BudgetKeyTable extends EstatioDomainObject<Budget> implements WithIntervalMutable<BudgetKeyTable>, WithApplicationTenancyProperty {
 
     public BudgetKeyTable() {

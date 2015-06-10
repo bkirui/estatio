@@ -18,11 +18,10 @@
  */
 package org.estatio.dom.budget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -32,47 +31,19 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.InvokeOn;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import org.estatio.dom.UdoDomainRepositoryAndFactory;
+import org.estatio.app.budget.BudgetCalculatedValueOnLeaseTermLine;
+import org.estatio.app.budget.BudgetCalculationServices;
 import org.estatio.dom.asset.Property;
-import org.estatio.dom.valuetypes.LocalDateInterval;
+import org.estatio.dom.lease.Lease;
+import org.estatio.dom.lease.LeaseItemType;
+import org.estatio.dom.lease.Leases;
 
 @DomainService(nature = NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
 @DomainServiceLayout()
-public class BudgetContributions extends UdoDomainRepositoryAndFactory<Budget> {
-
-    public BudgetContributions() {
-        super(BudgetContributions.class, Budget.class);
-    }
-
-    // //////////////////////////////////////
-
-    public Budget newBudget(
-            final @ParameterLayout(named = "Property") Property property,
-            final @ParameterLayout(named = "Start Date") LocalDate startDate,
-            final @ParameterLayout(named = "End Date") LocalDate endDate) {
-        Budget budget = newTransientInstance();
-        budget.setProperty(property);
-        budget.setStartDate(startDate);
-        budget.setEndDate(endDate);
-        persistIfNotAlready(budget);
-
-        return budget;
-    }
-
-    public String validateNewBudget(
-            final Property property,
-            final LocalDate startDate,
-            final LocalDate endDate) {
-        if (!new LocalDateInterval(startDate, endDate).isValid()) {
-            return "End date can not be before start date";
-        }
-
-        return null;
-    }
+public class BudgetContributions {
 
     @Action(semantics = SemanticsOf.SAFE, invokeOn = InvokeOn.OBJECT_ONLY)
     @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
@@ -81,7 +52,34 @@ public class BudgetContributions extends UdoDomainRepositoryAndFactory<Budget> {
         return budgets.findByProperty(property);
     };
 
+    @Action(semantics = SemanticsOf.SAFE, invokeOn = InvokeOn.OBJECT_ONLY)
+    @ActionLayout(contributed = Contributed.AS_ASSOCIATION)
+    @CollectionLayout(render = RenderType.EAGERLY)
+    public List<BudgetCalculatedValueOnLeaseTermLine> calculatedServiceChargesOnLease(final Budget budget){
+
+        List<BudgetCalculatedValueOnLeaseTermLine> lines = new ArrayList<BudgetCalculatedValueOnLeaseTermLine>();
+
+        List<Lease> leasesOnProperty = leases.findLeasesByProperty(budget.getProperty());
+        for (Lease lease : leasesOnProperty) {
+
+            lines.add(new BudgetCalculatedValueOnLeaseTermLine(
+                    budgetCalculationServices.calculateValueOnCurrentLeaseTermForServiceCharge(lease, budget),
+                    lease.findFirstItemOfType(LeaseItemType.SERVICE_CHARGE).currentTerm(budget.getStartDate()))
+            );
+
+        }
+
+        return lines;
+    }
+
+
     @Inject
     Budgets budgets;
+
+    @Inject
+    Leases leases;
+
+    @Inject
+    BudgetCalculationServices budgetCalculationServices;
 
 }

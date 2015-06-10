@@ -47,4 +47,17 @@ public class BudgetKeyValueMethodTest {
 
     }
 
+    @Test
+    public void testCalculateHundred() {
+
+        BudgetKeyValueMethod method = BudgetKeyValueMethod.PERCENT;
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(1)).equals(new BigDecimal(100)));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(10))).isEqualTo(new BigDecimal(10));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(100))).isEqualTo(new BigDecimal(1));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(1000))).isEqualTo(new BigDecimal(0.1).setScale(1, BigDecimal.ROUND_HALF_DOWN));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(10000))).isEqualTo(new BigDecimal(0.01).setScale(2, BigDecimal.ROUND_HALF_DOWN));
+        assertThat(method.calculate(new BigDecimal(1), new BigDecimal(100000))).isEqualTo(new BigDecimal(0.001).setScale(3, BigDecimal.ROUND_HALF_DOWN));
+
+    }
+
 }

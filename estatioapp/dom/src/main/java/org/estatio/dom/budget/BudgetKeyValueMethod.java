@@ -26,18 +26,43 @@ public enum BudgetKeyValueMethod {
     PROMILLE {
         @Override
         public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
-            return numerator.multiply(new BigDecimal(1000)).divide(denominator, MathContext.DECIMAL32);
+            return numerator.multiply(new BigDecimal(1000), MathContext.DECIMAL32).divide(denominator, MathContext.DECIMAL32);
         }
         @Override
         public boolean isValid(BudgetKeyTable budgetKeyTable) {
-                BigDecimal sum = new BigDecimal(0);
-                for (Iterator<BudgetKeyItem> it = budgetKeyTable.getBudgetKeyItems().iterator(); it.hasNext();) {
-                    sum = sum.add(it.next().getKeyValue());
-                }
-                if (!sum.equals(new BigDecimal(1000))) {
+                if (!this.keySum(budgetKeyTable).equals(new BigDecimal(1000).setScale(2))) {
                     return false;
                 }
             return true;
+        }
+        @Override
+        public BigDecimal keySum(BudgetKeyTable budgetKeyTable) {
+            BigDecimal sum = BigDecimal.ZERO;
+            for (Iterator<BudgetKeyItem> it = budgetKeyTable.getBudgetKeyItems().iterator(); it.hasNext();) {
+                sum = sum.add(it.next().getKeyValue());
+            }
+            return sum;
+        }
+    },
+    PERCENT {
+        @Override
+        public BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator) {
+            return numerator.multiply(new BigDecimal(100), MathContext.DECIMAL32).divide(denominator, MathContext.DECIMAL32);
+        }
+        @Override
+        public boolean isValid(BudgetKeyTable budgetKeyTable) {
+            if (!this.keySum(budgetKeyTable).equals(new BigDecimal(100).setScale(2))) {
+                return false;
+            }
+            return true;
+        }
+        @Override
+        public BigDecimal keySum(BudgetKeyTable budgetKeyTable) {
+            BigDecimal sum = BigDecimal.ZERO;
+            for (Iterator<BudgetKeyItem> it = budgetKeyTable.getBudgetKeyItems().iterator(); it.hasNext();) {
+                sum = sum.add(it.next().getKeyValue());
+            }
+            return sum;
         }
     },
     DEFAULT {
@@ -49,9 +74,19 @@ public enum BudgetKeyValueMethod {
         public boolean isValid(BudgetKeyTable budgetKeyTable) {
             return true;
         }
+        @Override
+        public BigDecimal keySum(BudgetKeyTable budgetKeyTable) {
+            BigDecimal sum = BigDecimal.ZERO;
+            for (Iterator<BudgetKeyItem> it = budgetKeyTable.getBudgetKeyItems().iterator(); it.hasNext();) {
+                sum = sum.add(it.next().getKeyValue());
+            }
+            return sum;
+        }
     };
 
     public abstract BigDecimal calculate(final BigDecimal numerator, final BigDecimal denominator);
 
     public abstract boolean isValid(BudgetKeyTable budgetKeyTable);
+
+    public abstract BigDecimal keySum(BudgetKeyTable budgetKeyTable);
 }

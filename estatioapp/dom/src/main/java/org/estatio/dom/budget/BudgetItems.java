@@ -89,4 +89,5 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
     public List<BudgetItem> findBudgetItemByBudget(final Budget budget) {
         return allMatches("findBudgetItemByBudget", "budget", budget);
     }
+
 }

@@ -57,7 +57,7 @@ public class BudgetForOxf extends BudgetAbstact {
         BudgetKeyTable budgetKeyTable = budgetKeyTables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME);
         final BigDecimal VALUE = new BigDecimal(30000);
         final Currency currency = currencies.findCurrency(CurrenciesRefData.EUR);
-        final Charge charge = charges.findByReference(ChargeRefData.GB_SERVICE_CHARGE);
+        final Charge charge = charges.findByReference(ChargeRefData.IT_SERVICE_CHARGE);
         final BudgetCostGroup budgetCostGroup = BudgetCostGroup.VIGILANZA;
 
 

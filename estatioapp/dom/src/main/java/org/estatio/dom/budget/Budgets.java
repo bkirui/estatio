@@ -32,6 +32,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.asset.Property;
+import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @DomainService(repositoryFor = Budget.class)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
@@ -55,6 +56,17 @@ public class Budgets extends UdoDomainRepositoryAndFactory<Budget> {
         persistIfNotAlready(budget);
 
         return budget;
+    }
+
+    public String validateNewBudget(
+            final Property property,
+            final LocalDate startDate,
+            final LocalDate endDate) {
+        if (!new LocalDateInterval(startDate, endDate).isValid()) {
+            return "End date can not be before start date";
+        }
+
+        return null;
     }
 
     // //////////////////////////////////////

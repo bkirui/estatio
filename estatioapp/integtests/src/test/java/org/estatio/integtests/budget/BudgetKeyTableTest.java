@@ -70,6 +70,7 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
             assertThat(budgetKeyTable.getEndDate().equals(BudgetKeyTablesForOxf.ENDDATE));
             assertThat(budgetKeyTable.getFoundationValueType().equals(BudgetKeyTablesForOxf.BUDGET_FOUNDATION_VALUE_TYPE));
             assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyTablesForOxf.BUDGET_KEY_VALUE_METHOD));
+            assertThat(budgetKeyTable.isValid() == true);
 
 
             //when
@@ -84,6 +85,8 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
             assertThat(budgetKeyTable.getEndDate().equals(new LocalDate(2015,12,31)));
             assertThat(budgetKeyTable.getFoundationValueType().equals(BudgetFoundationValueType.COUNT));
             assertThat(budgetKeyTable.getKeyValueMethod().equals(BudgetKeyValueMethod.DEFAULT));
+            //due to changing BudgetKeyValueMethod
+            assertThat(budgetKeyTable.isValid() == false);
         }
 
 

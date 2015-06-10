@@ -79,7 +79,7 @@ public class BudgetKeytablesTest {
         }
 
         @Test
-        public void anotherHappyCase() {
+         public void anotherHappyCase() {
 
             Property property = new PropertyForTesting();
             budgetKeyTables.findBudgetKeyTableByProperty(property);

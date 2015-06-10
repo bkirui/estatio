@@ -23,13 +23,14 @@ import com.google.inject.Inject;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Prototype;
+import org.apache.isis.applib.annotation.RestrictTo;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
@@ -78,8 +79,7 @@ public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTabl
         return null;
     }
 
-    @Action(semantics = SemanticsOf.SAFE)
-    @Prototype
+    @Action(semantics = SemanticsOf.SAFE, restrictTo = RestrictTo.PROTOTYPING)
     public List<BudgetKeyTable> allBudgetKeyTables() {
         return allInstances();
     }
@@ -100,23 +100,9 @@ public class BudgetKeyTables extends UdoDomainRepositoryAndFactory<BudgetKeyTabl
 
     // //////////////////////////////////////
 
-    @Hidden
+    @ActionLayout(hidden = Where.EVERYWHERE)
     public List<BudgetKeyTable> autoComplete(final String search) {
-//        final QBudgetKeyTable q = QBudgetKeyTable.candidate();
-//        return isisJdoSupport.executeQuery(BudgetKeyTable.class,
-//                q.name.equalsIgnoreCase(
-//                q.category.eq(category)));
-
-//        if (search != null && search.length() > 1) {
-//            return allMatches(BudgetKeyTable.class, new Predicate<BudgetKeyTable>() {
-//                @Override
-//                public boolean apply(BudgetKeyTable input) {
-//                    return input.getName().matches(StringUtils.wildcardToCaseInsensitiveRegex(search));
-//                }
-//            });
-//        }
-//        return null;
-        return allInstances();
+        return allMatches("findBudgetKeyTableByNameMatches", "name", search.toLowerCase());
     }
 
     @Inject
