@@ -24,6 +24,7 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.estatio.dom.asset.Unit;
 import org.estatio.dom.asset.Units;
 import org.estatio.dom.budget.BudgetFoundationValueType;
 import org.estatio.dom.budget.BudgetKeyItems;
@@ -116,4 +117,36 @@ public class BudgetKeyTableTest extends EstatioIntegrationTest {
 
     }
 
+    public static class validateNewBudgetKeyItemTest extends BudgetKeyTableTest {
+
+        @Inject
+        BudgetKeyItems items;
+
+        @Inject
+        Units units;
+
+        BigDecimal newKeyValue;
+        Unit unit;
+
+        @Test
+        public void whenSetup() throws Exception {
+
+            //given
+            budgetKeyTable = tables.findBudgetKeyTableByName(BudgetKeyTablesForOxf.NAME);
+            unit = units.findUnitByReference("OXF-001");
+
+            //when
+            newKeyValue = BigDecimal.ZERO;
+
+            // then
+            assertThat(items.validateNewBudgetKeyItem(budgetKeyTable, unit, newKeyValue).equals("keyValue cannot be zero or less"));
+
+            //when
+            newKeyValue = new BigDecimal(-1);
+
+            // then
+            assertThat(items.validateNewBudgetKeyItem(budgetKeyTable, unit, newKeyValue).equals("keyValue cannot be zero or less"));
+
+        }
+    }
 }

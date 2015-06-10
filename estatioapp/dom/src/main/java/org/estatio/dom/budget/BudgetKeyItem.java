@@ -53,7 +53,7 @@ import org.estatio.dom.asset.Unit;
 public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements WithApplicationTenancyProperty {
 
     public BudgetKeyItem() {
-        super("budgetKeyTable,unit");
+        super("budgetKeyTable,unit,keyValue, sourceValue");
     }
 
     private BudgetKeyTable budgetKeyTable;
@@ -122,10 +122,10 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
     }
 
     public String validateChangeKeyValue(final BigDecimal keyValue) {
-        if (keyValue.equals(new BigDecimal(0))) {
-            return "Key value can't be zero";
+        if (keyValue.compareTo(BigDecimal.ZERO) <= 0) {
+            return "keyValue cannot be zero or less";
         }
-        //TODO: validation in case of Millissime; Maybe changing an individual key value is no good idea at all
+        //TODO: Maybe changing an individual key value is no good idea at all?
         return null;
     }
 

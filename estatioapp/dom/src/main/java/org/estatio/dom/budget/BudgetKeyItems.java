@@ -41,14 +41,10 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
     public BudgetKeyItem newBudgetKeyItem(
             final @ParameterLayout(named = "Budget Key Table") BudgetKeyTable budgetKeyTable,
             final @ParameterLayout(named = "Unit") Unit unit,
-//            final @ParameterLayout(named = "Source Value") BigDecimal sourceValue,
-//            final @ParameterLayout(named = "Foundation Value") BigDecimal foundationValue,
             final @ParameterLayout(named = "Key Value") BigDecimal keyValue) {
         BudgetKeyItem budgetKeyItem = newTransientInstance();
         budgetKeyItem.setBudgetKeyTable(budgetKeyTable);
         budgetKeyItem.setUnit(unit);
-//        budgetKeyItem.setSourceValue(sourceValue);
-//        budgetKeyItem.setFoundationValue(foundationValue);
         budgetKeyItem.setKeyValue(keyValue);
         persistIfNotAlready(budgetKeyItem);
 
@@ -74,12 +70,11 @@ public class BudgetKeyItems extends UdoDomainRepositoryAndFactory<BudgetKeyItem>
     public String validateNewBudgetKeyItem(
             final BudgetKeyTable budgetKeyTable,
             final Unit unit,
-            //            final BigDecimal sourceValue,
-            //            final BigDecimal foundationValue,
             final BigDecimal keyValue) {
 
-        // TODO: I guess the different values need to be validated?
-        // At the moment: isValid method on BudgetKeyTable
+        if (keyValue.compareTo(BigDecimal.ZERO) <= 0) {
+            return "keyValue cannot be zero or less";
+        }
 
         return null;
     }

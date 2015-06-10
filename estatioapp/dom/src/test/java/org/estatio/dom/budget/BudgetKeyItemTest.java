@@ -63,4 +63,16 @@ public class BudgetKeyItemTest {
 
     }
 
+    @Test
+    public void testValidateChangeKeyValue(){
+
+        // given
+        BudgetKeyItem item = new BudgetKeyItem();
+        item.setKeyValue(new BigDecimal(2));
+        assertTrue(item.getKeyValue().equals(new BigDecimal(2)));
+
+        //when, then
+        assertEquals(item.validateChangeKeyValue(new BigDecimal(0)),"keyValue cannot be zero or less");
+    }
+
 }
