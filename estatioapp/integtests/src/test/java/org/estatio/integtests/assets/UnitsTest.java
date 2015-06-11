@@ -18,6 +18,8 @@
  */
 package org.estatio.integtests.assets;
 
+import static org.estatio.integtests.VT.bd;
+import static org.estatio.integtests.VT.ld;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
@@ -90,8 +92,8 @@ public class UnitsTest extends EstatioIntegrationTest {
 
             // when
             Unit unit = units.findUnitByReference(_PropertyForOxfGb.REF + "-001");
-            LocalDate startDate = new LocalDate(2013, 1, 1);
-            LocalDate endDate = new LocalDate(2013, 12, 31);
+            LocalDate startDate = ld(2013, 1, 1);
+            LocalDate endDate = ld(2013, 12, 31);
             unit.setEndDate(endDate);
             unit.setStartDate(startDate);
 
@@ -113,4 +115,31 @@ public class UnitsTest extends EstatioIntegrationTest {
             assertThat(units.findByProperty(propertyForOxf).size(), is(25));
         }
     }
+
+    public static class SumAreaByPropertyAndActiveOnDate extends UnitsTest {
+
+        @Test
+        public void happyCase() throws Exception {
+            // given, when
+            Property propertyForOxf = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            // then
+            assertThat(units.sumAreaByPropertyAndActiveOnDate(propertyForOxf, ld(2014,1,1)), is(bd("32500.00")));
+        }
+
+        @Test
+        public void happyCase1() throws Exception {
+            // given
+            Property propertyForOxf = properties.findPropertyByReference(_PropertyForOxfGb.REF);
+            Unit unit = units.findUnitByReference(_PropertyForOxfGb.REF + "-001");
+            // when
+            unit.setStartDate(ld(2013, 1, 1));
+            unit.setEndDate(ld(2013,12,31));
+            // then
+            assertThat(units.sumAreaByPropertyAndActiveOnDate(propertyForOxf, ld(2012,12,31)), is(bd("32400.00")));
+            assertThat(units.sumAreaByPropertyAndActiveOnDate(propertyForOxf, ld(2013,01,01)), is(bd("32500.00")));
+            assertThat(units.sumAreaByPropertyAndActiveOnDate(propertyForOxf, ld(2013,12,31)), is(bd("32500.00")));
+            assertThat(units.sumAreaByPropertyAndActiveOnDate(propertyForOxf, ld(2014,01,01)), is(bd("32400.00")));
+        }
+    }
+
 }

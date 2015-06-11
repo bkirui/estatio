@@ -18,10 +18,17 @@
  */
 package org.estatio.dom.asset;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
+import org.datanucleus.api.jdo.JDOPersistenceManager;
+import org.datanucleus.query.typesafe.TypesafeQuery;
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
@@ -34,6 +41,7 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.clock.ClockService;
 
 import org.estatio.dom.RegexValidation;
@@ -116,6 +124,21 @@ public class Units extends UdoDomainRepositoryAndFactory<Unit> {
         return allMatches("findByPropertyAndActiveOnDate", "property", property, "date", date);
     }
 
+    @Programmatic
+    public BigDecimal sumAreaByPropertyAndActiveOnDate(final Property property, final LocalDate date) {
+        final PersistenceManager persistenceManager = getIsisJdoSupport().getJdoPersistenceManager();
+        Query query = persistenceManager.newQuery(
+                "SELECT sum(area) "
+                + "FROM org.estatio.dom.asset.Unit "
+                + "WHERE (property == _property) "
+                + "&& (startDate == null || startDate <= _date) "
+                + "&& (endDate == null || endDate >= _date)");
+        query.declareParameters("Property _property, org.joda.time.LocalDate _date");
+        BigDecimal sum = (BigDecimal) query.execute(property, date);
+        query.closeAll();
+        return sum;
+    }
+
     // //////////////////////////////////////
 
     @Collection(hidden = Where.EVERYWHERE)
@@ -129,5 +152,31 @@ public class Units extends UdoDomainRepositoryAndFactory<Unit> {
     public List<Unit> allUnits() {
         return allInstances();
     }
+
+
+    private static Map<String, Object> asMap(final Object ... paramArgs) {
+        final HashMap<String, Object> map = new HashMap<String, Object>();
+        boolean param = true;
+        String paramStr = null;
+        for (final Object paramArg : paramArgs) {
+            if (param) {
+                if (paramArg instanceof String) {
+                    paramStr = (String) paramArg;
+                } else {
+                    throw new IllegalArgumentException("Parameter must be a string");
+                }
+            } else {
+                final Object arg = paramArg;
+                map.put(paramStr, arg);
+                paramStr = null;
+            }
+            param = !param;
+        }
+        if (paramStr != null) {
+            throw new IllegalArgumentException("Must have equal number of parameters and arguments");
+        }
+        return map;
+    }
+
 
 }
