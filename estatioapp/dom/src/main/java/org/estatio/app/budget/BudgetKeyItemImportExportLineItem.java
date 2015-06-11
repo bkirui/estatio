@@ -140,7 +140,7 @@ public class BudgetKeyItemImportExportLineItem
             budgetKeyItem.setBudgetKeyTable(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()));
             budgetKeyItem.setUnit(units.findUnitByReference(unitReference));
         }
-        budgetKeyItems.findByBudgetKeyTableAndUnit(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()), units.findUnitByReference(unitReference)).changeKeyValue(this.getKeyValue().setScale(2,BigDecimal.ROUND_HALF_DOWN));
+        budgetKeyItems.findByBudgetKeyTableAndUnit(budgetKeyTables.findBudgetKeyTableByName(getBudgetKeyTableName()), units.findUnitByReference(unitReference)).changeKeyValue(this.getKeyValue().setScale(3,BigDecimal.ROUND_HALF_UP));
         return budgetKeyItem;
     }
 
