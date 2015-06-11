@@ -22,11 +22,16 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.joda.time.LocalDate;
@@ -34,12 +39,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.core.commons.matchers.IsisMatchers;
 import org.apache.isis.core.unittestsupport.jmocking.IsisActions;
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
 import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2.Mode;
+
 import org.estatio.dom.AbstractBeanPropertiesTest;
 import org.estatio.dom.PojoTester;
 import org.estatio.dom.agreement.Agreement;
@@ -264,7 +271,6 @@ public class LeaseTest {
             assertThat(leaseItem.getLease(), is(lease));
             assertThat(leaseItem.getSequence(), is(BigInteger.ONE));
             assertThat(leaseItem.getApplicationTenancyPath(), is("/it/XXX/_"));
-
 
             // this assertion not true for unit tests, because we rely on JDO
             // to manage the bidir relationship for us.
@@ -835,6 +841,40 @@ public class LeaseTest {
             lease.setTenancyEndDate(startDate);
 
             assertNull(lease.getTenancyDuration());
+        }
+    }
+
+    public static class NewOccupancy extends LeaseTest {
+
+        @Mock
+        private DomainObjectContainer mockContainer;
+
+        private Occupancies occupancies;
+
+        @Before
+        public void setUp() throws Exception {
+
+            occupancies = new Occupancies() {
+                @Override
+                public List<Occupancy> occupancies(final Unit unit) {
+                    final Occupancy element = new Occupancy();
+                    element.setStartDate(new LocalDate(2014, 1, 1));
+                    element.setEndDate(new LocalDate(2014, 12, 31));
+                    return ImmutableList.of(element);
+                }
+            };
+
+            lease = new Lease();
+            lease.occupanciesRepo = occupancies;
+        }
+
+        @Test
+        public void validate() {
+
+            assertThat(lease.validateNewOccupancy(new LocalDate(2013, 12, 31), null), is("Interval of occupancy overlaps with existing occupancy"));
+            assertThat(lease.validateNewOccupancy(new LocalDate(2014, 12, 31), null), is("Interval of occupancy overlaps with existing occupancy"));
+            assertNull(lease.validateNewOccupancy(new LocalDate(2015, 1, 1), null));
+
         }
     }
 
