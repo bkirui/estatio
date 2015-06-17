@@ -25,12 +25,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.services.i18n.TranslatableString;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -57,6 +59,12 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
     public BudgetItem() {
         super("budget, budgetKeyTable, value, charge, budgetCostGroup");
     }
+
+    //region > identificatiom
+    public TranslatableString title() {
+        return TranslatableString.tr("{name}", "name", "Budget item for ".concat(getBudget().getProperty().getName()));
+    }
+    //endregion
 
     private Budget budget;
 
@@ -137,6 +145,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "4")
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public Currency getCurrency() {
         return currency;
     }
@@ -145,6 +154,7 @@ public class BudgetItem extends EstatioDomainObject<BudgetItem> implements WithA
         this.currency = currency;
     }
 
+    @ActionLayout(hidden = Where.EVERYWHERE)
     public BudgetItem changeCurrency(final @ParameterLayout(named = "Currency") Currency currency) {
         setCurrency(currency);
         return this;

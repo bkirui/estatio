@@ -30,6 +30,9 @@ import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.services.i18n.TranslatableString;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -56,10 +59,17 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
         super("budgetKeyTable,unit,keyValue, sourceValue");
     }
 
+    //region > identificatiom
+    public TranslatableString title() {
+        return TranslatableString.tr("{name}", "name", "Budget key item for ".concat(getUnit().getName()));
+    }
+    //endregion
+
     private BudgetKeyTable budgetKeyTable;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "1")
+    @PropertyLayout(hidden = Where.PARENTED_TABLES )
     public BudgetKeyTable getBudgetKeyTable() {
         return budgetKeyTable;
     }
@@ -138,6 +148,7 @@ public class BudgetKeyItem extends EstatioDomainObject<BudgetKeyItem> implements
 
     @Override
     @MemberOrder(sequence = "4")
+    @PropertyLayout(hidden = Where.EVERYWHERE)
     public ApplicationTenancy getApplicationTenancy() {
         return getBudgetKeyTable().getApplicationTenancy();
     }

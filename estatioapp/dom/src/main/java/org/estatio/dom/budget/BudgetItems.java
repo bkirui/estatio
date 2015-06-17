@@ -21,6 +21,8 @@ package org.estatio.dom.budget;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
@@ -30,7 +32,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.charge.Charge;
-import org.estatio.dom.currency.Currency;
+import org.estatio.dom.currency.Currencies;
 
 @DomainService(repositoryFor = BudgetItem.class)
 @DomainServiceLayout(menuBar = DomainServiceLayout.MenuBar.PRIMARY, named = "Budgets")
@@ -47,14 +49,14 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
             final @ParameterLayout(named = "Budget") Budget budget,
             final @ParameterLayout(named = "Budget Key Table") BudgetKeyTable budgetKeyTable,
             final @ParameterLayout(named = "Value") BigDecimal value,
-            final @ParameterLayout(named = "Currency") Currency currency,
+//            final @ParameterLayout(named = "Currency") Currency currency,
             final @ParameterLayout(named = "Charge") Charge charge,
             final @ParameterLayout(named = "Budget Cost Group") BudgetCostGroup budgetCostGroup) {
         BudgetItem budgetItem = newTransientInstance();
         budgetItem.setBudget(budget);
         budgetItem.setBudgetKeyTable(budgetKeyTable);
         budgetItem.setValue(value);
-        budgetItem.setCurrency(currency);
+        budgetItem.setCurrency(currencies.findCurrency("EUR"));
         budgetItem.setCharge(charge);
         budgetItem.setBudgetCostGroup(budgetCostGroup);
 
@@ -67,13 +69,25 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
             final Budget budget,
             final BudgetKeyTable budgetKeyTable,
             final BigDecimal value,
-            final Currency currency,
+//            final Currency currency,
             final Charge charge,
             final BudgetCostGroup budgetCostGroup) {
         if (value.equals(new BigDecimal(0))) {
             return "Value can't be zero";
         }
         return null;
+    }
+
+    public List<BudgetKeyTable> choices1NewBudgetItem(
+            final Budget budget,
+            final BudgetKeyTable budgetKeyTable,
+            final BigDecimal value,
+//            final Currency currency,
+            final Charge charge,
+            final BudgetCostGroup budgetCostGroup) {
+
+        return budgetKeyTables.findBudgetKeyTableByProperty(budget.getProperty());
+
     }
 
     // //////////////////////////////////////
@@ -90,4 +104,9 @@ public class BudgetItems extends UdoDomainRepositoryAndFactory<BudgetItem> {
         return allMatches("findBudgetItemByBudget", "budget", budget);
     }
 
+    @Inject
+    BudgetKeyTables budgetKeyTables;
+
+    @Inject
+    Currencies currencies;
 }

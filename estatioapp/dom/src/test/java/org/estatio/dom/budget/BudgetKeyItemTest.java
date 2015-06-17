@@ -55,11 +55,11 @@ public class BudgetKeyItemTest {
         assertTrue(item.getKeyValue().equals(new BigDecimal(2)));
 
         //when
-        item.changeKeyValue(new BigDecimal(2.333));
+        item.changeKeyValue(new BigDecimal(2.3335));
 
         //then
-        assertEquals(item.getKeyValue(),new BigDecimal(2.33).setScale(2, BigDecimal.ROUND_HALF_DOWN));
-        assertFalse(item.getKeyValue().equals(new BigDecimal(2.34).setScale(2, BigDecimal.ROUND_HALF_DOWN)));
+        assertEquals(item.getKeyValue(),new BigDecimal(2.333).setScale(3, BigDecimal.ROUND_HALF_UP));
+        assertFalse(item.getKeyValue().equals(new BigDecimal(2.334).setScale(3, BigDecimal.ROUND_HALF_UP)));
 
     }
 

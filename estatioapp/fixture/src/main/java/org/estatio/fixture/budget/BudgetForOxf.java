@@ -67,7 +67,7 @@ public class BudgetForOxf extends BudgetAbstact {
                 new LocalDate(2015, 12, 31),
                 budgetKeyTable,
                 VALUE,
-                currency,
+//                currency,
                 charge,
                 budgetCostGroup,
                 executionContext);

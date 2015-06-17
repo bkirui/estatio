@@ -50,7 +50,7 @@ public abstract class BudgetItemAbstact extends EstatioFixtureScript {
                 budget,
                 budgetKeyTable,
                 value,
-                currency,
+//                currency,
                 charge,
                 budgetCostGroup);
         return fixtureResults.addResult(this, budgetItem);

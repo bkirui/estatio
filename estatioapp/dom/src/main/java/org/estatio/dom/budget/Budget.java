@@ -42,6 +42,7 @@ import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.services.i18n.TranslatableString;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -69,6 +70,15 @@ public class Budget extends EstatioDomainObject<Budget> implements WithIntervalM
     public Budget() {
         super("property, startDate, endDate");
     }
+
+    //region > identificatiom
+    public TranslatableString title() {
+        return TranslatableString.tr("{name}", "name", "Budget for ".concat(getProperty().getName())
+                .concat(" - period: ")
+                .concat(getEffectiveInterval().toString())
+        );
+    }
+    //endregion
 
     private Property property;
 

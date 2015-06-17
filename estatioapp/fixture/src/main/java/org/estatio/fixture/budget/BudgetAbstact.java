@@ -31,7 +31,6 @@ import org.estatio.dom.budget.BudgetItems;
 import org.estatio.dom.budget.BudgetKeyTable;
 import org.estatio.dom.budget.Budgets;
 import org.estatio.dom.charge.Charge;
-import org.estatio.dom.currency.Currency;
 import org.estatio.fixture.EstatioFixtureScript;
 
 /**
@@ -46,12 +45,12 @@ public abstract class BudgetAbstact extends EstatioFixtureScript {
             final LocalDate endDate,
             final BudgetKeyTable budgetKeyTable,
             final BigDecimal value,
-            final Currency currency,
+//            final Currency currency,
             final Charge charge,
             final BudgetCostGroup budgetCostGroup,
             final ExecutionContext fixtureResults){
         Budget budget = budgets.newBudget(property, startDate, endDate);
-        createBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
+        createBudgetItem(budget, budgetKeyTable, value, charge, budgetCostGroup);
         return fixtureResults.addResult(this, budget);
     }
 
@@ -59,11 +58,11 @@ public abstract class BudgetAbstact extends EstatioFixtureScript {
             final Budget budget,
             final BudgetKeyTable budgetKeyTable,
             final BigDecimal value,
-            final Currency currency,
+//            final Currency currency,
             final Charge charge,
             final BudgetCostGroup budgetCostGroup
     ){
-        budgetItems.newBudgetItem(budget, budgetKeyTable, value, currency, charge, budgetCostGroup);
+        budgetItems.newBudgetItem(budget, budgetKeyTable, value, charge, budgetCostGroup);
     }
 
     @Inject
