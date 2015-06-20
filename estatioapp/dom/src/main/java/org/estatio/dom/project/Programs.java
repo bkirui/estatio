@@ -20,6 +20,8 @@ package org.estatio.dom.project;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Contributed;
@@ -32,7 +34,11 @@ import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
+import org.estatio.dom.Dflt;
 import org.estatio.dom.UdoDomainRepositoryAndFactory;
+import org.estatio.dom.apptenancy.EstatioApplicationTenancies;
 import org.estatio.dom.asset.Property;
 import org.estatio.dom.utils.StringUtils;
 
@@ -49,18 +55,28 @@ public class Programs extends UdoDomainRepositoryAndFactory<Program> {
     public Program newProgram(
             final @ParameterLayout(named="Reference") String reference,
             final @ParameterLayout(named="Name") String name,
-            final @ParameterLayout(named="programGoal", multiLine = 5) String programGoal) {
+            final @ParameterLayout(named="programGoal", multiLine = 5) String programGoal,
+            final @ParameterLayout(named="Application Tenancy") ApplicationTenancy applicationTenancy) {
         // Create project instance
         Program program = getContainer().newTransientInstance(Program.class);
         // Set values
         program.setReference(reference);
         program.setName(name);
         program.setProgramGoal(programGoal);
+        program.setApplicationTenancyPath(applicationTenancy.getPath());
 
         // Persist it
-        persist(program);
+        persistIfNotAlready(program);
         // Return it
         return program;
+    }
+
+    public List<ApplicationTenancy> choices3NewProgram() {
+        return estatioApplicationTenancies.globalOrCountryTenanciesForCurrentUser();
+    }
+
+    public ApplicationTenancy default3NewProgram() {
+        return Dflt.of(choices3NewProgram());
     }
 
     @Action(semantics=SemanticsOf.SAFE)
@@ -79,5 +95,8 @@ public class Programs extends UdoDomainRepositoryAndFactory<Program> {
     public List<Program> programs(final Property property) {
         return allMatches("findByProperty", "property", property);
     }
+
+    @Inject
+    EstatioApplicationTenancies estatioApplicationTenancies;
 
 }

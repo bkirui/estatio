@@ -19,12 +19,24 @@
 package org.estatio.dom.project;
 
 import java.util.List;
+
+import org.assertj.core.api.Assertions;
+import org.jmock.Expectations;
+import org.jmock.auto.Mock;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.query.Query;
 import org.apache.isis.core.commons.matchers.IsisMatchers;
+import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
+
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.estatio.dom.FinderInteraction;
 import org.estatio.dom.FinderInteraction.FinderMethod;
+import org.estatio.dom.apptenancy.EstatioApplicationTenancies;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -73,6 +85,59 @@ public class ProgramsTest {
             assertThat(finderInteraction.getQueryName(), is("matchByReferenceOrName"));
             assertThat(finderInteraction.getArgumentsByParameterName().get("matcher"), is((Object) "(?i)some.search.*Phrase"));
             assertThat(finderInteraction.getArgumentsByParameterName().size(), is(1));
+        }
+
+    }
+
+    public static class NewProgram extends ProgramsTest {
+
+        @Rule
+        public JUnitRuleMockery2 context = JUnitRuleMockery2.createFor(JUnitRuleMockery2.Mode.INTERFACES_AND_CLASSES);
+
+        @Mock
+        private DomainObjectContainer mockContainer;
+        @Mock
+        private EstatioApplicationTenancies mockEstatioApplicationTenancies;
+
+        Programs programs;
+
+        @Before
+        public void setup() {
+            programs = new Programs();
+            programs.setContainer(mockContainer);
+            programs.estatioApplicationTenancies = mockEstatioApplicationTenancies;
+        }
+
+
+        @Test
+        public void newProgram() {
+            // given
+            final ApplicationTenancy countryApplicationTenancy = new ApplicationTenancy();
+            countryApplicationTenancy.setPath("/it");
+
+            final Program program = new Program();
+            final ApplicationTenancy programApplicationTenancy = new ApplicationTenancy();
+            programApplicationTenancy.setPath("/it/REF-1");
+            programApplicationTenancy.setName("REF-1 (Italy)");
+
+            // expect
+            context.checking(new Expectations() {
+                {
+                    oneOf(mockContainer).newTransientInstance(Program.class);
+                    will(returnValue(program));
+
+                    oneOf(mockContainer).persistIfNotAlready(program);
+                }
+            });
+
+            // when
+            final Program newProgram = programs.newProgram("REF-1", "Name-1", "Some-goal", countryApplicationTenancy);
+
+            // then
+            Assertions.assertThat(newProgram.getReference()).isEqualTo("REF-1");
+            Assertions.assertThat(newProgram.getName()).isEqualTo("Name-1");
+            Assertions.assertThat(newProgram.getProgramGoal()).isEqualTo("Some-goal");
+            Assertions.assertThat(newProgram.getApplicationTenancyPath()).isEqualTo("/it");
         }
 
     }

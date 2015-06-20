@@ -20,6 +20,9 @@ package org.estatio.fixture.project;
 
 import javax.inject.Inject;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancies;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+
 import org.estatio.dom.asset.Properties;
 import org.estatio.dom.party.Parties;
 import org.estatio.dom.party.Party;
@@ -36,13 +39,15 @@ import static org.estatio.integtests.VT.ld;
 public abstract class ProgramAbstract extends EstatioFixtureScript {
 
     protected Program createProgram(
+            final String atPath,
             final String reference, 
             final String name, 
             final String programGoal,
             final Party owner,
             final Party boardmember,
             final ExecutionContext fixtureResults) {
-        Program program = programs.newProgram(reference, name, programGoal);
+        final ApplicationTenancy applicationTenancy = applicationTenancies.findTenancyByPath(atPath);
+        Program program = programs.newProgram(reference, name, programGoal, applicationTenancy);
         program.programRoles.createRole(program, ProgramRoleType.PROGRAM_OWNER, owner, ld(1999, 1, 1), ld(2000, 1, 1));
         program.programRoles.createRole(program, ProgramRoleType.PROGRAM_BOARDMEMBER, boardmember, ld(1999, 7, 1), ld(2000, 1, 1));
         return fixtureResults.addResult(this, program.getReference(), program);
@@ -58,5 +63,9 @@ public abstract class ProgramAbstract extends EstatioFixtureScript {
   
   @Inject
   	protected Properties properties;
+
+    @Inject
+    protected ApplicationTenancies applicationTenancies;
+
 
 }

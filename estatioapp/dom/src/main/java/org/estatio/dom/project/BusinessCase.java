@@ -17,9 +17,11 @@ import org.joda.time.LocalDate;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.services.i18n.TranslatableString;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -57,16 +59,19 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	public BusinessCase() {
 		super("project, date, lastUpdated desc nullsLast, businessCaseDescription");
 	}
-	
-	public String title() {
-		return "Businesscase : "+ this.getProject().getReference();
+
+	//region > identificatiom
+	public TranslatableString title() {
+		return TranslatableString.tr("{name}", "name", "Businesscase : " + this.getProject().getReference() + " _v_" + getBusinessCaseVersion());
 	}
+	//endregion
 	// //////////////////////////////////////
 	
 	private String businessCaseDescription;
 
 	@Column(allowsNull = "false")
     @PropertyLayout(multiLine = 5, describedAs = "Reason for the project and expected benefits")
+	@MemberOrder(sequence="1")
 	public String getBusinessCaseDescription() {
 		return businessCaseDescription;
 	}
@@ -80,6 +85,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private Project project;
 	
 	@Column(name= "projectId", allowsNull = "false")
+	@MemberOrder(sequence="8")
 	public Project getProject() {
 		return project;
 	}
@@ -93,6 +99,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private LocalDate date;
 	
 	@Column(allowsNull = "false")
+	@MemberOrder(sequence="3")
 	public LocalDate getDate() {
 		return date;
 	}
@@ -106,6 +113,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private LocalDate lastUpdated;
 	
 	@Column(allowsNull = "true")
+	@MemberOrder(sequence="5")
 	public LocalDate getLastUpdated() {
 		return lastUpdated;
 	}
@@ -119,6 +127,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private LocalDate nextReviewDate;
 	
 	@Column(allowsNull = "true")
+	@MemberOrder(sequence="4")
 	public LocalDate getNextReviewDate() {
 		return nextReviewDate;
 	}
@@ -132,6 +141,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private Integer businessCaseVersion;
 	
 	@Column(allowsNull = "false")
+	@MemberOrder(sequence="2")
 	public Integer getBusinessCaseVersion() {
 		return businessCaseVersion;
 	}
@@ -199,6 +209,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private BusinessCase next;
 	
 	@Override
+	@MemberOrder(sequence="7")
 	public BusinessCase getNext() {
 		return next;
 	}
@@ -214,6 +225,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	private BusinessCase previous;
 	
 	@Override
+	@MemberOrder(sequence="6")
 	public BusinessCase getPrevious() {
 		return previous;
 	}
@@ -223,6 +235,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	@Inject
 	BusinessCases businesscases;
 
+	@MemberOrder(sequence="9")
 	@Override public ApplicationTenancy getApplicationTenancy() {
 		return null;
 	}

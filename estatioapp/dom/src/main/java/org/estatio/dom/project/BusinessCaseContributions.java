@@ -13,14 +13,8 @@ import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import org.estatio.dom.UdoDomainRepositoryAndFactory;
-
 @DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
-public class BusinessCaseContributions extends UdoDomainRepositoryAndFactory<BusinessCase> {
-
-	public BusinessCaseContributions(){
-			super(BusinessCaseContributions.class, BusinessCase.class);
-	}
+public class BusinessCaseContributions  {
 
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
 	@ActionLayout(contributed=Contributed.AS_ACTION)
@@ -42,8 +36,8 @@ public class BusinessCaseContributions extends UdoDomainRepositoryAndFactory<Bus
 	}
 	
 	public boolean hideNewBusinessCase(final Project project, final String businessCaseDescription, final LocalDate reviewDate){
-		
-		if (!allMatches("findByProject", "project", project).isEmpty()){
+
+		if (!businesscases.businessCaseHistory(project).isEmpty()){
 			return true;
 		}
 		
@@ -51,8 +45,8 @@ public class BusinessCaseContributions extends UdoDomainRepositoryAndFactory<Bus
 	}
 	
 	public String validateNewBusinessCase(final Project project, final String businessCaseDescription, final LocalDate reviewDate){
-		
-		if (!allMatches("findByProject", "project", project).isEmpty()){
+
+		if (!businesscases.businessCaseHistory(project).isEmpty()){
 			return "This project has a business case already; use update business case instead";
 		}
 		

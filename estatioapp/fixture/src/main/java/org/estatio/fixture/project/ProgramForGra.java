@@ -27,6 +27,7 @@ import org.estatio.fixture.party.PersonForLinusTorvaldsNl;
 public class ProgramForGra extends ProgramAbstract {
 
     public static final String PROGRAM_REFERENCE = "GRA_P1";
+    public static final String AT_PATH_COUNTRY = "/";
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -45,7 +46,7 @@ public class ProgramForGra extends ProgramAbstract {
         Party manager = parties.findPartyByReference(PersonForJohnDoeNl.REF);
 
         createProgram(
-        		PROGRAM_REFERENCE, "Program 1", "Increase overall profit", owner, manager,
+                AT_PATH_COUNTRY, PROGRAM_REFERENCE, "Program 1", "Increase overall profit", owner, manager,
                 executionContext);
     }
 

@@ -37,16 +37,11 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 
-import org.estatio.dom.UdoDomainRepositoryAndFactory;
 import org.estatio.dom.party.Party;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 
 @DomainService(nature=NatureOfService.VIEW_CONTRIBUTIONS_ONLY)
-public class ProjectRolesContributions extends UdoDomainRepositoryAndFactory<ProjectRole> {
-
-    public ProjectRolesContributions() {
-        super(ProjectRolesContributions.class, ProjectRole.class);
-    }
+public class ProjectRolesContributions {
 
     // //////////////////////////////////////
 
@@ -55,8 +50,7 @@ public class ProjectRolesContributions extends UdoDomainRepositoryAndFactory<Pro
     @CollectionLayout(render=RenderType.EAGERLY)
     public List<ProjectRole> roles(
             final Project project) {
-        return allMatches("findByProject",
-                "project", project);
+        return projectRoles.findByProject(project);
     }
     
     public Project newProjectRole(

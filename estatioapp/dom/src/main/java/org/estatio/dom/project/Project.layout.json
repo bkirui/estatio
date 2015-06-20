@@ -27,7 +27,11 @@
             		"changeProject" : {}
             	}
             },
-            "businessCase": {},
+            "businessCase": {
+              "actions" : {
+                "businessCase" : {}
+              }
+            },
             "program": {},
             "versionSequence": {
               "hidden": {},
@@ -38,7 +42,6 @@
             }
           }
         },
-        "General" : {},
         "Dates": {
           "members": {
             "startDate": {
@@ -69,10 +72,27 @@
               },
              	"actions" : {
             		"updateCost" : {}
-            	}             
+            	}
             }
           }
-        }       
+        },
+        "General": {
+          "members": {
+            "relatedObject": {
+              "propertyLayout": {
+                "named": "Related Object",
+                "typicalLength": 25
+              }
+            },
+            "applicationTenancy": {
+              "propertyLayout": {
+                "describedAs": "Determines those users for whom this object is available to view and/or modify.",
+                "hidden": "PARENTED_TABLES",
+                "named": "Application Level"
+              }
+            }
+          }
+        }
       }
     },
     {

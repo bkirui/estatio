@@ -40,6 +40,7 @@ import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
@@ -293,9 +294,17 @@ public class ProgramRole
 
     @Inject ProgramRoles programRoles;
 
-    @Override public ApplicationTenancy getApplicationTenancy() {
-        return null;
+    // //////////////////////////////////////
+
+    @PropertyLayout(
+            named = "Application Level",
+            describedAs = "Determines those users for whom this object is available to view and/or modify.",
+            hidden = Where.PARENTED_TABLES
+    )
+    public ApplicationTenancy getApplicationTenancy() {
+        return getProgram().getApplicationTenancy();
     }
+
     // //////////////////////////////////////
 
     static final class SiblingFactory implements WithIntervalContiguous.Factory<ProgramRole> {

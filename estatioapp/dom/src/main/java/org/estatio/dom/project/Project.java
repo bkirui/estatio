@@ -46,8 +46,8 @@ import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.RenderType;
-import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.services.i18n.TranslatableString;
 
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
@@ -78,6 +78,13 @@ public class Project extends UdoDomainObject<Project> implements
 		super("reference, name, startDate");
 	}
 
+	//region > identificatiom
+	public TranslatableString title() {
+		return TranslatableString.tr("{name}", "name", getReference() + " _ " + getName());
+	}
+	//endregion
+	// //////////////////////////////////////
+
 	// //////////////////////////////////////
 
 	private String reference;
@@ -98,7 +105,6 @@ public class Project extends UdoDomainObject<Project> implements
 
 	private String name;
 
-	@Title
 	@Column(allowsNull = "false")
 	@MemberOrder(sequence="2")
 	public String getName() {
@@ -306,14 +312,22 @@ public class Project extends UdoDomainObject<Project> implements
 	public ProjectPhase default1ChangeProject(){
 		return this.getProjectPhase();
 	}
-	
-	
+
 	// //////////////////////////////////////
-	
+
+	@PropertyLayout(
+			named = "Application Level",
+			describedAs = "Determines those users for whom this object is available to view and/or modify.",
+			hidden = Where.PARENTED_TABLES
+	)
+	public ApplicationTenancy getApplicationTenancy() {
+		return getProgram().getApplicationTenancy();
+	}
+
+	// //////////////////////////////////////
+
 	@Inject
 	public ProjectRoles projectRoles;
 
-	@Override public ApplicationTenancy getApplicationTenancy() {
-		return null;
-	}
+	// //////////////////////////////////////
 }

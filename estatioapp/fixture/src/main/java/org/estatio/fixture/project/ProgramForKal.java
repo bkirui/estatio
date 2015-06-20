@@ -22,10 +22,12 @@ import org.estatio.dom.party.Party;
 import org.estatio.fixture.party.OrganisationForMediaXNl;
 import org.estatio.fixture.party.PersonForJohnDoeNl;
 import org.estatio.fixture.party.PersonForLinusTorvaldsNl;
+import org.estatio.fixture.security.tenancy.ApplicationTenancyForNl;
 
 public class ProgramForKal extends ProgramAbstract {
 
     public static final String PROGRAM_REFERENCE = "KAL_P1";
+    public static final String AT_PATH_COUNTRY = ApplicationTenancyForNl.PATH;
 
     @Override
     protected void execute(ExecutionContext executionContext) {
@@ -42,7 +44,7 @@ public class ProgramForKal extends ProgramAbstract {
         Party manager = parties.findPartyByReference(PersonForLinusTorvaldsNl.REF);
 
         createProgram(
-        		PROGRAM_REFERENCE, "2nd program", "Increase customer satisfaction", owner, manager,
+                AT_PATH_COUNTRY, PROGRAM_REFERENCE, "2nd program", "Increase customer satisfaction", owner, manager,
                 executionContext);
     }
 

@@ -37,8 +37,23 @@
     			}
               }
             },
-            "property": {
-              "propertyLayout": {}
+            "applicationTenancy": {
+              "propertyLayout": {
+                "describedAs": "Determines those users for whom this object is available to view and/or modify.",
+                "named": "Application Level"
+              }
+            },
+            "applicationTenancyPath": {
+              "propertyLayout": {
+                "named": "Application Tenancy Path",
+                "typicalLength": 25
+              }
+            },
+            "relatedObject": {
+              "propertyLayout": {
+                "named": "Related Object",
+                "typicalLength": 25
+              }
             },
             "versionSequence": {
               "propertyLayout": {

@@ -46,6 +46,13 @@
                 "hidden": "REFERENCES_PARENT"
               }
             },
+            "applicationTenancy": {
+              "propertyLayout": {
+                "describedAs": "Determines those users for whom this object is available to view and/or modify.",
+                "hidden": "PARENTED_TABLES",
+                "named": "Application Level"
+              }
+            },
             "versionSequence": {
               "propertyLayout": {
                 "hidden": "ANYWHERE",

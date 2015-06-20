@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancies;
+
 import org.estatio.dom.asset.Properties;
 import org.estatio.dom.project.BusinessCase;
 import org.estatio.dom.project.BusinessCaseContributions;
@@ -35,6 +37,7 @@ import org.estatio.dom.project.Project;
 import org.estatio.dom.project.Projects;
 import org.estatio.fixture.EstatioBaseLineFixture;
 import org.estatio.fixture.asset.PropertyForKalNl;
+import org.estatio.fixture.security.tenancy.ApplicationTenancyForGlobal;
 import org.estatio.integtests.EstatioIntegrationTest;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -49,7 +52,7 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
             @Override
             protected void execute(ExecutionContext executionContext) {
                 executionContext.executeChild(this, new EstatioBaseLineFixture());
-                
+				executionContext.executeChild(this, new ApplicationTenancyForGlobal());
                 executionContext.executeChild(this, new PropertyForKalNl());
                 
             }
@@ -68,6 +71,10 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     @Inject
     Properties properties;
 
+	@Inject
+	ApplicationTenancies applicationTenancies;
+
+
     public static class newBusinessCase extends BusinessCasesTest {
     	
     	BusinessCase bc;
@@ -77,13 +84,14 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	private static final String BUSINESSCASE_DESCRIPTION = "This is a description";
     	private static final LocalDate REVIEWDATE = LocalDate.now().plusDays(7);
     	private static final LocalDate NOW = LocalDate.now();
+		private static final String AT_PATH_GLOBAL = "/";
     	
     	
     	@Before
     	public void setUp() throws Exception {
     		// given
-    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal");
-    		pr1 = projects.newProject("PR4", "Testproject", new LocalDate(2015,1,1), new LocalDate(2015,12,31), null, null, null, p1);
+    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal", applicationTenancies.findTenancyByPath(AT_PATH_GLOBAL));
+    		pr1 = projects.newProject("PR4", "Testproject", new LocalDate(2015, 1, 1), new LocalDate(2015, 12, 31), null, null, null, p1);
     		
     		// when
     		bc = businesscases.newBusinessCase(pr1, BUSINESSCASE_DESCRIPTION, REVIEWDATE);
@@ -116,11 +124,12 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	
     	private static final String BUSINESSCASE_DESCRIPTION = "This is a description";
     	private static final LocalDate WRONG_REVIEWDATE = LocalDate.now().minusDays(7);
+		private static final String AT_PATH_GLOBAL = "/";
     	
     	@Before
     	public void setUp() throws Exception {
     		// given
-    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal");
+    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal", applicationTenancies.findTenancyByPath(AT_PATH_GLOBAL));
     		pr1 = projects.newProject("PR4", "Testproject", new LocalDate(2015,1,1), new LocalDate(2015,12,31), null, null, null, p1);
     		
     		// when
@@ -148,12 +157,13 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	private static final LocalDate REVIEWDATE = LocalDate.now().plusDays(7);
     	private static final LocalDate REVIEWDATE_UPDATED = LocalDate.now().plusDays(14);
     	private static final LocalDate NOW = LocalDate.now();
+		private static final String AT_PATH_GLOBAL = "/";
     	
     	
     	@Before
     	public void setUp() throws Exception {
     		// given
-    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal");
+    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal", applicationTenancies.findTenancyByPath(AT_PATH_GLOBAL));
     		pr1 = projects.newProject("PR4", "Testproject", new LocalDate(2015,1,1), new LocalDate(2015,12,31), null, null, null, p1);
     		bc = businesscases.newBusinessCase(pr1, BUSINESSCASE_DESCRIPTION, REVIEWDATE);
     		
@@ -201,12 +211,13 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	private static final String BUSINESSCASE_DESCRIPTION_UPDATED = "This is an updated description";
     	private static final LocalDate REVIEWDATE = LocalDate.now().plusDays(7);
     	private static final LocalDate WRONG_REVIEWDATE_UPDATED = LocalDate.now().minusDays(1);
+		private static final String AT_PATH_GLOBAL = "/";
     	
     	
     	@Before
     	public void setUp() throws Exception {
     		// given
-    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal");
+    		p1 = programs.newProgram("TST", "TestProgram", "TestGoal", applicationTenancies.findTenancyByPath(AT_PATH_GLOBAL));
     		pr1 = projects.newProject("PR4", "Testproject", new LocalDate(2015,1,1), new LocalDate(2015,12,31), null, null, null, p1);
     		bc = businesscases.newBusinessCase(pr1, BUSINESSCASE_DESCRIPTION, REVIEWDATE);
     		
