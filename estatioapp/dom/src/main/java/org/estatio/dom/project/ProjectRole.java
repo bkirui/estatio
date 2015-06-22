@@ -45,6 +45,7 @@ import org.estatio.dom.EstatioDomainObject;
 import org.estatio.dom.JdoColumnLength;
 import org.estatio.dom.UdoDomainObject;
 import org.estatio.dom.WithIntervalContiguous;
+import org.estatio.dom.apptenancy.WithApplicationTenancyGlobalAndCountry;
 import org.estatio.dom.party.Party;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 import org.joda.time.LocalDate;
@@ -110,7 +111,7 @@ import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 @DomainObjectLayout(bookmarking=BookmarkPolicy.AS_CHILD)
 public class ProjectRole
         extends UdoDomainObject<ProjectRole>
-        implements WithIntervalContiguous<ProjectRole> 
+        implements WithIntervalContiguous<ProjectRole>, WithApplicationTenancyGlobalAndCountry
 {
 
     private WithIntervalContiguous.Helper<ProjectRole> helper =

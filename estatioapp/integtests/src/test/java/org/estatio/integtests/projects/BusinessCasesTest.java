@@ -100,7 +100,7 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	@Test
         public void valuesSet() throws Exception {
     		//then 
-    		assertThat(businesscases.businesCase(pr1), is(bc));
+    		assertThat(businesscases.businessCase(pr1), is(bc));
     		assertNull(bc.getNext());
     		assertNull(bc.getPrevious());
     		assertThat(bc.getDate(), is(NOW));
@@ -139,7 +139,7 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	@Test
         public void valuesSet() throws Exception {
     		//then 
-    		assertThat(businesscases.businesCase(pr1), is(bc));
+    		assertThat(businesscases.businessCase(pr1), is(bc));
     		assertThat(bc.validateUpdateBusinessCase(BUSINESSCASE_DESCRIPTION, WRONG_REVIEWDATE), is("A review date should not be in the past"));
     	}
 
@@ -174,7 +174,7 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     	@Test
         public void valuesSet() throws Exception {
     		//then 
-    		assertThat(businesscases.businesCase(pr1), is(bc_upd));
+    		assertThat(businesscases.businessCase(pr1), is(bc_upd));
     		assertNull(bc_upd.getNext());
     		assertThat(bc_upd.getPrevious(), is(bc));
     		assertThat(bc.getNext(), is(bc_upd));

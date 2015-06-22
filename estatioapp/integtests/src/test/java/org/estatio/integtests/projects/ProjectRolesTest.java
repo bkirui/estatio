@@ -183,7 +183,7 @@ public class ProjectRolesTest extends EstatioIntegrationTest {
         	project = projects.findProject(ProjectsForKal.PROJECT_REFERENCE).get(0);
             oldParty = parties.findPartyByReference(PersonForGinoVannelliNl.REF);
             newParty = parties.findPartyByReference(PersonForJohnDoeNl.REF);
-            pr = projectRoles.createRole(project, ProjectRoleType.PROJECT_SENIORSUPPLIER, oldParty, new LocalDate(2000,1,2), null);
+            pr = projectRoles.createRole(project, ProjectRoleType.SENIOR_SUPPLIER, oldParty, new LocalDate(2000,1,2), null);
         }
 
         @Test

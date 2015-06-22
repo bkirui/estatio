@@ -51,6 +51,7 @@ import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.estatio.dom.JdoColumnLength;
 import org.estatio.dom.UdoDomainObject;
 import org.estatio.dom.WithIntervalContiguous;
+import org.estatio.dom.apptenancy.WithApplicationTenancyGlobalAndCountry;
 import org.estatio.dom.party.Party;
 import org.estatio.dom.valuetypes.LocalDateInterval;
 
@@ -111,7 +112,7 @@ import org.estatio.dom.valuetypes.LocalDateInterval;
 @DomainObjectLayout(bookmarking=BookmarkPolicy.AS_CHILD)
 public class ProgramRole
         extends UdoDomainObject<ProgramRole>
-        implements WithIntervalContiguous<ProgramRole> {
+        implements WithIntervalContiguous<ProgramRole>, WithApplicationTenancyGlobalAndCountry {
 
     private WithIntervalContiguous.Helper<ProgramRole> helper =
             new WithIntervalContiguous.Helper<ProgramRole>(this);

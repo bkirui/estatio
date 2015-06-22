@@ -31,6 +31,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Queries;
 import javax.jdo.annotations.Query;
+import javax.jdo.annotations.Unique;
 import javax.jdo.annotations.Version;
 import javax.jdo.annotations.VersionStrategy;
 
@@ -55,11 +56,13 @@ import org.estatio.dom.JdoColumnScale;
 import org.estatio.dom.RegexValidation;
 import org.estatio.dom.UdoDomainObject;
 import org.estatio.dom.WithReferenceUnique;
+import org.estatio.dom.apptenancy.WithApplicationTenancyGlobalAndCountry;
 import org.estatio.dom.currency.Currency;
 
 @PersistenceCapable(identityType = IdentityType.DATASTORE)
 @DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
 @Version(strategy = VersionStrategy.VERSION_NUMBER, column = "version")
+@Unique(members={"reference"})
 @Queries({
 		@Query(name = "findByReference", language = "JDOQL", value = "SELECT "
 				+ "FROM org.estatio.dom.project.Project "
@@ -72,7 +75,7 @@ import org.estatio.dom.currency.Currency;
 				+ "WHERE program == :program ") })
 @DomainObject(editing = Editing.DISABLED, autoCompleteRepository = Projects.class, autoCompleteAction = "autoComplete")
 public class Project extends UdoDomainObject<Project> implements
-		WithReferenceUnique {
+		WithReferenceUnique, WithApplicationTenancyGlobalAndCountry {
 
 	public Project() {
 		super("reference, name, startDate");

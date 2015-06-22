@@ -27,6 +27,7 @@ import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 
 import org.estatio.dom.Chained;
 import org.estatio.dom.UdoDomainObject;
+import org.estatio.dom.apptenancy.WithApplicationTenancyGlobalAndCountry;
 
 @PersistenceCapable(identityType = IdentityType.DATASTORE)
 @DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE, column = "id")
@@ -54,7 +55,7 @@ import org.estatio.dom.UdoDomainObject;
                     "WHERE project == :project && next == null")                      
 })
 @DomainObject(editing=Editing.DISABLED)
-public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chained<BusinessCase>{
+public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chained<BusinessCase>, WithApplicationTenancyGlobalAndCountry{
 
 	public BusinessCase() {
 		super("project, date, lastUpdated desc nullsLast, description");
