@@ -27,11 +27,7 @@
             		"changeProject" : {}
             	}
             },
-            "businessCase": {
-              "actions" : {
-                "businessCase" : {}
-              }
-            },
+            "businessCase": {},
             "program": {},
             "versionSequence": {
               "hidden": {},

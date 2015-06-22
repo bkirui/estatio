@@ -107,7 +107,7 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     		assertThat(bc.getBusinessCaseVersion(), is(1));
     		assertThat(bc.getNextReviewDate(), is(REVIEWDATE));
     		assertNull(bc.getLastUpdated());
-    		assertThat(bc.getBusinessCaseDescription(), is(BUSINESSCASE_DESCRIPTION));
+    		assertThat(bc.getDescription(), is(BUSINESSCASE_DESCRIPTION));
     		assertThat(bc.getProject(), is(pr1));
     		assertThat(bc.hideUpdateBusinessCase(BUSINESSCASE_DESCRIPTION, REVIEWDATE), is(false));
     		assertNull(bc.validateUpdateBusinessCase(BUSINESSCASE_DESCRIPTION, REVIEWDATE));
@@ -187,8 +187,8 @@ public class BusinessCasesTest extends EstatioIntegrationTest {
     		assertThat(bc.getNextReviewDate(), is(REVIEWDATE));
     		assertThat(bc_upd.getLastUpdated(), is(NOW));
     		assertNull(bc.getLastUpdated());
-    		assertThat(bc_upd.getBusinessCaseDescription(), is(BUSINESSCASE_DESCRIPTION_UPDATED));
-    		assertThat(bc.getBusinessCaseDescription(), is(BUSINESSCASE_DESCRIPTION));
+    		assertThat(bc_upd.getDescription(), is(BUSINESSCASE_DESCRIPTION_UPDATED));
+    		assertThat(bc.getDescription(), is(BUSINESSCASE_DESCRIPTION));
     		assertThat(bc_upd.getProject(), is(pr1));
     		assertThat(bc.getProject(), is(pr1));
     		assertThat(bc_upd.hideUpdateBusinessCase(BUSINESSCASE_DESCRIPTION_UPDATED, REVIEWDATE), is(false));

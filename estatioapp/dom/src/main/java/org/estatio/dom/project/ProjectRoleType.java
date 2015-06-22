@@ -29,8 +29,8 @@ import org.estatio.dom.utils.StringUtils;
 public enum ProjectRoleType implements TitledEnum {
 
     PROJECT_EXECUTIVE,
-    PROJECT_SENIORSUPPLIER,
-    PROJECT_SENIORUSER,
+    SENIOR_SUPPLIER,
+    SENIOR_USER,
     PROJECT_MANAGER;
     
 

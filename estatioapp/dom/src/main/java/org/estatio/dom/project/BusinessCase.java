@@ -57,27 +57,27 @@ import org.estatio.dom.UdoDomainObject;
 public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chained<BusinessCase>{
 
 	public BusinessCase() {
-		super("project, date, lastUpdated desc nullsLast, businessCaseDescription");
+		super("project, date, lastUpdated desc nullsLast, description");
 	}
 
 	//region > identificatiom
 	public TranslatableString title() {
-		return TranslatableString.tr("{name}", "name", "Businesscase : " + this.getProject().getReference() + " _v_" + getBusinessCaseVersion());
+		return TranslatableString.tr("{name}", "name", "Businesscase for " + this.getProject().getReference() );
 	}
 	//endregion
 	// //////////////////////////////////////
 	
-	private String businessCaseDescription;
+	private String description;
 
 	@Column(allowsNull = "false")
     @PropertyLayout(multiLine = 5, describedAs = "Reason for the project and expected benefits")
 	@MemberOrder(sequence="1")
-	public String getBusinessCaseDescription() {
-		return businessCaseDescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setBusinessCaseDescription(String businessCaseDescription) {
-		this.businessCaseDescription = businessCaseDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	// //////////////////////////////////////
@@ -155,7 +155,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	@Action(semantics=SemanticsOf.NON_IDEMPOTENT)
 	public BusinessCase updateBusinessCase(
 			@ParameterLayout(
-					named = "Business Case Description",
+					named = "Description",
 					multiLine = 5
 					)
 			final String businessCaseDescription,
@@ -172,7 +172,7 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 	}
 	
 	public String default0UpdateBusinessCase(){
-		return this.getBusinessCaseDescription();
+		return this.getDescription();
 	}
 	
 	public LocalDate default1UpdateBusinessCase(){
@@ -237,6 +237,6 @@ public class BusinessCase extends UdoDomainObject<BusinessCase> implements Chain
 
 	@MemberOrder(sequence="9")
 	@Override public ApplicationTenancy getApplicationTenancy() {
-		return null;
+		return getProject().getApplicationTenancy();
 	}
 }

@@ -30,7 +30,7 @@ public class BusinessCases extends UdoDomainRepositoryAndFactory<BusinessCase> {
 		BusinessCase businesscase = newTransientInstance(BusinessCase.class);
 		
 		// Set values
-		businesscase.setBusinessCaseDescription(businessCaseDescription);
+		businesscase.setDescription(businessCaseDescription);
 		businesscase.setDate(date);
 		businesscase.setNextReviewDate(reviewDate);
 		businesscase.setLastUpdated(lastUpdated);
@@ -56,7 +56,7 @@ public class BusinessCases extends UdoDomainRepositoryAndFactory<BusinessCase> {
 		BusinessCase businesscase = newTransientInstance(BusinessCase.class);
 		
 		// Set values
-		businesscase.setBusinessCaseDescription(businessCaseDescription);
+		businesscase.setDescription(businessCaseDescription);
 		businesscase.setDate(date);
 		businesscase.setNextReviewDate(reviewDate);
 		businesscase.setLastUpdated(lastUpdated);

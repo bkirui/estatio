@@ -84,7 +84,7 @@ public class Program
 
     //region > identificatiom
     public TranslatableString title() {
-        return TranslatableString.tr("{name}", "name", getReference() + " _ " + getName());
+        return TranslatableString.tr("{name}", "name", "[" + getReference() + "] " + getName());
     }
     //endregion
     // //////////////////////////////////////

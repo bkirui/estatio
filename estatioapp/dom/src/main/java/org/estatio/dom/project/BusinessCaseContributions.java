@@ -22,7 +22,7 @@ public class BusinessCaseContributions  {
 	public BusinessCase newBusinessCase(
 			final Project project,
 			@ParameterLayout(
-					named = "Business Case Description",
+					named = "Description",
 					multiLine = 5
 					)
 			final String businessCaseDescription,
@@ -61,7 +61,7 @@ public class BusinessCaseContributions  {
 	
 	@Action(semantics=SemanticsOf.SAFE)
 	@ActionLayout(contributed=Contributed.AS_ASSOCIATION)
-	public BusinessCase businesCase(final Project project){
+	public BusinessCase businessCase(final Project project){
 		return businesscases.findActiveBusinessCaseOnProject(project);
 	}
 	
